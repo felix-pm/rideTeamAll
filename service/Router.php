@@ -19,6 +19,9 @@ class Router
             else if($_GET['route'] === 'register') {
                 $this->ac->register();
             }
+            else if($_GET['route'] === 'connexion') {
+                $this->ac->connexion();
+            }
             else if($_GET['route'] === 'logout') {
                 $this->ac->logout();
             }
