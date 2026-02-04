@@ -3,11 +3,11 @@
 class Chat
 {
 
-    public function __construct(private ?int $id, private int $ride_id, private int $user_id, private string $content, private date $creater_at)
+    public function __construct(private ?int $id, private Ride $ride_id, private User $user_id, private string $content, private date $creater_at)
     {
 
     } 
-    
+
     public function getId()
     {
         return $this->id;
@@ -21,7 +21,7 @@ class Chat
     }
 
 
-    public function getRide_id()
+    public function getRide_id() : Ride
     {
         return $this->ride_id;
     }
@@ -34,7 +34,7 @@ class Chat
     }
 
 
-    public function getUser_id()
+    public function getUser_id() : User
     {
         return $this->user_id;
     }

@@ -3,12 +3,12 @@
 class Participation
 {
 
-    public function __construct(private int $ride_id, private int $user_id, private string $comments, private string $created_at)
+    public function __construct(private Ride $ride_id, private User $user_id, private string $comments, private string $created_at)
     {
 
     }  
 
-    public function getRide_id()
+    public function getRide_id() : Ride
     {
         return $this->ride_id;
     }
@@ -21,7 +21,7 @@ class Participation
     }
 
  
-    public function getUser_id()
+    public function getUser_id() : User
     {
         return $this->user_id;
     }

@@ -3,7 +3,7 @@
 class Ride
 {
 
-    public function __construct(private ?int $id, private string $title, private string $description, private string $start_date, private string $start_location, private string $end_location, private int $difficulty_level, private int $max_participants, private int $organizer_id)
+    public function __construct(private ?int $id, private string $title, private string $description, private string $start_date, private string $start_location, private string $end_location, private int $difficulty_level, private int $max_participants, private User $organizer_id)
     {
 
     }  
@@ -112,7 +112,7 @@ class Ride
     }
 
 
-    public function getOrganizer_id()
+    public function getOrganizer_id() : User
     {
         return $this->organizer_id;
     }

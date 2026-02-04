@@ -3,7 +3,7 @@
 class Bike
 {
 
-    public function __construct(private ?int $id, private string $marque, private string $modele, private string $annee, private int $user_id)
+    public function __construct(private ?int $id, private string $marque, private string $modele, private string $annee, private User $user_id)
     {
 
     } 
@@ -60,7 +60,7 @@ class Bike
     }
 
 
-    public function getUser_id()
+    public function getUser_id() : User
     {
         return $this->user_id;
     }
