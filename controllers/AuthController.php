@@ -81,7 +81,7 @@ class AuthController extends AbstractController
                 $userToCreate = new User(
                     $_POST['pseudo'],
                     $_POST['email'],
-                    $hashedPassword,
+                    $hashedPassword, // ! a regarder
                     "USER"
                 );
                 $manager->create_user($userToCreate);

@@ -84,7 +84,7 @@ class UserManager extends AbstractManager
                 ':pseudo' => $user->getPseudo(),
                 ':email'     => $user->getEmail(),
                 ':password'  => $user->getPassword(),
-                ':role'      => $user->getRole()
+                ':role'      => $user->getRole(),
                 ':avatar'    => $user->getAvatar()
             ];
         $query->execute($parameters);
@@ -98,4 +98,6 @@ class UserManager extends AbstractManager
         ];
         $query->execute($parameters);
     }
+
+    public function signalerUser() // ! fonction permettant de signaler une personne en fonction de ses propos ou des photos ou du nom
 }

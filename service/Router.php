@@ -2,46 +2,47 @@
 
 class Router
 {
-    private AuthController $ac;
-    private UserController $uc;
-    public function __construct()
-    {
-        $this->ac = new AuthController();
-        $this->uc = new UserController();
-    }
-
     public function handleRequest() : void
     {
         if(!empty($_GET['route'])) {
             if($_GET['route'] === 'login') {
-                $this->ac->login();
+                $ac = new AuthController();
+                $ac->login();
             }
             else if($_GET['route'] === 'register') {
-                $this->ac->register();
+                $ac = new AuthController();
+                $ac->register();
             }
             else if($_GET['route'] === 'connexion') {
-                $this->ac->connexion();
+                $ac = new AuthController();
+                $ac->connexion();
             }
             else if($_GET['route'] === 'logout') {
-                $this->ac->logout();
+                $ac = new AuthController();
+                $ac->logout();
             }
             else if($_GET['route'] === 'profile') {
-                $this->uc->profile();
+                $uc = new UserController();
+                $uc->profile();
             }
             else if($_GET['route'] === 'decouvrir') {
-                $this->uc->decouvrir();
+                $uc = new UserController();
+                $uc->decouvrir();
             }
             else if($_GET['route'] === 'follow') {
-                $this->uc->follow();
+                $uc = new UserController();
+                $uc->follow();
             }
             else
             {
-                $this->ac->notFound();
+                $ac = new AuthController();
+                $ac->notFound();
             }
         }
         else
         {
-            $this->uc->map();
+            $uc = new UserController();
+            $uc->home();
         }
     }
 }
