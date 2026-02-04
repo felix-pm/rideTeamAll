@@ -119,7 +119,7 @@ class UserController extends AbstractController
 
     public function profile() :void
     {
-        if(isset(isset($_SESSION["id"] && $_SESSION["pseudo"]) && isset($_SESSION["email"]) && isset($_SESSION["role"])))
+        if(isset($_SESSION["id"] && $_SESSION["pseudo"]) && isset($_SESSION["email"]) && isset($_SESSION["role"]))
         {
             if($_SESSION["role"] === "ADMIN")
             {

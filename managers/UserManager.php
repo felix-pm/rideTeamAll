@@ -70,7 +70,7 @@ class UserManager extends AbstractManager
                 ':pseudo' => $user->getPseudo(),
                 ':email'     => $user->getEmail(),
                 ':password'  => $user->getPassword(),
-                ':role'      => $user->getRole()
+                ':role'      => $user->getRole(),
                 ':avatar'    => $user->getAvatar()
             ];
 

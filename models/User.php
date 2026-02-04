@@ -3,7 +3,7 @@
 class User
 {
 
-    public function __construct(private int $id, private string $pseudo, private string $email, private string $password, private string $role, private string $avatar)
+    public function __construct(private ?int $id, private string $pseudo, private string $email, private string $password, private string $role, private string $avatar)
     {
 
     }  
@@ -72,7 +72,7 @@ class User
         return $this;
     }
 
-    
+
     public function getAvatar()
     {
         return $this->avatar;
