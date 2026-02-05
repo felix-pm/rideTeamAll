@@ -100,4 +100,5 @@ class UserManager extends AbstractManager
     }
 
     public function signalerUser() // ! fonction permettant de signaler une personne en fonction de ses propos ou des photos ou du nom
+    // ! a faire en js je pense
 }

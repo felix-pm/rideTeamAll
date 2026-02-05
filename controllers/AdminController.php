@@ -3,7 +3,7 @@
 class AdminController extends AbstractController
 {
     
-    // FONCTION POUR L'ADMIN
+    // ! a garder
     public function create_user() :void 
     {
         if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
@@ -47,6 +47,7 @@ class AdminController extends AbstractController
         $this->render('admin/user/create.html.twig', ['errors' => $errors]); // ! changer la redirection
     }
 
+    // ! a garder
     public function update_user() : void {
         if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
         {
@@ -65,28 +66,30 @@ class AdminController extends AbstractController
         }
     }
 
+    // ! a garder
     public function delete_user() : void {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
-    {
-        $this->redirect('index.php?route=login');
-        return; 
-    }
-
-    if (isset($_GET['id'])) 
-    {
-        $id = (int)$_GET['id'];
-        $manager = new UserManager();
-        $userToDelete = $manager->findById($id);
-
-        if ($userToDelete) 
+        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
         {
-            $manager->delete($userToDelete);
+            $this->redirect('index.php?route=login');
+            return; 
         }
+
+        if (isset($_GET['id'])) 
+        {
+            $id = (int)$_GET['id'];
+            $manager = new UserManager();
+            $userToDelete = $manager->findById($id);
+
+            if ($userToDelete) 
+            {
+                $manager->delete($userToDelete);
+            }
+        }
+
+        $this->redirect('index.php?route=list_admin'); // ! changer la redirection
     }
 
-    $this->redirect('index.php?route=list_admin'); // ! changer la redirection
-}
-
+    // ! a garder
     public function list_admin() : void 
     {
         if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
@@ -101,6 +104,7 @@ class AdminController extends AbstractController
         }
     }
 
+    // ! a garder
     public function show_user() : void
     {
         if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
@@ -117,6 +121,7 @@ class AdminController extends AbstractController
 
     }
 
+    // ! a garder
     public function profile() :void
     {
         if(isset($_SESSION["id"] && $_SESSION["pseudo"]) && isset($_SESSION["email"]) && isset($_SESSION["role"]))

@@ -52,5 +52,6 @@ class RideManager extends AbstractManager
     public function updateRide() // ! a faire
     // ? comment faire pour que ce soit uniquement la personne qui à créer le sortie qui puisse la modifier (l'admin aussi)
 
-    public function signalerRide() // ! renvoie une notification à l'admin 
+    public function signalerRide() // ! renvoie une notification à l'admin
+    // ! a faire en js je pense
 }
