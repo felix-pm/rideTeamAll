@@ -1,0 +1,16 @@
+{
+  "name": "rideteam/app",
+  "description": "Mon projet moto",
+  "type": "project",
+  "require": {
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "autoload": {
+    "classmap": [
+      "controllers/",
+      "managers/",
+      "models/",
+      "service/"
+    ]
+  }
+}

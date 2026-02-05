@@ -100,5 +100,5 @@ class UserManager extends AbstractManager
         $query->execute($parameters);
     }
 
-    public function signalerUser() // ! a faire en js je pense pour ne pas a avoir à recharger la page et donc perdre le fil de la discution par exemple dans le chat
+    public function signalerUser() {} // ! a faire en js je pense pour ne pas a avoir à recharger la page et donc perdre le fil de la discution par exemple dans le chat
 }

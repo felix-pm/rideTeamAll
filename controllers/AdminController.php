@@ -46,7 +46,7 @@ class AdminController extends AbstractController
             }
         }
         }
-        $this->render('admin/user/create.html.twig', ['errors' => $errors]); // ! changer la redirection
+        // $this->render('admin/user/create.html.twig', ['errors' => $errors]); // ! changer la redirection
     }
 
     // ! a garder
@@ -71,7 +71,7 @@ class AdminController extends AbstractController
                 );
                 $ctrl->update($update_user);
             }
-            $this->render('admin/user/update.html.twig', ['datas' => $datas]); // ! changer la redirection
+            // $this->render('admin/user/update.html.twig', ['datas' => $datas]); // ! changer la redirection
         }
     }
 
@@ -109,7 +109,7 @@ class AdminController extends AbstractController
         {
             $ctrl = new UserManager;
             $datas = $ctrl->findAll();
-            $this->render('admin/user/list_admin.html.twig', ['datas' => $datas]); // ! changer la redirection
+            // $this->render('admin/user/list_admin.html.twig', ['datas' => $datas]); // ! changer la redirection
         }
     }
 
@@ -125,7 +125,7 @@ class AdminController extends AbstractController
             $id = $_GET["id"];
             $ctrl = new UserManager;
             $datas = $ctrl->findById($id);
-            $this->render('admin/user/show.html.twig', ["datas" => $datas]); // ! changer la redirection
+            // $this->render('admin/user/show.html.twig', ["datas" => $datas]); // ! changer la redirection
         }
 
     }
@@ -141,12 +141,12 @@ class AdminController extends AbstractController
             }
             else
             {
-                $this->render('member/profile.html.twig', []);
+                // $this->render('member/profile.html.twig', []);
             }
         }
         else
         {
-            $this->render('auth/login.html.twig', []);
+            // $this->render('auth/login.html.twig', []);
         }
     }
 
@@ -164,7 +164,7 @@ class AdminController extends AbstractController
 
         
 
-        return $this->render('home/home.html.twig', [
+        // return $this->render('home/home.html.twig', [
             "groups" => $myGroups            
     ]);
     }

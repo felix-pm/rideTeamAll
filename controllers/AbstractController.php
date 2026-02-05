@@ -2,21 +2,23 @@
 
 class AbstractController
 {
-    private \Twig\Environment $twig;
-    public function __construct()
+    protected function render(string $templatePath, array $data = []) : void
     {
-        $loader = new \Twig\Loader\FilesystemLoader('templates');
-        $twig = new \Twig\Environment($loader,[
-            'debug' => true,
-        ]);
-        $twig->addGlobal('session', $_SESSION);
-        $twig->addExtension(new \Twig\Extension\DebugExtension());
-        $this->twig = $twig;
+        // 1. On "déballe" les données pour qu'elles deviennent des variables
+        // Ex: ['titre' => 'Accueil'] devient la variable $titre = 'Accueil'
+        extract($data);
+
+        // 2. On inclut le fichier (Attention au chemin !)
+        // On suppose que tes vues sont dans "templates/"
+        require_once __DIR__ . '/../templates/' . $templatePath . '.php';
     }
 
-    protected function render(string $template, array $data) : void
+    protected function jsonResponse(array $data, int $statusCode = 200): void
     {
-        echo $this->twig->render($template, $data);
+        header('Content-Type: application/json');
+        http_response_code($statusCode);
+        echo json_encode($data);
+        exit;
     }
 
     protected function redirect(string $url) : void

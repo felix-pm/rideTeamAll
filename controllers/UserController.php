@@ -12,32 +12,42 @@ class UserController extends AbstractController
             }
             else
             {
-                $this->render('member/profile.html.twig', []);
+                $this->render('member/profile', []);
             }
         }
         else
         {
-            $this->render('auth/login.html.twig', []);
+            $this->render('auth/login', []);
         }
     }
 
-    public function profilOther() // ! faire une fonction pour voir le profil des autres utilisateurs
+    public function profilOther() {} // ! faire une fonction pour voir le profil des autres utilisateurs
 
     // ! à voir si je la garde (ou si je change le nom)
     public function home()
     {
-        if (!isset($_SESSION['id'])) {
-            $this->redirect('index.php?route=login');
-        }
+        // if (!isset($_SESSION['id'])) {
+        //     $this->redirect('index.php?route=login');
+        // }
 
-        $userId = $_SESSION['id'];
+        $userId = $_SESSION['id'] ?? null;
 
         $manager = new RideManager();
 
         $rides = $manager->findAll(); 
 
-        return $this->render('home/home.html.twig', [
+        return $this->render('member/home', [
             "rides" => $rides
         ]);
+    }
+
+    public function follow(): void
+    {
+        $this->render('member/follow', []);
+    }
+
+    public function map(): void
+    {
+        $this->render('member/map', []);
     }
 }

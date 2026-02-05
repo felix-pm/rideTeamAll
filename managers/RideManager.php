@@ -84,5 +84,5 @@ class RideManager extends AbstractManager
     }
     
 
-    public function signalerRide() // ! a faire en js 
+    public function signalerRide() {} // ! a faire en js 
 }

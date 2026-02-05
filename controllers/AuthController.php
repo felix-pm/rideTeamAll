@@ -2,11 +2,6 @@
 
 class AuthController extends AbstractController
 {
-    public function home() : void
-    {
-        $this->render('home/home.html.twig', []); // ! a changer
-    }
-
     public function login(): void {
         $errors = [];
 
@@ -29,11 +24,11 @@ class AuthController extends AbstractController
                         $_SESSION['avatar'] = $user->getAvatar();
                         if($user->getRole() === 'ADMIN')
                         {
-                            $this->redirect("index.php?route=list_admin"); // ! a changer
+                            $this->redirect("index.php?route=admin");
                         }
                         else 
                         {
-                            $this->redirect("index.php?route=home"); // ! a changer
+                            $this->redirect("index.php?route=home");
                         }
                         exit;
                     } else {
@@ -45,7 +40,7 @@ class AuthController extends AbstractController
             }
         }
 
-        $this->render('auth/login.html.twig', ['errors' => $errors]); // ! a changer
+        $this->render('auth/login', ['errors' => $errors]);
     }
 
 
@@ -84,7 +79,7 @@ class AuthController extends AbstractController
                     email: $_POST['email'],
                     password: $hashedPassword,
                     role: "USER",
-                    avatar: null // Ou une image par défaut
+                    avatar: "./assets/img/default-avatar.png"
                 );
                 $manager->create_user($userToCreate);
                 $this->redirect('index.php?route=login');
@@ -92,16 +87,11 @@ class AuthController extends AbstractController
             }
         }
         
-        $this->render('auth/register.html.twig', ['errors' => $errors]); // ! a changer
+        $this->render('auth/register', ['errors' => $errors]);
     }
 
     public function notFound() : void
     {
-        $this->render('error/notFound.html.twig', []); // ! a changer
-    }
-
-    public function page_connexion(): void
-    {
-        $this->render('auth/page_connexion.html.twig', []); // ! a changer
+        $this->render('error/not_found', []);
     }
 }
