@@ -33,10 +33,12 @@ class AdminController extends AbstractController
                 $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 
                 $userToCreate = new User(
-                    $_POST['pseudo'],
-                    $_POST['email'],
-                    $hashedPassword,
-                    "USER"
+                    id: null, 
+                    pseudo: $_POST['pseudo'], 
+                    email: $_POST['email'],
+                    password: $hashedPassword,
+                    role: "USER",             
+                    avatar: null              
                 );
                 $manager->create_user($userToCreate);
                 $this->redirect('index.php?route=list_admin');
@@ -59,7 +61,14 @@ class AdminController extends AbstractController
             $datas = $ctrl->findById($_GET["id"]);
             if ($_SERVER['REQUEST_METHOD'] === 'POST')
             {
-                $update_user = new User($_POST["pseudo"], $_POST["email"], password_hash($_POST["password"], PASSWORD_DEFAULT), $_POST["role"], $_POST["avatar"]);
+                $update_user = new User(
+                    id: (int)$_GET['id'], 
+                    pseudo: $_POST["pseudo"],
+                    email: $_POST["email"],
+                    password: password_hash($_POST["password"], PASSWORD_DEFAULT),
+                    role: $_POST["role"],
+                    avatar: $_POST["avatar"] 
+                );
                 $ctrl->update($update_user);
             }
             $this->render('admin/user/update.html.twig', ['datas' => $datas]); // ! changer la redirection
@@ -124,7 +133,7 @@ class AdminController extends AbstractController
     // ! a garder
     public function profile() :void
     {
-        if(isset($_SESSION["id"] && $_SESSION["pseudo"]) && isset($_SESSION["email"]) && isset($_SESSION["role"]))
+        if(isset($_SESSION["id"], $_SESSION["pseudo"], $_SESSION["email"], $_SESSION["role"]))
         {
             if($_SESSION["role"] === "ADMIN")
             {

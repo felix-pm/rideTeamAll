@@ -68,10 +68,10 @@ class UserManager extends AbstractManager
             $query = $this->db->prepare("INSERT INTO users (pseudo, email, password, role, avatar) VALUES (:pseudo, :email, :password, :role, :avatar)");
             $parameters = [
                 ':pseudo' => $user->getPseudo(),
-                ':email'     => $user->getEmail(),
-                ':password'  => $user->getPassword(),
-                ':role'      => $user->getRole(),
-                ':avatar'    => $user->getAvatar()
+                ':email' => $user->getEmail(),
+                ':password' => $user->getPassword(),
+                ':role' => $user->getRole(),
+                ':avatar' => $user->getAvatar()
             ];
 
             $query->execute($parameters);
@@ -81,11 +81,12 @@ class UserManager extends AbstractManager
     {
         $query = $this->db->prepare('UPDATE users SET pseudo = :pseudo, email = :email, password = :password, role = :role, avatar = :avatar WHERE id = :id');;
         $parameters = [
+                ':id' => $user->getId(),
                 ':pseudo' => $user->getPseudo(),
-                ':email'     => $user->getEmail(),
-                ':password'  => $user->getPassword(),
-                ':role'      => $user->getRole(),
-                ':avatar'    => $user->getAvatar()
+                ':email' => $user->getEmail(),
+                ':password' => $user->getPassword(),
+                ':role' => $user->getRole(),
+                ':avatar' => $user->getAvatar()
             ];
         $query->execute($parameters);
     }
@@ -99,6 +100,5 @@ class UserManager extends AbstractManager
         $query->execute($parameters);
     }
 
-    public function signalerUser() // ! fonction permettant de signaler une personne en fonction de ses propos ou des photos ou du nom
-    // ! a faire en js je pense
+    public function signalerUser() // ! a faire en js je pense pour ne pas a avoir à recharger la page et donc perdre le fil de la discution par exemple dans le chat
 }

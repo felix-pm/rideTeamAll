@@ -79,10 +79,12 @@ class AuthController extends AbstractController
                 $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 
                 $userToCreate = new User(
-                    $_POST['pseudo'],
-                    $_POST['email'],
-                    $hashedPassword, // ! a regarder
-                    "USER"
+                    id: null,
+                    pseudo: $_POST['pseudo'],
+                    email: $_POST['email'],
+                    password: $hashedPassword,
+                    role: "USER",
+                    avatar: null // Ou une image par défaut
                 );
                 $manager->create_user($userToCreate);
                 $this->redirect('index.php?route=login');
