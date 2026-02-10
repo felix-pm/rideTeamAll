@@ -3,7 +3,7 @@
 class Ride
 {
 
-    public function __construct(private ?int $id, private string $title, private string $description, private string $start_date, private string $start_location, private string $end_location, private int $difficulty_level, private int $max_participants, private User $organizer_id)
+    public function __construct(private ?int $id, private string $title, private string $description, private string $start_hour, private string $start_date, private string $start_location, private string $end_location, private int $difficulty_level, private int $max_participants, private int $organizer_id)
     {
 
     }  
@@ -42,6 +42,19 @@ class Ride
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    
+    public function getStart_hour()
+    {
+        return $this->start_hour;
+    }
+
+    public function setStart_hour($start_hour)
+    {
+        $this->start_hour = $start_hour;
 
         return $this;
     }
@@ -112,7 +125,7 @@ class Ride
     }
 
 
-    public function getOrganizer_id() : User
+    public function getOrganizer_id()
     {
         return $this->organizer_id;
     }

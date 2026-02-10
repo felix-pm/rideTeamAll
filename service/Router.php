@@ -34,8 +34,8 @@ class Router
                 $uc->home();
             }
             else if($_GET['route'] === 'create_way') {
-                $uc = new UserController();
-                $uc->create_way();
+                $rc = new RideController();
+                $rc->addRide();
             }
             else
             {

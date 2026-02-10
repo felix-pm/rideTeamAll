@@ -19,14 +19,14 @@ class RideManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $ride = new Ride($item["id"], $item["title"], $item["description"], $item["start_date"], $item["start_location"], $item["end_location"], $item["difficulty_level"], $item["max_participants"], $item["organizer_id"]);
+            $ride = new Ride($item["id"], $item["title"], $item["description"], $item["start_hour"], $item["start_date"], $item["start_location"], $item["end_location"], $item["difficulty_level"], $item["max_participants"], $item["organizer_id"]);
             $rides[] = $ride;
         }
 
         return $rides;
     }
 
-    public function findOne() {
+    public function findOne($id) {
         $query = $this->db->prepare('SELECT * FROM rides WHERE id = :id');
         $parameters = [
             "id" => $id
@@ -36,43 +36,64 @@ class RideManager extends AbstractManager
 
         if($item)
         {
-            return new Ride($item["id"], $item["title"], $item["description"], $item["start_date"], $item["start_location"], $item["end_location"], $item["difficulty_level"], $item["max_participants"], $item["organizer_id"]);
+            return new Ride($item["id"], $item["title"], $item["description"], $item["start_hour"], $item["start_date"], $item["start_location"], $item["end_location"], $item["difficulty_level"], $item["max_participants"], $item["organizer_id"]);
         }
 
         return null;
     }
 
-    public function createRide(Ride $ride, User $user) {
-        $query = $this->db->prepare("INSERT INTO rides VALUES (:title, :description, :start_date, :start_location, :end_location, :difficulty_level, :max_participants, :organizer_id)");
+    public function createRide(Ride $ride) {
+        $query = $this->db->prepare("INSERT INTO rides (
+                    title, 
+                    description, 
+                    start_date, 
+                    start_hour, 
+                    start_location, 
+                    end_location, 
+                    difficulty_level, 
+                    max_participants, 
+                    organizer_id
+                ) VALUES (
+                    :title, 
+                    :description, 
+                    :start_date, 
+                    :start_hour, 
+                    :start_location, 
+                    :end_location, 
+                    :difficulty_level, 
+                    :max_participants, 
+                    :organizer_id
+                )");
         $parameters = [
             ':title' => $ride->getTitle(), 
             ':description' => $ride->getDescription(),
+            ':start_hour' => $ride->getStart_hour(),
             ':start_date' => $ride->getStart_date(),
             ':start_location' => $ride->getStart_location(),
             ':end_location' => $ride->getEnd_location(),
             ':difficulty_level' => $ride->getDifficulty_level(),
             ':max_participants'  => $ride->getMax_participants(),
-            ':organizer_id' => $user->getId(),
+            ':organizer_id' => $ride->getOrganizer_id(),
         ];
 
-        // 3. On exécute
         $query->execute($parameters);
         }
 
-    public function deleteRide() {
+    public function deleteRide($ride) {
         $query = $this->db->prepare('DELETE FROM rides WHERE id = :id');
         $parameters = [
-            "id" => $user->getId()
+            "id" => $ride->getId()
         ];
         $query->execute($parameters);
     }
 
     // ! comment faire pour que ce soit uniquement la personne qui à créer le sortie qui puisse la modifier (l'admin aussi)
-    public function updateRide() { 
-        $query = $this->db->prepare('UPDATE users SET title = :title, description = :description, start_date = :start_date, start_location = :start_location, end_location = :end_location, difficulty_level = :difficulty_level, max_participants = :max_participants, organizer_id = :organizer_id WHERE id = :id');;
+    public function updateRide($ride) { 
+        $query = $this->db->prepare('UPDATE rides SET title = :title, description = :description, start_hour = :start_hour, start_date = :start_date, start_location = :start_location, end_location = :end_location, difficulty_level = :difficulty_level, max_participants = :max_participants, organizer_id = :organizer_id WHERE id = :id');;
         $parameters = [
             ':title' => $ride->getTitle(), 
             ':description' => $ride->getDescription(),
+            ':start_hour' => $ride->getStart_hour(),
             ':start_date' => $ride->getStart_date(),
             ':start_location' => $ride->getStart_location(),
             ':end_location' => $ride->getEnd_location(),

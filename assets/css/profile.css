@@ -36,6 +36,10 @@ body {
   text-align: center;
 }
 
+#display-profil {
+  margin-top: 30px;
+}
+
 /* --- Le Header Bleu (Créé artificiellement) --- */
 #div-all::before {
   content: "";
@@ -56,7 +60,7 @@ body {
   width: 100px; /* On force la taille pour matcher le design */
   height: 100px;
   border-radius: 25px; /* "Squircle" (carré arrondi) plus moderne que 50% */
-  margin-top: 50px;
+  margin-top: 25px;
   border: 4px solid rgba(255, 255, 255, 0.3); /* Bordure semi-transparente */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   object-fit: cover;
@@ -74,7 +78,7 @@ body {
 }
 
 /* --- Bouton "Partager" --- */
-#div-all > button {
+#div-all button {
   position: relative;
   z-index: 1;
   background: rgba(255, 255, 255, 0.2);
@@ -90,7 +94,7 @@ body {
   transition: all 0.3s ease;
 }
 
-#div-all > button:hover {
+#div-all button:hover {
   background: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
 }
@@ -103,7 +107,7 @@ body {
   margin-top: 10px;
 }
 
-.flex-setting {
+#flex-profil {
   background: #f3f8fe; /* Bleu très pâle */
   margin-bottom: 15px;
   padding: 15px 20px;
@@ -118,13 +122,13 @@ body {
   color: #333;
 }
 
-.flex-setting:hover {
+#flex-profil:hover {
   transform: scale(1.02);
   box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
   background: white;
 }
 
-.flex-setting p:first-child {
+#flex-profil p:first-child {
   font-weight: 600;
   font-size: 14px;
   display: flex;
@@ -132,19 +136,17 @@ body {
   gap: 15px;
 }
 
-.flex-setting p:last-child {
+#flex-profil p:last-child {
   color: #a0a0a0;
   font-weight: 700;
 }
 
-/* --- Astuce : Ajouter des fausses icônes colorées devant le texte --- */
-/* On utilise ::before pour simuler les carrés bleus avec icônes de l'image */
-.flex-setting p:first-child::before {
+#flex-profil p:first-child::before {
   content: "";
   display: inline-block;
   width: 35px;
   height: 35px;
-  background-color: #dbeafe; /* Fond icône */
+  background-color: #dbeafe;
   border-radius: 10px;
   background-size: 20px;
   background-repeat: no-repeat;
@@ -152,41 +154,172 @@ body {
   flex-shrink: 0;
 }
 
-/* Icônes spécifiques via Emoji ou SVG encodé (hack CSS pur) */
-/* Avatar */
-.flex-setting:nth-child(1) p:first-child::before {
+#flex-profil:nth-child(1) p:first-child::before {
   content: "👤";
   text-align: center;
   line-height: 35px;
   background-color: #e0f2fe;
   color: #0284c7;
 }
-/* Pseudo */
-.flex-setting:nth-child(2) p:first-child::before {
-  content: "✏️";
+
+#flex-profil:nth-child(2) p:first-child::before {
+  content: "🏞️";
+  text-align: center;
+  line-height: 35px;
+  background-color: #16a34a17;
+  color: #16a34a;
+}
+
+#flex-profil:nth-child(3) p:first-child::before {
+  content: "🏍️​";
   text-align: center;
   line-height: 35px;
   background-color: #fce7f3;
   color: #db2777;
 }
-/* Email */
-.flex-setting:nth-child(3) p:first-child::before {
-  content: "✉️";
-  text-align: center;
-  line-height: 35px;
-  background-color: #dcfce7;
-  color: #16a34a;
-}
-/* Mot de passe */
-.flex-setting:nth-child(4) p:first-child::before {
-  content: "🔒";
-  text-align: center;
-  line-height: 35px;
-  background-color: #fae8ff;
-  color: #9333ea;
+
+#flex-balades {
+  background: #f3f8fe; /* Bleu très pâle */
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  color: #333;
 }
 
-/* --- Bouton Déconnexion --- */
+#flex-balades:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
+  background: white;
+}
+
+#flex-balades p:first-child {
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#flex-balades p:last-child {
+  color: #a0a0a0;
+  font-weight: 700;
+}
+
+#flex-balades p:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-color: #dbeafe;
+  border-radius: 10px;
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+#flex-balades:nth-child(1) p:first-child::before {
+  content: "👤";
+  text-align: center;
+  line-height: 35px;
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+#flex-balades:nth-child(2) p:first-child::before {
+  content: "🏞️";
+  text-align: center;
+  line-height: 35px;
+  background-color: #16a34a17;
+  color: #16a34a;
+}
+
+#flex-balades:nth-child(3) p:first-child::before {
+  content: "🏍️​";
+  text-align: center;
+  line-height: 35px;
+  background-color: #fce7f3;
+  color: #db2777;
+}
+
+#flex-garage {
+  background: #f3f8fe; /* Bleu très pâle */
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  color: #333;
+}
+
+#flex-garage:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
+  background: white;
+}
+
+#flex-garage p:first-child {
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#flex-garage p:last-child {
+  color: #a0a0a0;
+  font-weight: 700;
+}
+
+#flex-garage p:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-color: #dbeafe;
+  border-radius: 10px;
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+#flex-garage:nth-child(1) p:first-child::before {
+  content: "👤";
+  text-align: center;
+  line-height: 35px;
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+#flex-garage:nth-child(2) p:first-child::before {
+  content: "🏞️";
+  text-align: center;
+  line-height: 35px;
+  background-color: #16a34a17;
+  color: #16a34a;
+}
+
+#flex-garage:nth-child(3) p:first-child::before {
+  content: "🏍️​";
+  text-align: center;
+  line-height: 35px;
+  background-color: #fce7f3;
+  color: #db2777;
+}
+
 a[href*="logout"] {
   display: block;
   width: calc(100% - 50px);
@@ -198,4 +331,110 @@ a[href*="logout"] {
   border-radius: 20px;
   font-weight: 600;
   transition: 0.3s;
+}
+
+#display-profil,
+#display-balades,
+#display-garages {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  display: none; /* Géré par le JS, mais par défaut caché */
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 2. Le Bouton Retour (<) */
+/* On le place en absolu pour ne pas décaler l'avatar */
+#btn-back-profil,
+#btn-back-balades,
+#btn-back-garage {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s;
+}
+
+#btn-back-profil:hover,
+#btn-back-balades:hover,
+#btn-back-garage:hover {
+  transform: scale(1.2);
+}
+
+/* 3. Style du Formulaire de modification */
+#display-profil form {
+  width: 100%;
+  margin-top: 30px; /* Espace après le pseudo */
+  background: white;
+  padding: 10px;
+  border-radius: 20px;
+  /* On permet le scroll si le formulaire est trop grand pour la carte */
+  max-height: 430px;
+  overflow-y: hidden;
+}
+
+/* Les Labels */
+#display-profil label {
+  display: block;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #a0a0a0;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+/* Les Champs (Inputs) */
+#display-profil input {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #f3f8fe; /* Même gris-bleu que vos menus */
+  border: none;
+  border-radius: 15px;
+  font-size: 14px;
+  color: #333;
+  font-family: "Poppins", sans-serif;
+  transition: box-shadow 0.3s ease;
+}
+
+#display-profil input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3); /* Halo bleu au focus */
+  background-color: white;
+}
+
+/* Le bouton Enregistrer */
+#display-profil button {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  width: 100%;
+  padding: 15px;
+  border: none;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+}
+
+#display-profil button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(79, 172, 254, 0.4);
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+}
+
+/* 4. Messages "Feature à venir" (Balades & Garage) */
+#display-balades p:not(#btn-back-balades),
+#display-garages p:not(#btn-back-garage) {
+  margin-top: 150px; /* On descend le texte dans la zone blanche */
+  color: #a0a0a0;
+  font-style: italic;
+  font-weight: 500;
 }

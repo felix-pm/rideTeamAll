@@ -11,7 +11,7 @@
     <?php endif; ?>
 
     <form method="post" action="">
-      <label for="firstname">Pseudo</label>
+      <label for="pseudo">Pseudo</label>
       <input type="text" name="pseudo" id="firstname" required />
 
       <label for="email">Email</label>

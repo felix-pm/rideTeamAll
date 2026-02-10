@@ -1,47 +1,84 @@
 <?php require_once __DIR__ . '/../Partials/head.php'; ?>
 <?php require_once __DIR__ . '/../partials/header.php'; ?>
 
-<h2>Créer une balade</h2>
+<link rel="stylesheet" href="assets/css/create_way.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<form method="post" action="">
-    <label for="name_balade">Nom de la balade</label>
-    <input type="text" name="name_balade" id="name_balade" required />
+<body class="app-bg">
+    
+    <main id="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>Nouvelle Balade</h1>
+                <p>Roadbook & Good Vibes ✌️</p>
+            </div>
+        </header>
 
-    <label for="comment">Description de la balade</label>
-    <input type="text" name="comment" id="comment" required>
+        <section class="form-wrapper">
+            
+            <?php if (!empty($errors)): ?>
+                <div class="error-box animate-pop">
+                    <?php foreach ($errors as $error): ?>
+                        <p><i class="fa-solid fa-triangle-exclamation"></i> <?= htmlspecialchars($error) ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
 
-    <label for="start_hour">Horaire de départ</label>
-    <input type="time" step="1800" name="start_hour" id="start_hour" required>
+            <form action="index.php?route=create_way" method="POST">
+                
+                <div class="input-group">
+                    <label for="title"><i class="fa-solid fa-route"></i> Titre</label>
+                    <input type="text" name="title" id="title" placeholder="Ex: Voyage vers la mer" required>
+                </div>
 
-    <label for="start_date">Jour de départ</label>
-    <input type="date" name="start_date" id="start_date" required />
+                <div class="input-group">
+                    <label for="description"><i class="fa-solid fa-align-left"></i> La description</label>
+                    <textarea name="description" id="description" placeholder="Décris la balade..." required></textarea>
+                </div>
 
-    <label for="start_location">Jour de départ</label>
-    <input type="text" name="start_location" id="start_location" required />
+                <div class="row-group">
+                    <div class="input-group half">
+                        <label for="start_date"><i class="fa-regular fa-calendar"></i> Date</label>
+                        <input type="date" name="start_date" id="start_date" required>
+                    </div>
+                    <div class="input-group half">
+                        <label for="start_hour"><i class="fa-regular fa-clock"></i> Heure</label>
+                        <input type="time" name="start_hour" id="start_hour" required>
+                    </div>
+                </div>
 
-    <label for="end_location">Jour de départ</label>
-    <input type="text" name="end_location" id="end_location" required />
+                <div class="timeline-inputs">
+                    <div class="input-group">
+                        <label for="start_location" class="start-label"><i class="fa-solid fa-location-dot"></i> Départ</label>
+                        <input type="text" name="start_location" id="start_location" placeholder="Point A" required>
+                    </div>
+                    <div class="connector-line"></div>
+                    <div class="input-group">
+                        <label for="end_location" class="end-label"><i class="fa-solid fa-flag-checkered"></i> Arrivée</label>
+                        <input type="text" name="end_location" id="end_location" placeholder="Point B" required>
+                    </div>
+                </div>
 
-    <label for="difficulty_level">Niveau de difficulté</label>
-    <select name="difficulty_level">
-        <option value="">-- Choisir --</option>
-        <option value="1">facile</option>
-        <option value="2">intermédiaire</option>
-        <option value="3">difficile</option>
-    </select>
+                <div class="row-group">
+                    <div class="input-group half">
+                        <label for="difficulty_level"><i class="fa-solid fa-layer-group"></i> Niveau</label>
+                        <select name="difficulty_level" id="difficulty_level">
+                            <option value="1">Chill (Débutant)</option>
+                            <option value="2">Rythmé (Intermédiaire)</option>
+                            <option value="3">Sport (Expert)</option>
+                        </select>
+                    </div>
+                    <div class="input-group half">
+                        <label for="max_participants"><i class="fa-solid fa-users"></i> Max</label>
+                        <input type="number" name="max_participants" id="max_participants" min="1" max="50" value="5" required>
+                    </div>
+                </div>
 
-    <label for="max_participants">Nombre de participants max</label>
-    <select name="max_participants">
-        <option value="">-- Choisir --</option>
-        <option value="1">10</option>
-        <option value="2">15</option>
-        <option value="3">20</option>
-        <option value="4">25</option>
-        <option value="5">30</option>
-    </select>
+                <button type="submit" class="submit-btn">
+                    Créer la balade <i class="fa-solid fa-motorcycle"></i>
+                </button>
 
-
-    <button type="submit" style="width: 200px; margin-top: 20px">
-        Créer la balade
-    </button>
-</form>
+            </form>
+        </section>
+    </main>
+</body>
