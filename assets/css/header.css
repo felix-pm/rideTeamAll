@@ -1,0 +1,105 @@
+header {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #121212; /* Le fond noir mat de l'image */
+  border-top: 1px solid #2c2c2c; /* Légère ligne de séparation */
+  padding: 10px 0;
+  font-family: sans-serif; /* Police simple comme sur l'app */
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px; /* Hauteur fixe */
+  background-color: #121212; /* Noir sombre style app */
+  border-top: 1px solid #2a2a2a; /* Ligne de séparation subtile */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* --- Éléments Conteneurs (.flex et le lien profil direct) --- */
+/* On s'assure que les div .flex et le lien <a> du profil prennent la même place */
+.flex,
+nav > a {
+  flex: 1; /* Largeur égale pour tous (1/5ème) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-decoration: none; /* Enlève le souligné du lien profil */
+  color: #9e9e9e;
+}
+
+/* --- Style du Texte (valable pour liens et paragraphes) --- */
+nav a,
+nav p {
+  font-size: 10px;
+  font-weight: 500;
+  color: #9e9e9e; /* Gris inactif */
+  text-decoration: none;
+  margin: 0;
+  padding-top: 4px; /* Espace entre icône et texte */
+  transition: color 0.3s ease;
+}
+
+/* --- Style des Icônes standards --- */
+nav i {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 0;
+}
+
+/* --- CAS 1 : Les liens classiques (Découvrir, Carte, Abonnés) --- */
+/* Dans ces div, le lien <a> contient tout (icône + texte) */
+.flex a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+/* --- CAS 2 : Le bouton "Créer" (+) --- */
+/* Structure : div.flex > a(+) + p(Texte) */
+/* On cible le <a> spécifiquement dans le 3ème .flex */
+.flex:nth-child(3) a {
+  font-size: 24px; /* Taille du + */
+  font-weight: 300;
+  border: 2px solid #9e9e9e; /* Le cercle */
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 3px; /* Ajustement pour centrer le + verticalement */
+  margin-bottom: -2px; /* Rapproche un peu le texte */
+  flex: none; /* Empêche le bouton de s'étirer */
+}
+
+/* --- CAS 3 : Le Profil (Image + Texte) --- */
+/* Ton HTML a un style inline width: 50px qui casse tout sur mobile. */
+/* On utilise !important pour forcer la bonne taille. */
+nav > a img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover; /* Garde les proportions */
+  border: 1px solid #9e9e9e; /* Bordure grise */
+  margin-bottom: 0;
+}
+
+/* --- Effet au clic/survol --- */
+nav a:active,
+nav a:hover {
+  color: #e0e0e0; /* Devient plus clair au clic */
+}
