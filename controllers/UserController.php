@@ -50,4 +50,8 @@ class UserController extends AbstractController
     {
         $this->render('member/map', []);
     }
+
+    public function create_way() :void{
+        $this->render('member/create_way', []);
+    }
 }

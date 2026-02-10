@@ -79,7 +79,7 @@ class AuthController extends AbstractController
                     email: $_POST['email'],
                     password: $hashedPassword,
                     role: "USER",
-                    avatar: "./assets/img/default-avatar.png"
+                    avatar: "./assets/img/default-avatar.jpg"
                 );
                 $manager->create_user($userToCreate);
                 $this->redirect('index.php?route=login');

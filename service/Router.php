@@ -33,6 +33,10 @@ class Router
                 $uc = new UserController();
                 $uc->home();
             }
+            else if($_GET['route'] === 'create_way') {
+                $uc = new UserController();
+                $uc->create_way();
+            }
             else
             {
                 $ac = new AuthController();
