@@ -1,14 +1,21 @@
 :root {
   --font-titles: "Montserrat", sans-serif;
   --font-text: "Roboto", sans-serif;
+  --primary: #4facfe;
+  --secondary: #00f2fe;
+  --dark: #1e293b;
+  --text-grey: #64748b;
+  --light-bg: #f8fafc;
+  --white: #ffffff;
+  --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 20px 40px -5px rgba(79, 172, 254, 0.3);
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  list-style: none;
-  text-decoration: none;
-  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 body {

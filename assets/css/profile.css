@@ -1,22 +1,6 @@
 /* Importation d'une police moderne (Poppins) */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-/* --- Reset & Base --- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  background-color: #f0f2f5; /* Gris très clair pour le fond de page */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
 /* --- Le conteneur principal (La carte style téléphone) --- */
 #section-profile {
   width: 100%;
