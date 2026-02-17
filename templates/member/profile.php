@@ -13,6 +13,10 @@
                     <p>Modifier mon profil</p>
                     <p>></p>
                 </div>
+                <div id="flex-chat">
+                    <p>Mes discutions</p>
+                    <p>></p>
+                </div>
                 <div id="flex-balades">
                     <p>Mes balades</p>
                     <p>></p>
@@ -28,7 +32,7 @@
             <p id="btn-back-profil"><</p>
             <img src="<?= $_SESSION['avatar']?>" alt="">
             <h2><?= $_SESSION['pseudo']?></h2>
-            <form method="post" action="">
+            <form method="post" action="index.php?route=profile">
                 <label for="pseudo">Pseudo</label>
                 <input type="text" name="pseudo" id="pseudo" required />
 
@@ -45,14 +49,56 @@
             </form>
         </div>
 
+        <div id="display-chat" style="display: none;">
+            <p id="btn-back-chat"><</p>
+            <p>Mes discutions... (feature a venir)</p>
+        </div>
+
         <div id="display-balades" style="display: none;">
             <p id="btn-back-balades"><</p>
-            <p>Mes balades... (feature a venir)</p>
+            
+            <div class="balades-tabs">
+                <h3 id="tab-passees" class="active-tab">Passées</h3>
+                <h3 id="tab-futures">Futures</h3>
+            </div>
+
+            <div class="balades-content-container">
+                <div id="content-passees" class="balades-content active-content">
+                    <p>Vos balades terminées apparaîtront ici.</p>
+                    </div>
+                
+                <div id="content-futures" class="balades-content exit-right">
+                    <p>Vos balades prévues apparaîtront ici.</p>
+                    </div>
+            </div>
         </div>
 
         <div id="display-garages" style="display: none;">
             <p id="btn-back-garage"><</p>
-            <p>Mon garage... (feature a venir)</p>
+            <div id="bikes-container">
+                <p>Vous n'avez encore aucune moto dans votre garage...</p>
+            </div>
+            <button id="button-add-bike">Ajouter une moto</button>
+        </div>
+
+        <div id="add-bike" style="display: none;">
+            <p id="btn-back-add-bike"><</p>
+            <form action="index.php?route=add_bike" method="POST">
+                
+                <label for="marque"><i class="fa-solid fa-route"></i> Marque :</label>
+                <input type="text" name="marque" id="marque" placeholder="La marque de ta moto" required>
+
+                <label for="modele"><i class="fa-solid fa-align-left"></i>Modèle :</label>
+                <input type="text" name="modele" id="modele" placeholder="Le modèle de ta moto" required>
+
+                <label for="annee"><i class="fa-regular fa-calendar"></i> Année</label>
+                <input type="date" name="annee" id="annee" required>
+
+                <button type="submit" class="submit-btn">
+                    Enregistrer ta moto <i class="fa-solid fa-motorcycle"></i>
+                </button>
+
+            </form>
         </div>
 
     </div>
@@ -65,23 +111,3 @@
 
 
 <!-- <input type="file" accept="image/*"> -->
-
-
-
-
-<!-- <div class="flex-setting">
-    <p>Modifier mon Avatar</p>
-    <p>></p>
-</div>
-<div class="flex-setting">
-    <p>Modifier mon Pseudo</p>
-    <p>></p>
-</div>
-<div class="flex-setting">
-    <p>Modifier mon Email</p>
-    <p>></p>
-</div>
-<div class="flex-setting">
-    <p>Modifier mon Mot de passe</p>
-    <p>></p>
-</div> -->

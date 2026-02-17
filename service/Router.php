@@ -37,6 +37,18 @@ class Router
                 $rc = new RideController();
                 $rc->addRide();
             }
+            else if($_GET['route'] === 'api_rides') {
+                $rc = new RideController();
+                $rc->api_list();
+            }
+            else if($_GET['route'] === 'api_bikes') {
+                $bc = new BikeController();
+                $bc->api_bike();
+            } 
+            else if ($_GET['route'] === 'add_bike') {
+                $bc = new BikeController();
+                $bc->addBike();
+            }
             else
             {
                 $ac = new AuthController();

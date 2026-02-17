@@ -17,9 +17,12 @@ class BikeManager extends AbstractManager
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         $bikes = [];
 
+        $userManager = new UserManager();
+        $user = $userManager->findById($user_id);
+
         foreach($result as $item)
         {
-            $bike = new Bike($item["id"], $item["marque"], $item["modele"], $item["annee"], $item["user_id"]);
+            $bike = new Bike($item["id"], $item["marque"], $item["modele"], $item["annee"], $user);
             $bikes[] = $bike;
         }
 
@@ -30,16 +33,19 @@ class BikeManager extends AbstractManager
     {
         $query = $this->db->prepare('SELECT * FROM bikes WHERE user_id = :user_id AND id = :id');
         $parameters = [
-            "user_id" => $user_id
+            "user_id" => $user_id,
             "id" => $id
         ];
         $query->execute($parameters);
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         $bikes = [];
 
+        $userManager = new UserManager();
+        $user = $userManager->findById($user_id);
+
         foreach($result as $item)
         {
-            $bike = new Bike($item["id"], $item["marque"], $item["modele"], $item["annee"], $item["user_id"]);
+            $bike = new Bike($item["id"], $item["marque"], $item["modele"], $item["annee"], $user);
             $bikes[] = $bike;
         }
 

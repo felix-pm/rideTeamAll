@@ -21,7 +21,11 @@
 }
 
 #display-profil {
-  margin-top: 30px;
+  margin-top: 0px;
+}
+
+#display-profil img {
+  margin-top: 55px; /* 25px de base + les 30px du conteneur */
 }
 
 /* --- Le Header Bleu (Créé artificiellement) --- */
@@ -146,20 +150,59 @@
   color: #0284c7;
 }
 
-#flex-profil:nth-child(2) p:first-child::before {
-  content: "🏞️";
-  text-align: center;
-  line-height: 35px;
-  background-color: #16a34a17;
-  color: #16a34a;
+#flex-chat {
+  background: #f3f8fe; /* Bleu très pâle */
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  color: #333;
 }
 
-#flex-profil:nth-child(3) p:first-child::before {
-  content: "🏍️​";
+#flex-chat:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
+  background: white;
+}
+
+#flex-chat p:first-child {
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#flex-chat p:last-child {
+  color: #a0a0a0;
+  font-weight: 700;
+}
+
+#flex-chat p:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-color: #dbeafe;
+  border-radius: 10px;
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+#flex-chat:nth-child(2) p:first-child::before {
+  content: "📖";
   text-align: center;
   line-height: 35px;
-  background-color: #fce7f3;
-  color: #db2777;
+  background-color: #c6e53c17;
+  color: #16a34a;
 }
 
 #flex-balades {
@@ -209,28 +252,12 @@
   flex-shrink: 0;
 }
 
-#flex-balades:nth-child(1) p:first-child::before {
-  content: "👤";
-  text-align: center;
-  line-height: 35px;
-  background-color: #e0f2fe;
-  color: #0284c7;
-}
-
-#flex-balades:nth-child(2) p:first-child::before {
-  content: "🏞️";
+#flex-balades:nth-child(3) p:first-child::before {
+  content: "🏞️​";
   text-align: center;
   line-height: 35px;
   background-color: #16a34a17;
   color: #16a34a;
-}
-
-#flex-balades:nth-child(3) p:first-child::before {
-  content: "🏍️​";
-  text-align: center;
-  line-height: 35px;
-  background-color: #fce7f3;
-  color: #db2777;
 }
 
 #flex-garage {
@@ -280,23 +307,7 @@
   flex-shrink: 0;
 }
 
-#flex-garage:nth-child(1) p:first-child::before {
-  content: "👤";
-  text-align: center;
-  line-height: 35px;
-  background-color: #e0f2fe;
-  color: #0284c7;
-}
-
-#flex-garage:nth-child(2) p:first-child::before {
-  content: "🏞️";
-  text-align: center;
-  line-height: 35px;
-  background-color: #16a34a17;
-  color: #16a34a;
-}
-
-#flex-garage:nth-child(3) p:first-child::before {
+#flex-garage:nth-child(4) p:first-child::before {
   content: "🏍️​";
   text-align: center;
   line-height: 35px;
@@ -319,37 +330,50 @@ a[href*="logout"] {
 
 #display-profil,
 #display-balades,
-#display-garages {
-  position: relative;
+#display-chat,
+#display-garages,
+#add-bike {
+  position: relative; /* Indispensable pour que tes textes restent DEVANT le fond bleu */
   z-index: 1;
   width: 100%;
-  height: 100%;
-  padding: 0 20px;
-  display: none; /* Géré par le JS, mais par défaut caché */
+
+  /* LA MAGIE EST ICI : ce 1px bloque la fusion des marges ! */
+  padding: 1px 20px 0px 20px;
+
+  display: none;
   flex-direction: column;
   align-items: center;
 }
 
-/* 2. Le Bouton Retour (<) */
-/* On le place en absolu pour ne pas décaler l'avatar */
+/* 3. LE BOUTON RETOUR (Parfaitement aligné) */
 #btn-back-profil,
 #btn-back-balades,
-#btn-back-garage {
+#btn-back-chat,
+#btn-back-garage,
+#btn-back-add-bike {
   position: absolute;
-  top: 25px;
-  left: 25px;
+  top: 15px; /* Le conteneur ne bougeant plus, le bouton reste fixé à 15px du haut ! */
+  left: 15px;
+  margin: 0;
   color: white;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   cursor: pointer;
-  z-index: 10;
-  transition: transform 0.2s;
+  z-index: 100;
+  transition: transform 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #btn-back-profil:hover,
 #btn-back-balades:hover,
-#btn-back-garage:hover {
-  transform: scale(1.2);
+#btn-back-chat:hover,
+#btn-back-garage:hover,
+#btn-back-add-bike:hover {
+  transform: scale(1.2) translateX(-3px);
 }
 
 /* 3. Style du Formulaire de modification */
@@ -415,10 +439,185 @@ a[href*="logout"] {
 }
 
 /* 4. Messages "Feature à venir" (Balades & Garage) */
-#display-balades p:not(#btn-back-balades),
+#display-chat p:not(#btn-back-chat),
 #display-garages p:not(#btn-back-garage) {
   margin-top: 150px; /* On descend le texte dans la zone blanche */
   color: #a0a0a0;
   font-style: italic;
   font-weight: 500;
+}
+
+/* --- NOUVEAUX STYLES : ONGLETS EN "BOITES" (VERSION AMÉLIORÉE) --- */
+
+/* 1. Fix pour le bouton retour qui se faisait écraser */
+#btn-back-balades {
+  z-index: 100 !important; /* On le force à passer par-dessus TOUT le reste */
+}
+
+/* 2. Le conteneur des onglets */
+.balades-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 80px; /* Augmenté de 60px à 80px pour laisser respirer le bouton retour */
+  width: 100%;
+  padding: 0 10px;
+  position: relative;
+  z-index: 2;
+}
+
+/* 3. Style de la "Case" (l'onglet inactif par défaut) */
+.balades-tabs h3 {
+  flex: 1;
+  text-align: center;
+  background-color: #f3f8fe; /* Gris/bleu clair */
+  color: #a0a0a0;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 15px 0;
+  border-radius: 15px;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animation très fluide */
+}
+
+/* Astuce de pro : On prépare le fond bleu dégradé (caché par défaut) */
+.balades-tabs h3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  z-index: -1; /* Reste derrière le texte */
+  opacity: 0; /* Totalement transparent par défaut */
+  transition: opacity 0.4s ease; /* C'est ça qui va créer l'animation de remplissage */
+}
+
+/* Effet au survol (hover) pour les cases inactives */
+.balades-tabs h3:not(.active-tab):hover {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  transform: translateY(-2px);
+}
+
+/* --- 4. Style de la Case ACTIVE (La nouvelle animation) --- */
+.balades-tabs h3.active-tab {
+  color: white; /* Le texte devient blanc pour ressortir sur le bleu */
+  transform: translateY(-4px) scale(1.03); /* La case remonte et grossit un tout petit peu */
+  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4); /* Superbe ombre bleutée */
+}
+
+/* On affiche le fond bleu dégradé pour la case active */
+.balades-tabs h3.active-tab::before {
+  opacity: 1;
+}
+
+/* --- Conteneur et Animation du contenu (inchangé, garde cette partie que tu as déjà) --- */
+.balades-content-container {
+  width: 100%;
+  position: relative;
+  margin-top: 25px;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.balades-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 10px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.balades-content.active-content {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  transform: translateX(0);
+}
+
+.balades-content.exit-left {
+  transform: translateX(-100%);
+  position: absolute;
+}
+
+.balades-content.exit-right {
+  transform: translateX(100%);
+  position: absolute;
+}
+
+/* --- Style du Formulaire : Ajouter une Moto --- */
+#add-bike form {
+  width: 100%;
+  margin-top: 80px; /* On le descend pour ne pas gêner le bouton retour */
+  background: white;
+  padding: 15px 20px 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Légère ombre */
+  display: flex;
+  flex-direction: column;
+}
+
+#add-bike label {
+  display: block;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a0a0a0;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+#add-bike label i {
+  margin-right: 5px; /* Espace entre l'icône FontAwesome et le texte */
+  color: #4facfe;
+}
+
+#add-bike input {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #f3f8fe;
+  border: none;
+  border-radius: 15px;
+  font-size: 14px;
+  color: #333;
+  font-family: "Poppins", sans-serif;
+  transition: box-shadow 0.3s ease;
+}
+
+#add-bike input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+  background-color: white;
+}
+
+#add-bike button.submit-btn {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 15px;
+  margin-top: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#add-bike button.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(79, 172, 254, 0.4);
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
 }

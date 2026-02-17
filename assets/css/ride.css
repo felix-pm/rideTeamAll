@@ -1,0 +1,257 @@
+main {
+  width: 100%;
+  max-width: 800px; /* On limite la largeur pour un effet fil d'actu "BlaBlaCar" */
+  padding: 20px;
+  margin: 0 auto;
+}
+
+main h2 {
+  text-align: center;
+  color: var(--dark);
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+#rides-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* =========================================
+   CARTES DE BALADES (.ride-card)
+   ========================================= */
+.ride-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 20px 25px;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: 1px solid #e2e8f0; /* Bordure très subtile */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ride-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px); /* Petit effet de soulèvement au survol */
+}
+
+.ride-card h3 {
+  color: var(--dark);
+  font-size: 1.4rem;
+  margin: 0 0 5px 0;
+}
+
+.location-card {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.date-card {
+  color: var(--text-grey);
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.ride-card button {
+  align-self: flex-start; /* Le bouton ne prend pas toute la largeur */
+  padding: 10px 20px;
+  background: var(--light-bg);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.ride-card button:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+/* =========================================
+   MODAL DES DÉTAILS (.ride-modal)
+   ========================================= */
+.ride-modal {
+  /* Positionnement fixe pour passer au-dessus de tout */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+
+  /* Dimensions et style de la boîte */
+  width: 90%;
+  max-width: 500px;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 30px;
+  max-height: 90vh; /* Empêche le modal de déborder de l'écran */
+  overflow-y: auto; /* Permet de scroller à l'intérieur si besoin */
+
+  /* Le gros hack magique : une ombre géante pour faire le fond sombre ! */
+  box-shadow:
+    0 10px 50px rgba(0, 0, 0, 0.2),
+    0 0 0 100vmax rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Bouton Retour (La petite flèche) */
+.btn-back-modal {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text-grey);
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 5px;
+  transition: color 0.2s;
+}
+
+.btn-back-modal:hover {
+  color: var(--primary);
+}
+
+/* Typographie du Modal */
+.ride-modal h3 {
+  font-size: 1.6rem;
+  color: var(--dark);
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--light-bg);
+  padding-bottom: 15px;
+}
+
+.location-modal {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.date-modal,
+.hour-modal,
+.level-modal,
+.participants-modal,
+.organizer-modal {
+  color: var(--text-grey);
+  font-size: 1rem;
+}
+
+/* Boîte de description stylisée */
+.description-modal {
+  background: var(--light-bg);
+  padding: 15px;
+  border-radius: 12px;
+  color: var(--dark);
+  font-size: 0.95rem;
+  margin: 10px 0;
+  line-height: 1.5;
+  border-left: 4px solid var(--secondary);
+}
+
+/* Actions du bas de modal */
+.btn-participants-modal,
+.btn-join-modal {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+}
+
+.btn-participants-modal {
+  background: var(--white);
+  color: var(--dark);
+  border: 1px solid #cbd5e1;
+}
+
+.btn-participants-modal:hover {
+  background: var(--light-bg);
+}
+
+.btn-join-modal {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: var(--white);
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+}
+
+.btn-join-modal:hover {
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   PAGE HOME - BLOC BLEU & LAYOUT
+   ========================================= */
+.home-main {
+  width: 100%;
+  max-width: 800px; /* Plus large que create-way pour que les cartes respirent */
+  margin: 0 auto;
+}
+
+/* Le bloc bleu en dégradé */
+.home-main .app-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 25px 60px 25px; /* Padding bas large pour l'effet de superposition */
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+  color: white;
+  position: relative;
+  z-index: 10;
+}
+
+.home-main .header-content {
+  text-align: center;
+}
+
+.home-main .header-content h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: var(--white);
+}
+
+.home-main .header-content p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* Le conteneur des cartes qui remonte sur le header */
+.rides-wrapper {
+  position: relative;
+  z-index: 20;
+  margin: -30px 20px 20px 20px; /* Remonte de 30px sur le bleu */
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================
+   AJUSTEMENTS SUR LE CONTAINER DES CARTES
+   ========================================= */
+#rides-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}

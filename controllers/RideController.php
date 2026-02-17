@@ -32,4 +32,34 @@ class RideController extends AbstractController
         }
         $this->render('member/create_way', ['errors' => $errors]);
     }
+
+
+    public function api_list()
+    {
+        // 1. On récupère les données depuis la BDD
+        $manager = new RideManager();
+        $ridesObjects = $manager->findAll(); 
+
+        // 2. On transforme les objets complexes en tableau simple
+        $ridesArray = [];
+        foreach($ridesObjects as $ride) {
+            $ridesArray[] = [
+                'id' => $ride->getId(),
+                'title' => $ride->getTitle(),
+                'description' => $ride->getDescription(),
+                'startHour' => $ride->getStart_hour(),
+                'date' => $ride->getStart_date(),
+                'startLocation' => $ride->getStart_location(),
+                'endLocation' => $ride->getEnd_location(),
+                'difficultyLevel' => $ride->getDifficulty_level(),
+                'getMaxParticipants' => $ride->getMax_participants(),
+                'getOrganizerId' => $ride->getOrganizer_id()
+            ];
+        }
+
+        // 3. On prévient le navigateur qu'on envoie du JSON et on l'affiche
+        header('Content-Type: application/json');
+        echo json_encode($ridesArray);
+        exit; // Très important : on arrête le script ici pour ne pas envoyer de HTML par erreur
+    }
 }
