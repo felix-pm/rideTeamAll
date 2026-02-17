@@ -83,7 +83,7 @@
 
         <div id="add-bike" style="display: none;">
             <p id="btn-back-add-bike"><</p>
-            <form action="index.php?route=add_bike" method="POST">
+            <form action="index.php?route=add_bike" method="POST" enctype="multipart/form-data">
                 
                 <label for="marque"><i class="fa-solid fa-route"></i> Marque :</label>
                 <input type="text" name="marque" id="marque" placeholder="La marque de ta moto" required>
@@ -93,6 +93,9 @@
 
                 <label for="annee"><i class="fa-regular fa-calendar"></i> Année</label>
                 <input type="date" name="annee" id="annee" required>
+
+                <label for="image"><i class="fa-solid fa-camera"></i> Photo de la moto :</label>
+                <input type="file" name="image" id="image" accept="image/*">
 
                 <button type="submit" class="submit-btn">
                     Enregistrer ta moto <i class="fa-solid fa-motorcycle"></i>

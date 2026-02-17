@@ -138,20 +138,35 @@ document.addEventListener("DOMContentLoaded", () => {
         const cardBike = document.createElement("div");
         cardBike.classList.add("bike-card");
 
+        // --- NOUVELLE GESTION DE L'IMAGE ---
+        const imageElement = document.createElement("img");
+
+        // On utilise une condition ternaire :
+        // Si bike.url n'est pas null, on met bike.url. Sinon, on met le chemin par défaut.
+        imageElement.src = bike.url ? bike.url : "assets/img/default-bike.avif";
+
+        imageElement.alt = `Photo de ${bike.marque}`;
+        imageElement.classList.add("bike-img");
+        cardBike.appendChild(imageElement);
+        // -----------------------------------
+
         const marque = document.createElement("p");
+        marque.classList.add("bike-marque");
+
         const modele = document.createElement("p");
+        modele.classList.add("bike-modele");
+
         const annee = document.createElement("p");
+        annee.classList.add("bike-annee");
 
-        marque.textContent = bike.marque;
-        modele.textContent = bike.modele;
-        annee.textContent = bike.annee;
+        marque.textContent = `Marque : ${bike.marque}`;
+        modele.textContent = `Modèle : ${bike.modele}`;
+        annee.textContent = `Année : ${bike.annee}`;
 
-        // --- ÉTAPE C : Assemblage (on met les textes dans la carte) ---
         cardBike.appendChild(marque);
         cardBike.appendChild(modele);
         cardBike.appendChild(annee);
 
-        // --- ÉTAPE D : Livraison (on met la carte dans la page web) ---
         bikeContainer.appendChild(cardBike);
       });
     })

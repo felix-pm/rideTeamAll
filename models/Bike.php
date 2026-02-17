@@ -3,10 +3,9 @@
 class Bike
 {
 
-    public function __construct(private ?int $id, private string $marque, private string $modele, private string $annee, private User $user_id)
-    {
-
-    } 
+    public function __construct(private ?int $id, private string $marque, private string $modele, private string $annee, private User $user_id, private ?string $url = null)
+        {
+        }
     
     public function getId()
     {
@@ -55,6 +54,19 @@ class Bike
     public function setAnnee($annee)
     {
         $this->annee = $annee;
+
+        return $this;
+    }
+
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl($url): self
+    {
+        $this->url = $url;
 
         return $this;
     }

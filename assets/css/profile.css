@@ -621,3 +621,116 @@ a[href*="logout"] {
   box-shadow: 0 15px 25px rgba(79, 172, 254, 0.4);
   background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
 }
+
+#div-all #bikes-container {
+  width: 100% !important;
+  margin-top: 80px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 15px !important;
+  min-height: 350px !important;
+  max-height: 600px !important;
+  overflow-y: auto !important;
+  padding: 5px !important;
+  box-sizing: border-box !important;
+}
+
+#div-all #bikes-container::-webkit-scrollbar {
+  width: 4px;
+}
+#div-all #bikes-container::-webkit-scrollbar-thumb {
+  background-color: #dbeafe;
+  border-radius: 10px;
+}
+
+/* Message quand le garage est vide */
+#div-all #bikes-container > p {
+  color: #a0a0a0 !important;
+  font-style: italic !important;
+  font-size: 14px !important;
+  margin-top: 50px !important;
+  text-align: center !important;
+}
+
+/* --- La Carte Moto --- */
+#div-all #bikes-container .bike-card {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  padding: 15px !important;
+  display: grid !important;
+  grid-template-columns: 75px 1fr !important;
+  grid-template-rows: auto auto auto !important;
+  column-gap: 15px !important;
+  row-gap: 2px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #f3f8fe !important;
+  align-items: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* L'image de la moto : ON ÉCRASE "#div-all img" QUI CASSAIT TOUT */
+#div-all #bikes-container .bike-img {
+  grid-column: 1 !important;
+  grid-row: 1 / 4 !important;
+  width: 75px !important;
+  height: 75px !important;
+  border-radius: 15px !important;
+  object-fit: cover !important;
+  margin: 0 !important; /* Annule le margin-top de 25px de l'avatar */
+  border: none !important; /* Annule la grosse bordure blanche de l'avatar */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* On réinitialise TOUS les <p> dans la carte moto */
+#div-all #bikes-container p {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  line-height: 1.2 !important;
+}
+
+/* Textes spécifiques */
+#div-all #bikes-container .bike-marque {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  color: #333 !important;
+  align-self: end !important;
+}
+
+#div-all #bikes-container .bike-modele {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: #4facfe !important;
+  align-self: center !important;
+}
+
+#div-all #bikes-container .bike-annee {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+  font-size: 13px !important;
+  color: #a0a0a0 !important;
+  align-self: start !important;
+}
+
+#div-all button#button-add-bike {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  color: white !important;
+  width: 100% !important;
+  padding: 15px !important;
+  border: none !important;
+  border-radius: 15px !important;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+  backdrop-filter: none !important; /* Enlève le flou de fond (blur) */
+}
