@@ -20,11 +20,16 @@ class RideController extends AbstractController
                     start_hour: $_POST['start_hour'],
                     start_date: $_POST['start_date'],
                     start_location: $_POST['start_location'],
+                    start_latitude: $_POST['start_latitude'], 
+                    start_longitude: $_POST['start_longitude'],
                     end_location: $_POST['end_location'],
+                    end_latitude: $_POST['end_latitude'], 
+                    end_longitude: $_POST['end_longitude'], 
                     difficulty_level: $_POST['difficulty_level'],
                     max_participants: $_POST['max_participants'],
-                    organizer_id: $_SESSION['id'],
+                    organizer_id: $_SESSION['id']
                 );
+
                 $manager->createRide($rideToCreate);
                 $this->redirect('index.php?route=home');
                 exit;
@@ -36,11 +41,9 @@ class RideController extends AbstractController
 
     public function api_list()
     {
-        // 1. On récupère les données depuis la BDD
         $manager = new RideManager();
         $ridesObjects = $manager->findAll(); 
 
-        // 2. On transforme les objets complexes en tableau simple
         $ridesArray = [];
         foreach($ridesObjects as $ride) {
             $ridesArray[] = [
@@ -57,9 +60,8 @@ class RideController extends AbstractController
             ];
         }
 
-        // 3. On prévient le navigateur qu'on envoie du JSON et on l'affiche
         header('Content-Type: application/json');
         echo json_encode($ridesArray);
-        exit; // Très important : on arrête le script ici pour ne pas envoyer de HTML par erreur
+        exit;
     }
 }

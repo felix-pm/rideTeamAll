@@ -667,6 +667,52 @@ a[href*="logout"] {
   align-items: center !important;
   width: 100% !important;
   box-sizing: border-box !important;
+  position: relative !important;
+  padding-right: 70px !important;
+}
+
+/* --- STYLE COMMUN DES ICÔNES D'ACTION --- */
+#div-all #bikes-container .bike-card i {
+  position: absolute !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 13px !important;
+  border-radius: 50% !important;
+  background-color: #f3f8fe !important; /* Fond gris-bleu clair */
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* --- ICÔNE "PARAMÈTRES" (GEAR) --- */
+#div-all #bikes-container .bike-card .fa-gear {
+  top: 15px !important;
+  right: 50px !important; /* Placée à côté de la poubelle */
+  color: #a0a0a0 !important;
+}
+
+#div-all #bikes-container .bike-card .fa-gear:hover {
+  color: #4facfe !important; /* Devient bleu au survol */
+  background-color: #e0f2fe !important;
+  transform: rotate(90deg) scale(1.1) !important; /* Effet de rotation mécanique */
+  box-shadow: 0 5px 10px rgba(79, 172, 254, 0.2) !important;
+}
+
+/* --- ICÔNE "POUBELLE" (TRASH) --- */
+#div-all #bikes-container .bike-card .fa-trash-can {
+  top: 15px !important;
+  right: 15px !important; /* Placée tout à droite */
+  color: #fca5a5 !important; /* Rouge pastel */
+}
+
+#div-all #bikes-container .bike-card .fa-trash-can:hover {
+  color: #ef4444 !important; /* Rouge vif au survol */
+  background-color: #fee2e2 !important;
+  transform: scale(1.1) !important; /* Grossit légèrement */
+  box-shadow: 0 5px 10px rgba(239, 68, 68, 0.2) !important;
 }
 
 /* L'image de la moto : ON ÉCRASE "#div-all img" QUI CASSAIT TOUT */

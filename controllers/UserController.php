@@ -75,7 +75,21 @@ class UserController extends AbstractController
 
     public function map(): void
     {
-        $this->render('member/map', []);
+        $manager = new RideManager();
+        $ridesObjects = $manager->findAll(); 
+
+        $ridesArray = [];
+        foreach($ridesObjects as $ride) {
+            $ridesArray[] = [
+                'id' => $ride->getId(),
+                'title' => $ride->getTitle(),
+                'start_latitude' => $ride->getStart_latitude(),
+                'start_longitude' => $ride->getStart_longitude()
+            ];
+        }
+
+        // 3. Envoyer ce tableau à la vue sous le nom "rides"
+        $this->render('member/map', ['rides' => $ridesArray]);
     }
 
     public function create_way() :void{

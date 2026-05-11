@@ -5,6 +5,10 @@
     
     <header class="app-header">
         <div class="header-content">
+            <form action="#" method="get" style="display: flex;">
+                <input type="text" name="recherche" placeholder="Rechercher...">
+                <button type="submit" class="btn-sent-home"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
             <h1>Les balades à venir</h1>
             <p>Trouve ta prochaine balade !</p>
         </div>

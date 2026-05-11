@@ -9,7 +9,12 @@ class RideManager extends AbstractManager
 
     public function findAll() : array
     {
-        $query = $this->db->prepare('SELECT * FROM rides');
+        $query = $this->db->prepare('
+            SELECT * 
+            FROM rides 
+            WHERE start_date > CURDATE() 
+            OR (start_date = CURDATE() AND start_hour > CURTIME())
+        ');
         $parameters = [
 
         ];
@@ -19,7 +24,23 @@ class RideManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $ride = new Ride($item["id"], $item["title"], $item["description"], $item["start_hour"], $item["start_date"], $item["start_location"], $item["end_location"], $item["difficulty_level"], $item["max_participants"], $item["organizer_id"]);
+            // À remplacer dans findAll() ET dans findOne() :
+            $ride = new Ride(
+                $item["id"], 
+                $item["title"], 
+                $item["description"], 
+                $item["start_hour"], 
+                $item["start_date"], 
+                $item["start_location"], 
+                $item["start_latitude"],  
+                $item["start_longitude"], 
+                $item["end_location"], 
+                $item["end_latitude"],    
+                $item["end_longitude"],   
+                $item["difficulty_level"], 
+                $item["max_participants"], 
+                $item["organizer_id"]
+            );
             $rides[] = $ride;
         }
 
@@ -36,7 +57,22 @@ class RideManager extends AbstractManager
 
         if($item)
         {
-            return new Ride($item["id"], $item["title"], $item["description"], $item["start_hour"], $item["start_date"], $item["start_location"], $item["end_location"], $item["difficulty_level"], $item["max_participants"], $item["organizer_id"]);
+            return $ride = new Ride(
+                    $item["id"], 
+                    $item["title"], 
+                    $item["description"], 
+                    $item["start_hour"], 
+                    $item["start_date"], 
+                    $item["start_location"], 
+                    $item["start_latitude"],  
+                    $item["start_longitude"], 
+                    $item["end_location"], 
+                    $item["end_latitude"],    
+                    $item["end_longitude"],   
+                    $item["difficulty_level"], 
+                    $item["max_participants"], 
+                    $item["organizer_id"]
+                );
         }
 
         return null;
@@ -49,7 +85,11 @@ class RideManager extends AbstractManager
                     start_date, 
                     start_hour, 
                     start_location, 
+                    start_latitude,
+                    start_longitude,
                     end_location, 
+                    end_latitude,
+                    end_longitude,
                     difficulty_level, 
                     max_participants, 
                     organizer_id
@@ -59,25 +99,34 @@ class RideManager extends AbstractManager
                     :start_date, 
                     :start_hour, 
                     :start_location, 
+                    :start_latitude,
+                    :start_longitude,
                     :end_location, 
+                    :end_latitude,
+                    :end_longitude,
                     :difficulty_level, 
                     :max_participants, 
                     :organizer_id
                 )");
+                
         $parameters = [
             ':title' => $ride->getTitle(), 
             ':description' => $ride->getDescription(),
             ':start_hour' => $ride->getStart_hour(),
             ':start_date' => $ride->getStart_date(),
             ':start_location' => $ride->getStart_location(),
+            ':start_latitude' => $ride->getStart_latitude(), 
+            ':start_longitude' => $ride->getStart_longitude(),
             ':end_location' => $ride->getEnd_location(),
+            ':end_latitude' => $ride->getEnd_latitude(), 
+            ':end_longitude' => $ride->getEnd_longitude(), 
             ':difficulty_level' => $ride->getDifficulty_level(),
             ':max_participants'  => $ride->getMax_participants(),
             ':organizer_id' => $ride->getOrganizer_id(),
         ];
 
         $query->execute($parameters);
-        }
+}
 
     public function deleteRide($ride) {
         $query = $this->db->prepare('DELETE FROM rides WHERE id = :id');
@@ -88,21 +137,44 @@ class RideManager extends AbstractManager
     }
 
     // ! comment faire pour que ce soit uniquement la personne qui à créer le sortie qui puisse la modifier (l'admin aussi)
-    public function updateRide($ride) { 
-        $query = $this->db->prepare('UPDATE rides SET title = :title, description = :description, start_hour = :start_hour, start_date = :start_date, start_location = :start_location, end_location = :end_location, difficulty_level = :difficulty_level, max_participants = :max_participants, organizer_id = :organizer_id WHERE id = :id');;
-        $parameters = [
-            ':title' => $ride->getTitle(), 
-            ':description' => $ride->getDescription(),
-            ':start_hour' => $ride->getStart_hour(),
-            ':start_date' => $ride->getStart_date(),
-            ':start_location' => $ride->getStart_location(),
-            ':end_location' => $ride->getEnd_location(),
-            ':difficulty_level' => $ride->getDifficulty_level(),
-            ':max_participants'  => $ride->getMax_participants(),
-            ':organizer_id' => $user->getId(),
-        ];
-        $query->execute($parameters);
+    public function addRide() {
+    $errors = [];
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if (empty($_POST["title"]) || empty($_POST["description"]) || empty($_POST["start_hour"]) || empty($_POST["start_date"]) || empty($_POST["start_location"]) || empty($_POST["end_location"]) || empty($_POST["difficulty_level"]) || empty($_POST["max_participants"]))
+        {
+            $errors[] = "Veuillez remplir tous les champs !";
+        }
+        $manager = new RideManager();
+        
+        if (empty($errors)) {
+            // 1. On récupère les coordonnées via l'API
+            $startCoords = $this->getCoordinates($_POST['start_location']);
+            $endCoords = $this->getCoordinates($_POST['end_location']);
+   
+            $rideToCreate = new Ride(
+                    $item["id"], 
+                    $item["title"], 
+                    $item["description"], 
+                    $item["start_hour"], 
+                    $item["start_date"], 
+                    $item["start_location"], 
+                    $item["start_latitude"],  
+                    $item["start_longitude"], 
+                    $item["end_location"], 
+                    $item["end_latitude"],    
+                    $item["end_longitude"],   
+                    $item["difficulty_level"], 
+                    $item["max_participants"], 
+                    $item["organizer_id"]
+                );
+            $manager->createRide($rideToCreate);
+            $this->redirect('index.php?route=home');
+            exit;
+        }
     }
+    $this->render('member/create_way', ['errors' => $errors]);
+}
     
 
     public function signalerRide() {} // ! a faire en js 

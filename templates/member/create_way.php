@@ -32,8 +32,8 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="description"><i class="fa-solid fa-align-left"></i> La description</label>
-                    <textarea name="description" id="description" placeholder="Décris la balade..." required></textarea>
+                    <label for="description"><i class="fa-solid fa-align-left"></i>Le lieu de rendez-vous</label>
+                    <textarea name="description" id="description" placeholder="Donne un lieu précis du rdv..." required></textarea>
                 </div>
 
                 <div class="row-group">
@@ -48,14 +48,24 @@
                 </div>
 
                 <div class="timeline-inputs">
-                    <div class="input-group">
+                    <div class="input-group" style="position: relative;">
                         <label for="start_location" class="start-label"><i class="fa-solid fa-location-dot"></i> Départ</label>
-                        <input type="text" name="start_location" id="start_location" placeholder="Point A" required>
+                        <input type="text" name="start_location" id="start_location" placeholder="Point A" autocomplete="off" required>
+                        <ul id="start_results" class="autocomplete-list"></ul>
+                        
+                        <input type="hidden" name="start_latitude" id="start_latitude">
+                        <input type="hidden" name="start_longitude" id="start_longitude">
                     </div>
+                    
                     <div class="connector-line"></div>
-                    <div class="input-group">
+                    
+                    <div class="input-group" style="position: relative;">
                         <label for="end_location" class="end-label"><i class="fa-solid fa-flag-checkered"></i> Arrivée</label>
-                        <input type="text" name="end_location" id="end_location" placeholder="Point B" required>
+                        <input type="text" name="end_location" id="end_location" placeholder="Point B" autocomplete="off" required>
+                        <ul id="end_results" class="autocomplete-list"></ul>
+                        
+                        <input type="hidden" name="end_latitude" id="end_latitude">
+                        <input type="hidden" name="end_longitude" id="end_longitude">
                     </div>
                 </div>
 

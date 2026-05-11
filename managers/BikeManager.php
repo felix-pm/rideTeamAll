@@ -66,7 +66,7 @@ class BikeManager extends AbstractManager
     }
 
     public function deleteBike(Bike $bike) {
-        $query = $this->db->prepare('DELETE FROM bikes WHERE id = :id');
+        $query = $this->db->prepare('DELETE FROM bikes WHERE user_id = :user_id AND id = :id');
         $parameters = [
             "id" => $bike->getId()
         ];

@@ -12,6 +12,7 @@ const btnBackProfil = document.getElementById("btn-back-profil");
 btnBackProfil.addEventListener("click", () => {
   pageModifProfil.style.display = "none";
   pageProfil.style.display = "block";
+  btnLogout.style.display = "block";
 });
 
 const buttonChat = document.getElementById("flex-chat");
@@ -26,6 +27,7 @@ const btnBackChat = document.getElementById("btn-back-chat");
 btnBackChat.addEventListener("click", () => {
   pageChat.style.display = "none";
   pageProfil.style.display = "block";
+  btnLogout.style.display = "block";
 });
 
 const buttonBalades = document.getElementById("flex-balades");
@@ -40,6 +42,7 @@ const btnBackBalades = document.getElementById("btn-back-balades");
 btnBackBalades.addEventListener("click", () => {
   pageBalades.style.display = "none";
   pageProfil.style.display = "block";
+  btnLogout.style.display = "block";
 });
 
 const buttonGarage = document.getElementById("flex-garage");
@@ -54,6 +57,7 @@ const btnBackGarage = document.getElementById("btn-back-garage");
 btnBackGarage.addEventListener("click", () => {
   pageGarage.style.display = "none";
   pageProfil.style.display = "block";
+  btnLogout.style.display = "block";
 });
 
 // !
@@ -139,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cardBike.classList.add("bike-card");
 
         // --- NOUVELLE GESTION DE L'IMAGE ---
-        const imageElement = document.createElement("img");
+        const imageElement = document.createElement("img"); // ! <i class="fa-solid fa-trash-can"></i>    <i class="fa-solid fa-gear"></i>
 
         // On utilise une condition ternaire :
         // Si bike.url n'est pas null, on met bike.url. Sinon, on met le chemin par défaut.
@@ -149,6 +153,12 @@ document.addEventListener("DOMContentLoaded", () => {
         imageElement.classList.add("bike-img");
         cardBike.appendChild(imageElement);
         // -----------------------------------
+
+        const trash = document.createElement("i");
+        trash.classList.add("fa-solid", "fa-trash-can");
+
+        const setting = document.createElement("i");
+        setting.classList.add("fa-solid", "fa-gear");
 
         const marque = document.createElement("p");
         marque.classList.add("bike-marque");
@@ -163,6 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
         modele.textContent = `Modèle : ${bike.modele}`;
         annee.textContent = `Année : ${bike.annee}`;
 
+        cardBike.appendChild(trash);
+        cardBike.appendChild(setting);
         cardBike.appendChild(marque);
         cardBike.appendChild(modele);
         cardBike.appendChild(annee);
