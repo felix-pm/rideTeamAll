@@ -1,189 +1,98 @@
-const buttonModifProfil = document.getElementById("flex-profil");
-const pageProfil = document.getElementById("profil");
-const pageModifProfil = document.getElementById("display-profil");
-const btnLogout = document.getElementById("btn-logout");
-buttonModifProfil.addEventListener("click", () => {
-  pageProfil.style.display = "none";
-  btnLogout.style.display = "none";
-  pageModifProfil.style.display = "flex";
-});
+// ! Affichage du garage
+const bikeContainer = document.getElementById("bikes-container");
 
-const btnBackProfil = document.getElementById("btn-back-profil");
-btnBackProfil.addEventListener("click", () => {
-  pageModifProfil.style.display = "none";
-  pageProfil.style.display = "block";
-  btnLogout.style.display = "block";
-});
+// 1. On appelle notre route PHP (le livreur)
+fetch("index.php?route=api_bikes")
+  .then((response) => response.json()) // 2. On traduit la réponse texte en Objet JS
+  .then((data) => {
+    // 3. On vide le message "Chargement..."
+    bikeContainer.innerHTML = "";
 
-const buttonChat = document.getElementById("flex-chat");
-const pageChat = document.getElementById("display-chat");
-buttonChat.addEventListener("click", () => {
-  pageProfil.style.display = "none";
-  btnLogout.style.display = "none";
-  pageChat.style.display = "block";
-});
+    if (data.length === 0) {
+      bikeContainer.textContent =
+        "Aucune moto dans votre garage pour le moment...";
+      return;
+    }
 
-const btnBackChat = document.getElementById("btn-back-chat");
-btnBackChat.addEventListener("click", () => {
-  pageChat.style.display = "none";
-  pageProfil.style.display = "block";
-  btnLogout.style.display = "block";
-});
+    data.forEach((bike) => {
+      const cardBike = document.createElement("div");
+      cardBike.classList.add("bike-card");
 
-const buttonBalades = document.getElementById("flex-balades");
-const pageBalades = document.getElementById("display-balades");
-buttonBalades.addEventListener("click", () => {
-  pageProfil.style.display = "none";
-  btnLogout.style.display = "none";
-  pageBalades.style.display = "block";
-});
+      const imageElement = document.createElement("img"); // ! <i class="fa-solid fa-trash-can"></i>    <i class="fa-solid fa-gear"></i>
 
-const btnBackBalades = document.getElementById("btn-back-balades");
-btnBackBalades.addEventListener("click", () => {
-  pageBalades.style.display = "none";
-  pageProfil.style.display = "block";
-  btnLogout.style.display = "block";
-});
+      imageElement.src = bike.url ? bike.url : "assets/img/default-bike.avif";
 
-const buttonGarage = document.getElementById("flex-garage");
-const pageGarage = document.getElementById("display-garages");
-buttonGarage.addEventListener("click", () => {
-  pageProfil.style.display = "none";
-  btnLogout.style.display = "none";
-  pageGarage.style.display = "block";
-});
+      imageElement.alt = `Photo de ${bike.marque}`;
+      imageElement.classList.add("bike-img");
+      cardBike.appendChild(imageElement);
+      // -----------------------------------
 
-const btnBackGarage = document.getElementById("btn-back-garage");
-btnBackGarage.addEventListener("click", () => {
-  pageGarage.style.display = "none";
-  pageProfil.style.display = "block";
-  btnLogout.style.display = "block";
-});
+      const trash = document.createElement("i");
+      trash.classList.add("fa-solid", "fa-trash-can");
 
-// !
-// --- GESTION DES ONGLETS "MES BALADES" ---
+      const setting = document.createElement("i");
+      setting.classList.add("fa-solid", "fa-gear");
 
-const tabPassees = document.getElementById("tab-passees");
-const tabFutures = document.getElementById("tab-futures");
-const contentPassees = document.getElementById("content-passees");
-const contentFutures = document.getElementById("content-futures");
+      const marque = document.createElement("p");
+      marque.classList.add("bike-marque");
 
-if (tabPassees && tabFutures) {
-  // Clic sur l'onglet "Passées"
-  tabPassees.addEventListener("click", () => {
-    // Si l'onglet est déjà actif, on ne fait rien
-    if (tabPassees.classList.contains("active-tab")) return;
+      const modele = document.createElement("p");
+      modele.classList.add("bike-modele");
 
-    // 1. Mettre à jour le style des titres (onglets)
-    tabPassees.classList.add("active-tab");
-    tabFutures.classList.remove("active-tab");
+      const annee = document.createElement("p");
+      annee.classList.add("bike-annee");
 
-    // 2. Animer les contenus
-    // Le contenu "Passées" arrive par la gauche pour se centrer
-    contentPassees.classList.remove("exit-left", "exit-right");
-    contentPassees.classList.add("active-content");
+      marque.textContent = `Marque : ${bike.marque}`;
+      modele.textContent = `Modèle : ${bike.modele}`;
+      annee.textContent = `Année : ${bike.annee}`;
 
-    // Le contenu "Futures" s'en va vers la droite
-    contentFutures.classList.remove("active-content");
-    contentFutures.classList.add("exit-right");
+      cardBike.appendChild(trash);
+      cardBike.appendChild(setting);
+      cardBike.appendChild(marque);
+      cardBike.appendChild(modele);
+      cardBike.appendChild(annee);
+
+      bikeContainer.appendChild(cardBike);
+    });
+  })
+  .catch((error) => {
+    console.error("Erreur de récupération :", error);
+    bikeContainer.textContent = "Erreur lors du chargement.";
   });
 
-  // Clic sur l'onglet "Futures"
-  tabFutures.addEventListener("click", () => {
-    // Si l'onglet est déjà actif, on ne fait rien
-    if (tabFutures.classList.contains("active-tab")) return;
+// On sélectionne tous les boutons d'onglets
+const tabButtons = document.querySelectorAll(".tab-btn");
+const tabPanels = document.querySelectorAll(".tab-panel");
 
-    // 1. Mettre à jour le style des titres (onglets)
-    tabFutures.classList.add("active-tab");
-    tabPassees.classList.remove("active-tab");
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    // 1. Retirer la classe 'active' de tous les boutons et panneaux
+    tabButtons.forEach((btn) => btn.classList.remove("active"));
+    tabPanels.forEach((panel) => panel.classList.remove("active"));
 
-    // 2. Animer les contenus
-    // Le contenu "Futures" arrive par la droite pour se centrer
-    contentFutures.classList.remove("exit-left", "exit-right");
-    contentFutures.classList.add("active-content");
+    // 2. Ajouter la classe 'active' au bouton cliqué
+    button.classList.add("active");
 
-    // Le contenu "Passées" s'en va vers la gauche
-    contentPassees.classList.remove("active-content");
-    contentPassees.classList.add("exit-left");
+    // 3. Afficher le panneau correspondant grâce à l'attribut data-tab
+    const targetTab = button.getAttribute("data-tab");
+    document.getElementById(targetTab).classList.add("active");
+  });
+});
+
+// Gérer l'affichage du formulaire d'ajout de moto
+const btnAddBike = document.getElementById("button-add-bike");
+const formAddBike = document.getElementById("add-bike");
+const btnBackAddBike = document.getElementById("btn-back-add-bike");
+const displayGarages = document.getElementById("display-garages");
+
+if (btnAddBike && formAddBike) {
+  btnAddBike.addEventListener("click", () => {
+    formAddBike.style.display = "block";
+    displayGarages.style.display = "none"; // Optionnel : cache le garage pendant l'ajout
+  });
+
+  btnBackAddBike.addEventListener("click", () => {
+    formAddBike.style.display = "none";
+    displayGarages.style.display = "block"; // Fait réapparaitre le garage
   });
 }
-
-const buttonAddBike = document.getElementById("button-add-bike");
-const pageAddBike = document.getElementById("add-bike");
-buttonAddBike.addEventListener("click", () => {
-  pageGarage.style.display = "none";
-  pageAddBike.style.display = "block";
-});
-
-const buttonBackAddBike = document.getElementById("btn-back-add-bike");
-buttonBackAddBike.addEventListener("click", () => {
-  pageGarage.style.display = "block";
-  pageAddBike.style.display = "none";
-});
-
-// ! Affichage du garage
-document.addEventListener("DOMContentLoaded", () => {
-  const bikeContainer = document.getElementById("bikes-container");
-
-  // 1. On appelle notre route PHP (le livreur)
-  fetch("index.php?route=api_bikes")
-    .then((response) => response.json()) // 2. On traduit la réponse texte en Objet JS
-    .then((data) => {
-      // 3. On vide le message "Chargement..."
-      bikeContainer.innerHTML = "";
-
-      if (data.length === 0) {
-        bikeContainer.textContent =
-          "Aucune moto dans votre garage pour le moment...";
-        return;
-      }
-
-      data.forEach((bike) => {
-        const cardBike = document.createElement("div");
-        cardBike.classList.add("bike-card");
-
-        // --- NOUVELLE GESTION DE L'IMAGE ---
-        const imageElement = document.createElement("img"); // ! <i class="fa-solid fa-trash-can"></i>    <i class="fa-solid fa-gear"></i>
-
-        // On utilise une condition ternaire :
-        // Si bike.url n'est pas null, on met bike.url. Sinon, on met le chemin par défaut.
-        imageElement.src = bike.url ? bike.url : "assets/img/default-bike.avif";
-
-        imageElement.alt = `Photo de ${bike.marque}`;
-        imageElement.classList.add("bike-img");
-        cardBike.appendChild(imageElement);
-        // -----------------------------------
-
-        const trash = document.createElement("i");
-        trash.classList.add("fa-solid", "fa-trash-can");
-
-        const setting = document.createElement("i");
-        setting.classList.add("fa-solid", "fa-gear");
-
-        const marque = document.createElement("p");
-        marque.classList.add("bike-marque");
-
-        const modele = document.createElement("p");
-        modele.classList.add("bike-modele");
-
-        const annee = document.createElement("p");
-        annee.classList.add("bike-annee");
-
-        marque.textContent = `Marque : ${bike.marque}`;
-        modele.textContent = `Modèle : ${bike.modele}`;
-        annee.textContent = `Année : ${bike.annee}`;
-
-        cardBike.appendChild(trash);
-        cardBike.appendChild(setting);
-        cardBike.appendChild(marque);
-        cardBike.appendChild(modele);
-        cardBike.appendChild(annee);
-
-        bikeContainer.appendChild(cardBike);
-      });
-    })
-    .catch((error) => {
-      console.error("Erreur de récupération :", error);
-      bikeContainer.textContent = "Erreur lors du chargement.";
-    });
-});

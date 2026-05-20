@@ -1,269 +1,276 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+:root {
+  --bg-dark: #121212;
+  --card-bg: #1e1e1e;
+  --input-bg: #2a2a2a;
+  --text-white: #ffffff;
+  --text-grey: #a0a0a0;
+  --accent-orange: #f05a30;
+  --error-red: #ff3b3b;
+  --border-radius: 12px;
+}
 
+/* =========================================
+   BASE & STRUCTURE (MOBILE FIRST)
+   ========================================= */
 body.app-bg {
-  background-color: #eef2f6;
-  /* Petit dégradé d'ambiance en fond */
-  background-image: radial-gradient(
-    circle at 10% 20%,
-    rgb(239, 246, 255) 0%,
-    rgb(219, 228, 255) 90%
-  );
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Permet le scroll */
-  padding-bottom: 40px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  color: var(--text-white);
+  padding-bottom: 85px; /* Pour éviter que le bouton soit caché par ta navbar */
 }
 
-/* --- MAIN CONTAINER (Mobile Card Style) --- */
-#app-container {
-  width: 100%;
-  max-width: 450px;
-  background: transparent;
-  position: relative;
-  margin-top: 0;
-}
-
-/* --- HEADER --- */
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px 25px 50px 25px; /* Padding bas large pour laisser place au formulaire */
-  /* Background en verre dégradé */
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: 0 0 40px 40px;
-  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
-  color: white;
-  position: relative;
+header.app-header {
+  padding: 20px 15px;
+  background-color: var(--bg-dark);
+  position: sticky !important;
+  top: 0 !important;
+  bottom: auto !important;
   z-index: 10;
+  border-bottom: 1px solid #2a2a2a;
 }
 
-.back-btn {
-  color: white;
-  font-size: 1.2rem;
-  background: rgba(255, 255, 255, 0.2);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  text-decoration: none;
-  backdrop-filter: blur(5px);
-  transition: transform 0.2s;
-}
-.back-btn:active {
-  transform: scale(0.9);
-}
-
-.header-content {
-  text-align: center;
-  flex-grow: 1;
-}
-.header-content h1 {
-  font-size: 1.4rem;
+.app-header h1 {
+  display: block !important; /* Force l'apparition du titre */
+  margin: 0;
+  font-size: 1.5rem;
   font-weight: 700;
 }
-.header-content p {
-  font-size: 0.8rem;
-  opacity: 0.9;
-  font-weight: 300;
+
+.app-header p {
+  display: block !important; /* Force l'apparition du sous-titre */
+  margin: 5px 0 0 0;
+  color: var(--text-grey);
+  font-size: 0.95rem;
 }
 
-.mini-avatar img {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  object-fit: cover;
-}
-
-/* --- FORM WRAPPER (Floating Card) --- */
 .form-wrapper {
-  background: var(--white);
-  margin: -30px 20px 0 20px; /* Remonte sur le header */
-  padding: 30px 25px;
-  border-radius: 30px;
-  box-shadow: var(--shadow-soft);
-  position: relative;
-  z-index: 20;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 20px 15px;
 }
 
-/* --- INPUTS & LABELS --- */
+/* =========================================
+   MESSAGES D'ERREUR
+   ========================================= */
+.error-box {
+  background-color: rgba(255, 59, 59, 0.1);
+  border: 1px solid var(--error-red);
+  color: #ff6b6b;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+}
+
+.error-box p {
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* Animation d'apparition */
+.animate-pop {
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================
+   FORMULAIRE & INPUTS
+   ========================================= */
 .input-group {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
 }
 
 .input-group label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
   color: var(--text-grey);
   margin-bottom: 8px;
-  margin-left: 5px;
+  font-weight: 500;
 }
 
+/* Les icônes dans les labels prennent la couleur principale */
 .input-group label i {
-  color: var(--primary);
+  color: var(--accent-orange);
+  width: 20px;
+  text-align: center;
   margin-right: 5px;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 15px 18px;
-  border: 2px solid transparent;
-  background-color: #f1f5f9;
-  border-radius: 18px;
-  font-size: 0.95rem;
-  color: var(--dark);
-  font-weight: 500;
+/* Champs de texte, textarea et selects */
+.input-group input,
+.input-group textarea,
+.input-group select {
+  background-color: var(--input-bg);
+  border: 1px solid transparent;
+  color: var(--text-white);
+  padding: 14px 15px;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: inherit;
   outline: none;
   transition: all 0.3s ease;
 }
 
-textarea {
-  resize: none;
-  height: 100px;
+/* Pour le placeholder */
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #666;
 }
 
-/* Focus Effect : White bg + border + shadow */
-input:focus,
-select:focus,
-textarea:focus {
-  background-color: var(--white);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
-  transform: translateY(-2px);
+/* Effet au clic (focus) */
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+  border-color: var(--accent-orange);
+  background-color: #333;
 }
 
-/* --- ROW LAYOUTS --- */
+.input-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Pour mettre deux champs côte à côte (Date/Heure, Niveau/Max) */
 .row-group {
   display: flex;
   gap: 15px;
 }
-.half {
+
+.row-group .half {
   flex: 1;
 }
 
-/* --- TIMELINE EFFECT (Ligne entre départ et arrivée) --- */
+/* Modifier l'icône calendrier/horloge native sur mobile */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+/* =========================================
+   DESIGN "TIMELINE" (Départ -> Arrivée)
+   ========================================= */
 .timeline-inputs {
-  position: relative;
-  margin-bottom: 20px;
-  background: #f8fafc;
+  background-color: var(--card-bg);
   padding: 15px;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
 }
+
 .timeline-inputs .input-group {
-  margin-bottom: 10px;
-}
-.timeline-inputs .input-group:last-child {
   margin-bottom: 0;
 }
+
+.timeline-inputs input {
+  background-color: var(--bg-dark); /* Contraste pour ressortir de la carte */
+}
+
 .connector-line {
+  height: 15px;
   width: 2px;
-  height: 20px;
-  background: #cbd5e1;
-  margin-left: 14px; /* Alignement sous l'icone */
-  margin-bottom: 10px;
+  background-color: var(--text-grey);
+  margin: 8px 0 8px 10px; /* Aligné juste en dessous de l'icône de localisation */
+  opacity: 0.3;
 }
 
-/* --- BUTTON --- */
-.submit-btn {
-  width: 100%;
-  margin-top: 15px;
-  margin-bottom: 20px;
-  padding: 18px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.submit-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 20px 30px rgba(79, 172, 254, 0.5);
-}
-.submit-btn:active {
-  transform: scale(0.95);
-}
-
-/* --- ERROR BOX --- */
-.error-box {
-  background: #fee2e2;
-  color: #ef4444;
-  padding: 15px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  border: 1px solid #fecaca;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-/* --- ANIMATIONS --- */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pop {
-  0% {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-.animate-pop {
-  animation: pop 0.4s ease-out;
-}
-
+/* =========================================
+   AUTOCOMPLÉTION (Adresses)
+   ========================================= */
 .autocomplete-list {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  z-index: 1000;
-  list-style: none;
+  background-color: #333;
+  margin: 5px 0 0 0;
   padding: 0;
-  margin: 0;
-  max-height: 200px;
+  list-style: none;
+  border-radius: 8px;
+  max-height: 180px;
   overflow-y: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  border: 1px solid #444;
 }
 
 .autocomplete-list li {
-  padding: 10px;
+  padding: 12px 15px;
+  border-bottom: 1px solid #444;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 0.9em;
-  color: #333;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.autocomplete-list li:last-child {
+  border-bottom: none;
 }
 
 .autocomplete-list li:hover {
-  background-color: #f8f9fa;
+  background-color: var(--accent-orange);
+}
+
+/* =========================================
+   BOUTON DE SOUMISSION
+   ========================================= */
+.submit-btn {
+  width: 100%;
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+  border: none;
+  padding: 16px;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  transition:
+    background-color 0.3s,
+    transform 0.1s;
+}
+
+.submit-btn:hover {
+  background-color: #e04b22;
+}
+
+.submit-btn:active {
+  transform: scale(0.98); /* Petit effet d'enfoncement au clic */
+}
+
+/* =========================================
+   TABLETTES & DESKTOP
+   ========================================= */
+@media (min-width: 768px) {
+  .app-header .header-content,
+  .form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .app-header .header-content {
+    text-align: center;
+  }
 }

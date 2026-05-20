@@ -1,0 +1,238 @@
+:root {
+  --bg-dark: #121212;
+  --card-bg: #1e1e1e;
+  --text-white: #ffffff;
+  --text-grey: #a0a0a0;
+  --accent-orange: #f05a30;
+  --badge-red: #ff3b3b;
+  --badge-green: #4caf50;
+  --border-radius: 12px;
+}
+
+/* =========================================
+   BASE (MOBILE FIRST)
+   S'applique à tous les écrans par défaut
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  color: var(--text-white);
+}
+
+/* --- HEADER & BARRE DE RECHERCHE --- */
+.app-header {
+  padding: 15px;
+  background-color: var(--bg-dark);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-header h1 {
+  margin-top: 20px;
+}
+
+.app-header form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  background-color: var(--card-bg);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px 15px;
+}
+
+.search-container i {
+  color: var(--text-grey);
+  margin-right: 10px;
+}
+
+.search-container input {
+  background: none;
+  border: none;
+  color: var(--text-white);
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.btn-sent-home {
+  background-color: var(--card-bg);
+  border: 1px solid #333;
+  color: var(--text-grey);
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* --- CONTENEUR DES CARTES --- */
+.rides-wrapper {
+  padding: 10px 15px;
+  padding-bottom: 80px;
+}
+
+/* --- STYLE DE LA CARTE --- */
+.ride-card {
+  display: block;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.ride-card:hover {
+  transform: translateY(-2px); /* Petit effet de survol sympa */
+}
+
+/* Image et Badge */
+.card-image-wrapper {
+  position: relative;
+  height: 180px;
+  width: 100%;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: white;
+}
+
+.badge-hard {
+  background-color: var(--badge-red);
+}
+.badge-easy {
+  background-color: var(--badge-green);
+}
+
+/* Contenu textuel */
+.card-content {
+  padding: 15px;
+}
+
+.card-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.author {
+  color: var(--text-grey);
+  font-size: 0.9rem;
+  margin: 0 0 15px 0;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  color: var(--text-grey);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.info-row i {
+  width: 20px;
+  margin-right: 8px;
+}
+
+/* Ligne des participants */
+.participants-row {
+  display: flex;
+  align-items: center;
+  color: var(--text-grey);
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+.participants-row i {
+  margin-right: 12px;
+}
+
+.avatars {
+  display: flex;
+  margin-right: 10px;
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--accent-orange);
+  border: 2px solid var(--card-bg);
+  margin-left: -8px;
+}
+
+.avatar:first-child {
+  margin-left: 0;
+}
+
+/* =========================================
+   TABLETTES & DESKTOP (MEDIA QUERIES)
+   S'applique uniquement aux écrans > 768px
+   ========================================= */
+
+@media (min-width: 768px) {
+  /* On centre le contenu et on limite la largeur max */
+  .app-header,
+  .rides-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Le header reprend son titre sur grand écran (optionnel, mais pratique) */
+  .app-header h1,
+  .app-header p {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .app-header form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Transformation de la liste en grille automatique */
+  #rides-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px; /* Espace entre les cartes */
+  }
+
+  /* On retire la marge du bas puisqu'on utilise 'gap' dans la grille */
+  .ride-card {
+    margin-bottom: 0;
+  }
+}

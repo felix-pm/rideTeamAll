@@ -50,22 +50,14 @@
                 <div class="timeline-inputs">
                     <div class="input-group" style="position: relative;">
                         <label for="start_location" class="start-label"><i class="fa-solid fa-location-dot"></i> Départ</label>
-                        <input type="text" name="start_location" id="start_location" placeholder="Point A" autocomplete="off" required>
-                        <ul id="start_results" class="autocomplete-list"></ul>
-                        
-                        <input type="hidden" name="start_latitude" id="start_latitude">
-                        <input type="hidden" name="start_longitude" id="start_longitude">
+                        <input type="text" name="start_location" id="start_location" placeholder="Ville de départ" autocomplete="off" required>
                     </div>
                     
                     <div class="connector-line"></div>
                     
                     <div class="input-group" style="position: relative;">
                         <label for="end_location" class="end-label"><i class="fa-solid fa-flag-checkered"></i> Arrivée</label>
-                        <input type="text" name="end_location" id="end_location" placeholder="Point B" autocomplete="off" required>
-                        <ul id="end_results" class="autocomplete-list"></ul>
-                        
-                        <input type="hidden" name="end_latitude" id="end_latitude">
-                        <input type="hidden" name="end_longitude" id="end_longitude">
+                        <input type="text" name="end_location" id="end_location" placeholder="Ville d'arrivée" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -73,9 +65,9 @@
                     <div class="input-group half">
                         <label for="difficulty_level"><i class="fa-solid fa-layer-group"></i> Niveau</label>
                         <select name="difficulty_level" id="difficulty_level">
-                            <option value="1">Chill (Débutant)</option>
-                            <option value="2">Rythmé (Intermédiaire)</option>
-                            <option value="3">Sport (Expert)</option>
+                            <option value="1">Facile</option>
+                            <option value="2">Moyen</option>
+                            <option value="3">Difficile</option>
                         </select>
                     </div>
                     <div class="input-group half">

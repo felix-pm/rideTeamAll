@@ -38,6 +38,24 @@ class RideController extends AbstractController
         $this->render('member/create_way', ['errors' => $errors]);
     }
 
+    public function show($id){
+        $rideManager = new RideManager();
+        $ride = $rideManager->findOne($id);
+
+        if (!$ride) {
+            $this->redirect('index.php?route=home');
+            exit;
+        }
+
+        $participationManager = new ParticipationManager();
+        $participations = $participationManager->findParticipantsByRideId($id);
+
+        return $this->render('member/ride', [
+            "ride" => $ride,
+            "participations" => $participations 
+        ]);
+    }
+
 
     public function api_list()
     {

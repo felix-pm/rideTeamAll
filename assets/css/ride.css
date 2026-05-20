@@ -1,269 +1,216 @@
-main {
-  width: 100%;
-  max-width: 800px; /* On limite la largeur pour un effet fil d'actu "BlaBlaCar" */
-  padding: 20px;
-  margin: 0 auto;
-}
-
-main h2 {
-  text-align: center;
-  color: var(--dark);
-  margin-bottom: 30px;
-  font-size: 2rem;
-}
-
-#rides-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-}
-
 /* =========================================
-   CARTES DE BALADES (.ride-card)
+   PAGE DETAILS BALADE (ride.php) - MAQUETTE
    ========================================= */
-.ride-card {
-  background: var(--white);
-  border-radius: 16px;
-  padding: 20px 25px;
-  box-shadow: var(--shadow-soft);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  border: 1px solid #e2e8f0; /* Bordure très subtile */
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
 
-.ride-card:hover {
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-3px); /* Petit effet de soulèvement au survol */
-}
-
-.ride-card h3 {
-  color: var(--dark);
-  font-size: 1.4rem;
-  margin: 0 0 5px 0;
-}
-
-.location-card {
-  font-weight: 600;
-  color: var(--primary);
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-}
-
-.date-card {
-  color: var(--text-grey);
-  font-size: 0.95rem;
-  margin-bottom: 10px;
-}
-
-.ride-card button {
-  align-self: flex-start; /* Le bouton ne prend pas toute la largeur */
-  padding: 10px 20px;
-  background: var(--light-bg);
-  color: var(--primary);
-  border: 2px solid var(--primary);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
-
-.ride-card button:hover {
-  background: var(--primary);
-  color: var(--white);
-}
-
-/* =========================================
-   MODAL DES DÉTAILS (.ride-modal)
-   ========================================= */
-.ride-modal {
-  /* Positionnement fixe pour passer au-dessus de tout */
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-
-  /* Dimensions et style de la boîte */
-  width: 90%;
-  max-width: 500px;
-  background: var(--white);
-  border-radius: 20px;
-  padding: 30px;
-  max-height: 90vh; /* Empêche le modal de déborder de l'écran */
-  overflow-y: auto; /* Permet de scroller à l'intérieur si besoin */
-
-  /* Le gros hack magique : une ombre géante pour faire le fond sombre ! */
-  box-shadow:
-    0 10px 50px rgba(0, 0, 0, 0.2),
-    0 0 0 100vmax rgba(0, 0, 0, 0.5);
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Bouton Retour (La petite flèche) */
-.btn-back-modal {
-  align-self: flex-start;
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--text-grey);
-  cursor: pointer;
+/* On enlève le padding pour que l'image touche les bords de l'écran */
+.ride-details-main {
   padding: 0;
-  margin-bottom: 5px;
-  transition: color 0.2s;
-}
-
-.btn-back-modal:hover {
-  color: var(--primary);
-}
-
-/* Typographie du Modal */
-.ride-modal h3 {
-  font-size: 1.6rem;
-  color: var(--dark);
-  margin-bottom: 10px;
-  border-bottom: 2px solid var(--light-bg);
-  padding-bottom: 15px;
-}
-
-.location-modal {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--primary);
-}
-
-.date-modal,
-.hour-modal,
-.level-modal,
-.participants-modal,
-.organizer-modal {
-  color: var(--text-grey);
-  font-size: 1rem;
-}
-
-/* Boîte de description stylisée */
-.description-modal {
-  background: var(--light-bg);
-  padding: 15px;
-  border-radius: 12px;
-  color: var(--dark);
-  font-size: 0.95rem;
-  margin: 10px 0;
-  line-height: 1.5;
-  border-left: 4px solid var(--secondary);
-}
-
-/* Actions du bas de modal */
-.btn-participants-modal,
-.btn-join-modal {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 5px;
-}
-
-.btn-participants-modal {
-  background: var(--white);
-  color: var(--dark);
-  border: 1px solid #cbd5e1;
-}
-
-.btn-participants-modal:hover {
-  background: var(--light-bg);
-}
-
-.btn-join-modal {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: var(--white);
-  font-weight: bold;
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-}
-
-.btn-join-modal:hover {
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
-  transform: translateY(-2px);
-}
-
-/* =========================================
-   PAGE HOME - BLOC BLEU & LAYOUT
-   ========================================= */
-.home-main {
-  width: 100%;
-  max-width: 800px; /* Plus large que create-way pour que les cartes respirent */
+  max-width: 800px;
   margin: 0 auto;
+  padding-bottom: 90px;
 }
 
-/* Le bloc bleu en dégradé */
-.home-main .app-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 25px 60px 25px; /* Padding bas large pour l'effet de superposition */
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: 0 0 40px 40px;
-  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
-  color: white;
+/* --- Image de Couverture --- */
+.ride-cover {
   position: relative;
-  z-index: 10;
+  width: 100%;
+  height: 250px;
 }
 
-.home-main .header-content {
-  text-align: center;
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.home-main .header-content h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
+/* Bouton Retour superposé sur l'image */
+.btn-back-overlay {
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  background-color: rgba(0, 0, 0, 0.5); /* Cercle noir semi-transparent */
+  color: var(--text-white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  backdrop-filter: blur(4px); /* Petit effet de flou derrière le bouton */
+  transition: background-color 0.3s;
+}
+
+.btn-back-overlay:active {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* --- Contenu Principal --- */
+.ride-content {
+  padding: 25px 20px;
+}
+
+/* Titre et Badge sur la même ligne */
+.ride-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
   margin-bottom: 5px;
-  color: var(--white);
 }
 
-.home-main .header-content p {
+.ride-header-top h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* On force la position relative pour le badge pour annuler l'absolu du badge des cartes de l'accueil */
+.ride-header-top .badge {
+  position: static;
+}
+
+/* --- COULEURS DES BADGES (Ajout pour sécuriser l'affichage de "Moyen") --- */
+.badge-medium {
+  background-color: #f35207b8;
+  color: var(--text-white);
+}
+.badge-easy {
+  background-color: #4caf50;
+  color: white;
+}
+.badge-hard {
+  background-color: var(--error-red);
+  color: white;
+}
+
+/* Auteur */
+.ride-details-main .author {
+  color: var(--text-grey);
   font-size: 0.95rem;
-  opacity: 0.9;
-  font-weight: 300;
+  margin-bottom: 25px;
+}
+
+/* --- Bloc d'informations condensées --- */
+.ride-quick-infos {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* On réutilise tes classes .info-row et .participants-row, on les aère un peu */
+.ride-quick-infos .info-row {
+  margin-bottom: 15px;
+}
+.ride-quick-infos .info-row:last-of-type {
+  margin-bottom: 0; /* Évite un espace en trop si pas de participants */
+}
+.ride-quick-infos .participants-row {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #333; /* Petite ligne de séparation */
+}
+
+/* --- Section Description --- */
+.ride-description {
+  margin-bottom: 40px;
+}
+
+.ride-description h3 {
+  font-size: 1.2rem;
+  margin: 0 0 10px 0;
+  color: var(--text-white);
+}
+
+.ride-description p {
+  color: var(--text-grey);
+  font-size: 0.95rem;
+  line-height: 1.6;
   margin: 0;
 }
 
-/* Le conteneur des cartes qui remonte sur le header */
-.rides-wrapper {
-  position: relative;
-  z-index: 20;
-  margin: -30px 20px 20px 20px; /* Remonte de 30px sur le bleu */
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+/* --- Bouton Rejoindre --- */
+.btn-join {
+  width: 100%;
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+  border: none;
+  padding: 18px;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(240, 90, 48, 0.2); /* Ombre orangée */
+  transition: transform 0.1s;
 }
 
-/* =========================================
-   AJUSTEMENTS SUR LE CONTAINER DES CARTES
-   ========================================= */
-#rides-container {
+.btn-join:active {
+  transform: scale(0.98);
+}
+
+/* --- Liste détaillée des participants (ride.php) --- */
+.ride-participants-list {
+  margin-bottom: 30px;
+}
+
+.ride-participants-list h3 {
+  font-size: 1.15rem;
+  margin: 0 0 15px 0;
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.participants-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  width: 100%;
+  gap: 10px; /* Espace régulier entre chaque carte participant */
 }
 
-.btn-sent-home {
-  padding: 10px 14px;
+/* Design de la "carte" utilisateur */
+.participants-list li {
+  background-color: var(--card-bg);
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espace entre l'avatar et le nom */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* L'avatar du participant */
+.participant-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 1px solid #ccc;
-  margin-left: 10px;
+  object-fit: cover;
+  background-color: var(
+    --bg-dark
+  ); /* Au cas où l'image met du temps à charger */
+  border: 2px solid var(--accent-orange); /* Petit rappel de la couleur principale */
 }
 
-.btn-sent-home i {
-  font-size: 25px;
+/* Le pseudo du participant */
+.participant-name {
+  color: var(--text-white);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.no-participants {
   color: var(--text-grey);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0;
+  background-color: var(--card-bg);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  text-align: center;
 }

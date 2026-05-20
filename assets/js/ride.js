@@ -1,10 +1,8 @@
-// On attend que la page HTML soit chargée
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("rides-container");
 
-  // 1. On appelle notre route PHP (le livreur)
   fetch("index.php?route=api_rides")
-    .then((response) => response.json()) // 2. On traduit la réponse texte en Objet JS
+    .then((response) => response.json())
     .then((data) => {
       container.innerHTML = "";
 
@@ -12,118 +10,109 @@ document.addEventListener("DOMContentLoaded", () => {
         container.textContent = "Aucune balade pour le moment.";
         return;
       }
-      data.forEach((ride) => {
-        // ! card pour afficher toutes les balades
-        const card = document.createElement("div");
-        card.classList.add("ride-card");
 
-        // ! récupération des données pour l'affichage principal
+      data.forEach((ride, index) => {
+        const card = document.createElement("a");
+        card.classList.add("ride-card");
+        card.href = `index.php?route=ride&id=${ride.id}`;
+
+        const imageWrapper = document.createElement("div");
+        imageWrapper.classList.add("card-image-wrapper");
+
+        const img = document.createElement("img");
+        img.classList.add("card-img");
+        img.src = `https://picsum.photos/400/200?random=${index}`;
+        img.alt = "Image de la balade";
+
+        // --- DÉBUT DE LA MODIFICATION POUR LA DIFFICULTÉ ---
+        const badge = document.createElement("span");
+        badge.classList.add("badge");
+
+        let diffValue = ride.difficultyLevel;
+        let badgeText = "Inconnu";
+        let diffClass = "badge-medium"; // Classe par défaut
+
+        // Si ta BDD renvoie un nombre entier (ex: 1 = Facile, 2 = Moyen, 3 = Difficile)
+        if (typeof diffValue === "number" || !isNaN(diffValue)) {
+          const intDiff = parseInt(diffValue);
+          if (intDiff === 1) {
+            badgeText = "Facile";
+            diffClass = "badge-easy";
+          } else if (intDiff === 2) {
+            badgeText = "Moyen";
+            diffClass = "badge-medium";
+          } else if (intDiff >= 3) {
+            badgeText = "Difficile";
+            diffClass = "badge-hard";
+          }
+        }
+        // Si finalement ta BDD renvoie du texte (au cas où tu changes ton format)
+        else if (typeof diffValue === "string") {
+          badgeText = diffValue.charAt(0).toUpperCase() + diffValue.slice(1); // Majuscule au début
+          const lowerString = diffValue.toLowerCase();
+
+          if (lowerString === "difficile") {
+            diffClass = "badge-hard";
+          } else if (lowerString === "facile") {
+            diffClass = "badge-easy";
+          } else {
+            diffClass = "badge-medium";
+          }
+        }
+
+        // On assigne le texte et la bonne classe
+        badge.textContent = badgeText;
+        badge.classList.add(diffClass);
+        // --- FIN DE LA MODIFICATION ---
+
+        imageWrapper.appendChild(img);
+        imageWrapper.appendChild(badge);
+
+        const content = document.createElement("div");
+        content.classList.add("card-content");
+
         const title = document.createElement("h3");
         title.textContent = ride.title;
 
-        const location = document.createElement("p");
-        location.classList.add("location-card");
-        location.textContent = `${ride.startLocation} -> ${ride.endLocation}`;
+        const author = document.createElement("p");
+        author.classList.add("author");
+        author.textContent = `${ride.getOrganizerId} A REMPLACER PAR LE NOM`;
 
-        const date = document.createElement("p");
-        date.classList.add("date-card");
-        date.textContent = `Prévue le : ${ride.date}`;
+        const date = document.createElement("div");
+        date.classList.add("info-row");
+        date.innerHTML = `<i class="fa-regular fa-calendar"></i> <span>${ride.date}</span>`;
 
-        const nbParticipants = document.createElement("p");
-        nbParticipants.classList.add("date-card");
-        nbParticipants.textContent = `Nombre de participants : /${ride.getMaxParticipants}`;
+        const location = document.createElement("div");
+        location.classList.add("info-row");
+        location.innerHTML = `<i class="fa-solid fa-location-dot"></i> <span>${ride.startLocation}</span>`;
 
-        const buttonDetails = document.createElement("button");
-        buttonDetails.textContent = "Voir les détails";
+        const nbParticipants = document.createElement("div");
+        nbParticipants.classList.add("participants-row");
+        nbParticipants.innerHTML = `
+            <i class="fa-solid fa-user-group"></i>
+            <div class="avatars">
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+            </div>
+            <span>... / ${ride.getMaxParticipants || 12} participants</span>
+        `;
 
-        card.appendChild(title);
-        card.appendChild(location);
-        card.appendChild(date);
-        card.appendChild(nbParticipants);
-        card.appendChild(buttonDetails);
+        content.appendChild(title);
+        content.appendChild(author);
+        content.appendChild(date);
+        content.appendChild(location);
+        content.appendChild(nbParticipants);
+
+        card.appendChild(imageWrapper);
+        card.appendChild(content);
+
         container.appendChild(card);
-
-        buttonDetails.addEventListener("click", () => {
-          modal.style.display = "block";
-        });
-
-        // ! modal pour afficher tous les détails de la balade
-        const modal = document.createElement("div");
-        modal.classList.add("ride-modal");
-        modal.style.display = "none";
-
-        // ! récupération des données pour l'affichage du modal
-        const buttonBack = document.createElement("button");
-        buttonBack.classList.add("btn-back-modal");
-        buttonBack.textContent = "<";
-
-        const titleModal = document.createElement("h3");
-        titleModal.textContent = ride.title;
-
-        const locationModal = document.createElement("p");
-        locationModal.classList.add("location-modal");
-        locationModal.textContent = `${ride.startLocation} -> ${ride.endLocation}`;
-
-        const dateModal = document.createElement("p");
-        dateModal.classList.add("date-modal");
-        dateModal.textContent = `Prévue le : ${ride.date}`;
-
-        const description = document.createElement("p");
-        description.classList.add("description-modal");
-        description.textContent = ride.description;
-
-        const startHour = document.createElement("p");
-        startHour.classList.add("hour-modal");
-        startHour.textContent = `Départ à ${ride.startHour}`;
-
-        const difficultyLevel = document.createElement("p");
-        difficultyLevel.classList.add("level-modal");
-        difficulty = "";
-        if (ride.difficultyLevel === 1) {
-          difficulty = "Chill (débutant)";
-        } else if (ride.difficultyLevel === 2) {
-          difficulty = "rythmé (intermédiaire)";
-        } else {
-          difficulty = "Sport (expert)";
-        }
-        difficultyLevel.textContent = `Niveau : ${difficulty}`;
-
-        const maxParticipants = document.createElement("p");
-        maxParticipants.classList.add("participants-modal");
-        maxParticipants.textContent = `Nombre de participants max : ${ride.getMaxParticipants}`;
-
-        const organizerId = document.createElement("p");
-        organizerId.classList.add("organizer-modal");
-        organizerId.textContent = `Organisé par : ${ride.getOrganizerId}`;
-
-        const buttonParticipants = document.createElement("button");
-        buttonParticipants.classList.add("btn-participants-modal");
-        buttonParticipants.textContent = "Voir les participants";
-
-        const buttonJoin = document.createElement("button");
-        buttonJoin.classList.add("btn-join-modal");
-        buttonJoin.textContent = "Rejoindre";
-
-        buttonBack.addEventListener("click", () => {
-          modal.style.display = "none";
-        });
-
-        modal.appendChild(buttonBack);
-        modal.appendChild(titleModal);
-        modal.appendChild(locationModal);
-        modal.appendChild(dateModal);
-        modal.appendChild(description);
-        modal.appendChild(startHour);
-        modal.appendChild(difficultyLevel);
-        modal.appendChild(maxParticipants);
-        modal.appendChild(organizerId);
-        modal.appendChild(buttonParticipants);
-        modal.appendChild(buttonJoin);
-        container.appendChild(modal);
       });
     })
     .catch((error) => {
       console.error("Erreur de récupération :", error);
-      container.textContent = "Erreur lors du chargement.";
+      container.textContent =
+        "Erreur lors du chargement. Vérifie la console de ton navigateur.";
     });
 });

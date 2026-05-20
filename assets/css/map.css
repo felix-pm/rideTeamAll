@@ -2,3 +2,54 @@
   height: 110vh;
   width: 100%;
 }
+
+/* --- Le marqueur principal --- */
+.beautiful-marker {
+  background-color: var(--accent-orange); /* Un beau vert moderne */
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid #ffffff; /* Bordure blanche pour détacher de la carte */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 18px; /* Taille de l'emoji */
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+/* Effet quand on passe la souris dessus */
+.beautiful-marker:hover {
+  transform: scale(1.15); /* Grossit légèrement */
+  background-color: #d5641e3d; /* Devient bleu */
+}
+
+/* --- L'animation de pulsation (l'onde sous le marqueur) --- */
+.marker-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: #e15d1149; /* Vert transparent */
+  border-radius: 50%;
+  z-index: 1;
+  /* L'animation qui tourne en boucle */
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}

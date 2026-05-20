@@ -1,782 +1,333 @@
-/* Importation d'une police moderne (Poppins) */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+:root {
+  --bg-dark: #121212;
+  --card-bg: #1e1e1e;
+  --input-bg: #2a2a2a;
+  --text-white: #ffffff;
+  --text-grey: #a0a0a0;
+  --accent-orange: #f05a30;
+  --error-red: #ff3b3b;
+  --border-radius: 12px;
+}
 
-/* --- Le conteneur principal (La carte style téléphone) --- */
+/* =========================================
+   BASE (MOBILE FIRST)
+   ========================================= */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  color: var(--text-white);
+  padding-bottom: 90px; /* Espace pour la navbar fixed */
+}
+
 #section-profile {
-  width: 100%;
-  max-width: 400px; /* Largeur type mobile */
-  padding: 20px;
+  padding: 20px 15px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-#div-all {
-  background: #ffffff;
-  border-radius: 40px;
-  box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.12),
-    0 10px 20px rgba(0, 0, 0, 0.05);
-  overflow: hidden; /* Important pour que le header bleu ne dépasse pas */
+/* =========================================
+   EN-TÊTE PROFIL
+   ========================================= */
+#profil {
   position: relative;
-  padding-bottom: 30px;
   text-align: center;
+  background-color: var(--card-bg);
+  padding: 30px 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-#display-profil {
-  margin-top: 0px;
-}
-
-#display-profil img {
-  margin-top: 55px; /* 25px de base + les 30px du conteneur */
-}
-
-/* --- Le Header Bleu (Créé artificiellement) --- */
-#div-all::before {
-  content: "";
+/* Icône des paramètres (engrenage) */
+#profil a {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 320px; /* Hauteur de la zone bleue */
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  border-radius: 0 0 50% 50% / 0 0 40px 40px; /* La courbe douce en bas */
-  z-index: 0;
+  top: 15px;
+  right: 15px;
+  color: var(--text-grey);
+  font-size: 1.4rem;
+  transition: color 0.3s;
 }
 
-/* --- Avatar --- */
-#div-all img {
-  position: relative;
-  z-index: 1;
-  width: 100px; /* On force la taille pour matcher le design */
+#profil a:hover {
+  color: var(--accent-orange);
+}
+
+/* Avatar */
+#profil img {
+  width: 100px;
   height: 100px;
-  border-radius: 25px; /* "Squircle" (carré arrondi) plus moderne que 50% */
-  margin-top: 25px;
-  border: 4px solid rgba(255, 255, 255, 0.3); /* Bordure semi-transparente */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
   object-fit: cover;
+  border: 3px solid var(--accent-orange);
+  margin-bottom: 10px;
+  background-color: var(--bg-dark);
 }
 
-/* --- Titre (Pseudo) --- */
-#div-all h2 {
-  position: relative;
-  z-index: 1;
-  color: white;
-  font-size: 24px;
-  font-weight: 700;
-  margin-top: 15px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+#profil h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.6rem;
 }
 
-/* --- Bouton "Partager" --- */
-#div-all button {
-  position: relative;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: white;
+#profil button {
+  background: transparent;
+  border: 1px solid var(--accent-orange);
+  color: var(--accent-orange);
   padding: 8px 20px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
-  margin-bottom: 30px;
   transition: all 0.3s ease;
 }
 
-#div-all button:hover {
-  background: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
+#profil button:active {
+  background: var(--accent-orange);
+  color: var(--text-white);
 }
 
-/* --- Liste des paramètres --- */
-#modif-profile {
-  position: relative;
-  z-index: 1;
-  padding: 0 25px;
-  margin-top: 10px;
-}
-
-#flex-profil {
-  background: #f3f8fe; /* Bleu très pâle */
+/* =========================================
+   MON GARAGE (Carrousel horizontal)
+   ========================================= */
+#display-garages h2 {
+  font-size: 1.3rem;
   margin-bottom: 15px;
-  padding: 15px 20px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  color: #333;
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 10px;
 }
 
-#flex-profil:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
-  background: white;
-}
-
-#flex-profil p:first-child {
-  font-weight: 600;
-  font-size: 14px;
+#bikes-container {
   display: flex;
-  align-items: center;
+  overflow-x: auto; /* Permet le scroll horizontal */
+  scroll-snap-type: x mandatory;
   gap: 15px;
+  padding-bottom: 15px; /* Laisse de la place pour la barre de scroll */
 }
 
-#flex-profil p:last-child {
-  color: #a0a0a0;
-  font-weight: 700;
-}
-
-#flex-profil p:first-child::before {
-  content: "";
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-color: #dbeafe;
-  border-radius: 10px;
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-#flex-profil:nth-child(1) p:first-child::before {
-  content: "👤";
-  text-align: center;
-  line-height: 35px;
-  background-color: #e0f2fe;
-  color: #0284c7;
-}
-
-#flex-chat {
-  background: #f3f8fe; /* Bleu très pâle */
-  margin-bottom: 15px;
-  padding: 15px 20px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  color: #333;
-}
-
-#flex-chat:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
-  background: white;
-}
-
-#flex-chat p:first-child {
-  font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-#flex-chat p:last-child {
-  color: #a0a0a0;
-  font-weight: 700;
-}
-
-#flex-chat p:first-child::before {
-  content: "";
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-color: #dbeafe;
-  border-radius: 10px;
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-#flex-chat:nth-child(2) p:first-child::before {
-  content: "📖";
-  text-align: center;
-  line-height: 35px;
-  background-color: #c6e53c17;
-  color: #16a34a;
-}
-
-#flex-balades {
-  background: #f3f8fe; /* Bleu très pâle */
-  margin-bottom: 15px;
-  padding: 15px 20px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  color: #333;
-}
-
-#flex-balades:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
-  background: white;
-}
-
-#flex-balades p:first-child {
-  font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-#flex-balades p:last-child {
-  color: #a0a0a0;
-  font-weight: 700;
-}
-
-#flex-balades p:first-child::before {
-  content: "";
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-color: #dbeafe;
-  border-radius: 10px;
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-#flex-balades:nth-child(3) p:first-child::before {
-  content: "🏞️​";
-  text-align: center;
-  line-height: 35px;
-  background-color: #16a34a17;
-  color: #16a34a;
-}
-
-#flex-garage {
-  background: #f3f8fe; /* Bleu très pâle */
-  margin-bottom: 15px;
-  padding: 15px 20px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  color: #333;
-}
-
-#flex-garage:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.15);
-  background: white;
-}
-
-#flex-garage p:first-child {
-  font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-#flex-garage p:last-child {
-  color: #a0a0a0;
-  font-weight: 700;
-}
-
-#flex-garage p:first-child::before {
-  content: "";
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-color: #dbeafe;
-  border-radius: 10px;
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-#flex-garage:nth-child(4) p:first-child::before {
-  content: "🏍️​";
-  text-align: center;
-  line-height: 35px;
-  background-color: #fce7f3;
-  color: #db2777;
-}
-
-a[href*="logout"] {
-  display: block;
-  width: calc(100% - 50px);
-  margin: 10px auto 0;
-  padding: 15px;
-  text-align: center;
-  color: #0288d1;
-  text-decoration: none;
-  border-radius: 20px;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-#display-profil,
-#display-balades,
-#display-chat,
-#display-garages,
-#add-bike {
-  position: relative; /* Indispensable pour que tes textes restent DEVANT le fond bleu */
-  z-index: 1;
-  width: 100%;
-
-  /* LA MAGIE EST ICI : ce 1px bloque la fusion des marges ! */
-  padding: 1px 20px 0px 20px;
-
+/* Cache la barre de scroll sur Chrome/Safari pour un effet "app native" */
+#bikes-container::-webkit-scrollbar {
   display: none;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* 3. LE BOUTON RETOUR (Parfaitement aligné) */
-#btn-back-profil,
-#btn-back-balades,
-#btn-back-chat,
-#btn-back-garage,
-#btn-back-add-bike {
+/* Carte Moto */
+.bike-card {
+  flex: 0 0 220px; /* Taille fixe pour chaque carte dans le carrousel */
+  scroll-snap-align: start;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.bike-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* Icônes Paramètres et Poubelle sur l'image */
+.bike-card .fa-gear,
+.bike-card .fa-trash-can {
   position: absolute;
-  top: 15px; /* Le conteneur ne bougeant plus, le bouton reste fixé à 15px du haut ! */
-  left: 15px;
-  margin: 0;
-  color: white;
-  font-size: 28px;
-  font-weight: 700;
+  top: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--text-white);
+  padding: 8px;
+  border-radius: 50%;
+  font-size: 0.9rem;
   cursor: pointer;
-  z-index: 100;
-  transition: transform 0.2s ease;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-#btn-back-profil:hover,
-#btn-back-balades:hover,
-#btn-back-chat:hover,
-#btn-back-garage:hover,
-#btn-back-add-bike:hover {
-  transform: scale(1.2) translateX(-3px);
+.bike-card .fa-gear {
+  right: 10px;
+}
+.bike-card .fa-trash-can {
+  left: 10px;
+  color: #ff6b6b;
 }
 
-/* 3. Style du Formulaire de modification */
-#display-profil form {
+/* Textes de la moto */
+.bike-marque,
+.bike-modele,
+.bike-annee {
+  margin: 5px 15px;
+  font-size: 0.9rem;
+  color: var(--text-grey);
+}
+
+.bike-marque {
+  margin-top: 10px;
+  color: var(--text-white);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.bike-annee {
+  margin-bottom: 15px;
+}
+
+/* Bouton Ajouter une moto */
+#button-add-bike {
   width: 100%;
-  margin-top: 30px; /* Espace après le pseudo */
-  background: white;
-  padding: 10px;
-  border-radius: 20px;
-  /* On permet le scroll si le formulaire est trop grand pour la carte */
-  max-height: 430px;
-  overflow-y: hidden;
-}
-
-/* Les Labels */
-#display-profil label {
-  display: block;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  color: #a0a0a0;
-  margin-bottom: 5px;
-  margin-left: 10px;
-  margin-top: 15px;
-}
-
-/* Les Champs (Inputs) */
-#display-profil input {
-  width: 100%;
-  padding: 12px 20px;
-  background-color: #f3f8fe; /* Même gris-bleu que vos menus */
-  border: none;
-  border-radius: 15px;
-  font-size: 14px;
-  color: #333;
-  font-family: "Poppins", sans-serif;
-  transition: box-shadow 0.3s ease;
-}
-
-#display-profil input:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3); /* Halo bleu au focus */
-  background-color: white;
-}
-
-/* Le bouton Enregistrer */
-#display-profil button {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  width: 100%;
+  background-color: transparent;
+  border: 2px dashed var(--accent-orange);
+  color: var(--accent-orange);
   padding: 15px;
-  border: none;
-  margin-top: 25px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
-}
-
-#display-profil button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 25px rgba(79, 172, 254, 0.4);
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-}
-
-/* 4. Messages "Feature à venir" (Balades & Garage) */
-#display-chat p:not(#btn-back-chat),
-#display-garages p:not(#btn-back-garage) {
-  margin-top: 150px; /* On descend le texte dans la zone blanche */
-  color: #a0a0a0;
-  font-style: italic;
-  font-weight: 500;
-}
-
-/* --- NOUVEAUX STYLES : ONGLETS EN "BOITES" (VERSION AMÉLIORÉE) --- */
-
-/* 1. Fix pour le bouton retour qui se faisait écraser */
-#btn-back-balades {
-  z-index: 100 !important; /* On le force à passer par-dessus TOUT le reste */
-}
-
-/* 2. Le conteneur des onglets */
-.balades-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 80px; /* Augmenté de 60px à 80px pour laisser respirer le bouton retour */
-  width: 100%;
-  padding: 0 10px;
-  position: relative;
-  z-index: 2;
-}
-
-/* 3. Style de la "Case" (l'onglet inactif par défaut) */
-.balades-tabs h3 {
-  flex: 1;
-  text-align: center;
-  background-color: #f3f8fe; /* Gris/bleu clair */
-  color: #a0a0a0;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 15px 0;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  margin: 0;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animation très fluide */
+  margin-top: 10px;
+  transition: background-color 0.3s;
 }
 
-/* Astuce de pro : On prépare le fond bleu dégradé (caché par défaut) */
-.balades-tabs h3::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  z-index: -1; /* Reste derrière le texte */
-  opacity: 0; /* Totalement transparent par défaut */
-  transition: opacity 0.4s ease; /* C'est ça qui va créer l'animation de remplissage */
+#button-add-bike:hover {
+  background-color: rgba(240, 90, 48, 0.1);
 }
 
-/* Effet au survol (hover) pour les cases inactives */
-.balades-tabs h3:not(.active-tab):hover {
-  background-color: #e0f2fe;
-  color: #0284c7;
-  transform: translateY(-2px);
+/* =========================================
+   FORMULAIRE D'AJOUT DE MOTO
+   ========================================= */
+#add-bike {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+  animation: fadeIn 0.3s ease;
 }
 
-/* --- 4. Style de la Case ACTIVE (La nouvelle animation) --- */
-.balades-tabs h3.active-tab {
-  color: white; /* Le texte devient blanc pour ressortir sur le bleu */
-  transform: translateY(-4px) scale(1.03); /* La case remonte et grossit un tout petit peu */
-  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4); /* Superbe ombre bleutée */
+#btn-back-add-bike {
+  display: inline-block;
+  color: var(--text-grey);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+  cursor: pointer;
 }
 
-/* On affiche le fond bleu dégradé pour la case active */
-.balades-tabs h3.active-tab::before {
-  opacity: 1;
-}
-
-/* --- Conteneur et Animation du contenu (inchangé, garde cette partie que tu as déjà) --- */
-.balades-content-container {
-  width: 100%;
-  position: relative;
-  margin-top: 25px;
-  min-height: 200px;
-  overflow: hidden;
-}
-
-.balades-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-  padding: 10px;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  visibility: hidden;
-  opacity: 0;
-}
-
-.balades-content.active-content {
-  opacity: 1;
-  visibility: visible;
-  position: relative;
-  transform: translateX(0);
-}
-
-.balades-content.exit-left {
-  transform: translateX(-100%);
-  position: absolute;
-}
-
-.balades-content.exit-right {
-  transform: translateX(100%);
-  position: absolute;
-}
-
-/* --- Style du Formulaire : Ajouter une Moto --- */
 #add-bike form {
-  width: 100%;
-  margin-top: 80px; /* On le descend pour ne pas gêner le bouton retour */
-  background: white;
-  padding: 15px 20px 25px 20px;
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Légère ombre */
   display: flex;
   flex-direction: column;
 }
 
 #add-bike label {
-  display: block;
-  text-align: left;
-  font-size: 13px;
-  font-weight: 600;
-  color: #a0a0a0;
-  margin-bottom: 5px;
-  margin-left: 10px;
+  font-size: 0.9rem;
+  color: var(--text-grey);
+  margin-bottom: 8px;
   margin-top: 15px;
 }
 
 #add-bike label i {
-  margin-right: 5px; /* Espace entre l'icône FontAwesome et le texte */
-  color: #4facfe;
+  color: var(--accent-orange);
+  margin-right: 8px;
 }
 
 #add-bike input {
-  width: 100%;
-  padding: 12px 20px;
-  background-color: #f3f8fe;
-  border: none;
-  border-radius: 15px;
-  font-size: 14px;
-  color: #333;
-  font-family: "Poppins", sans-serif;
-  transition: box-shadow 0.3s ease;
+  background-color: var(--input-bg);
+  border: 1px solid transparent;
+  color: var(--text-white);
+  padding: 14px 15px;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  outline: none;
 }
 
 #add-bike input:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
-  background-color: white;
+  border-color: var(--accent-orange);
 }
 
-#add-bike button.submit-btn {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  color: white;
-  width: 100%;
-  padding: 15px;
+input[type="file"] {
+  padding: 10px;
+  color: var(--text-grey);
+}
+
+.submit-btn {
+  background-color: var(--accent-orange);
+  color: var(--text-white);
   border: none;
-  border-radius: 15px;
-  margin-top: 25px;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-#add-bike button.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 25px rgba(79, 172, 254, 0.4);
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+/* =========================================
+   ONGLETS (À VENIR / PASSÉES)
+   ========================================= */
+.tabs-container {
+  margin-top: 40px;
 }
 
-#div-all #bikes-container {
-  width: 100% !important;
-  margin-top: 80px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 15px !important;
-  min-height: 350px !important;
-  max-height: 600px !important;
-  overflow-y: auto !important;
-  padding: 5px !important;
-  box-sizing: border-box !important;
+.tabs-header {
+  display: flex;
+  border-bottom: 1px solid #333;
 }
 
-#div-all #bikes-container::-webkit-scrollbar {
-  width: 4px;
-}
-#div-all #bikes-container::-webkit-scrollbar-thumb {
-  background-color: #dbeafe;
-  border-radius: 10px;
-}
-
-/* Message quand le garage est vide */
-#div-all #bikes-container > p {
-  color: #a0a0a0 !important;
-  font-style: italic !important;
-  font-size: 14px !important;
-  margin-top: 50px !important;
-  text-align: center !important;
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-grey);
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
 }
 
-/* --- La Carte Moto --- */
-#div-all #bikes-container .bike-card {
-  background: #ffffff !important;
-  border-radius: 20px !important;
-  padding: 15px !important;
-  display: grid !important;
-  grid-template-columns: 75px 1fr !important;
-  grid-template-rows: auto auto auto !important;
-  column-gap: 15px !important;
-  row-gap: 2px !important;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
-  border: 1px solid #f3f8fe !important;
-  align-items: center !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  position: relative !important;
-  padding-right: 70px !important;
+.tab-btn.active {
+  color: var(--accent-orange);
+  border-bottom-color: var(--accent-orange);
 }
 
-/* --- STYLE COMMUN DES ICÔNES D'ACTION --- */
-#div-all #bikes-container .bike-card i {
-  position: absolute !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 30px !important;
-  height: 30px !important;
-  font-size: 13px !important;
-  border-radius: 50% !important;
-  background-color: #f3f8fe !important; /* Fond gris-bleu clair */
-  cursor: pointer !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+.tab-panel {
+  display: none; /* Caché par défaut */
+  padding: 20px 0;
+  color: var(--text-grey);
+  text-align: center;
 }
 
-/* --- ICÔNE "PARAMÈTRES" (GEAR) --- */
-#div-all #bikes-container .bike-card .fa-gear {
-  top: 15px !important;
-  right: 50px !important; /* Placée à côté de la poubelle */
-  color: #a0a0a0 !important;
+.tab-panel.active {
+  display: block; /* Affiché si actif */
+  animation: fadeIn 0.4s ease;
 }
 
-#div-all #bikes-container .bike-card .fa-gear:hover {
-  color: #4facfe !important; /* Devient bleu au survol */
-  background-color: #e0f2fe !important;
-  transform: rotate(90deg) scale(1.1) !important; /* Effet de rotation mécanique */
-  box-shadow: 0 5px 10px rgba(79, 172, 254, 0.2) !important;
+/* =========================================
+   DÉCONNEXION
+   ========================================= */
+#btn-logout {
+  margin-top: 50px;
+  text-align: center;
 }
 
-/* --- ICÔNE "POUBELLE" (TRASH) --- */
-#div-all #bikes-container .bike-card .fa-trash-can {
-  top: 15px !important;
-  right: 15px !important; /* Placée tout à droite */
-  color: #fca5a5 !important; /* Rouge pastel */
+#btn-logout a {
+  color: var(--error-red);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 15px;
+  display: inline-block;
 }
 
-#div-all #bikes-container .bike-card .fa-trash-can:hover {
-  color: #ef4444 !important; /* Rouge vif au survol */
-  background-color: #fee2e2 !important;
-  transform: scale(1.1) !important; /* Grossit légèrement */
-  box-shadow: 0 5px 10px rgba(239, 68, 68, 0.2) !important;
-}
-
-/* L'image de la moto : ON ÉCRASE "#div-all img" QUI CASSAIT TOUT */
-#div-all #bikes-container .bike-img {
-  grid-column: 1 !important;
-  grid-row: 1 / 4 !important;
-  width: 75px !important;
-  height: 75px !important;
-  border-radius: 15px !important;
-  object-fit: cover !important;
-  margin: 0 !important; /* Annule le margin-top de 25px de l'avatar */
-  border: none !important; /* Annule la grosse bordure blanche de l'avatar */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* On réinitialise TOUS les <p> dans la carte moto */
-#div-all #bikes-container p {
-  margin: 0 !important;
-  padding: 0 !important;
-  text-align: left !important;
-  line-height: 1.2 !important;
-}
-
-/* Textes spécifiques */
-#div-all #bikes-container .bike-marque {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-  font-weight: 700 !important;
-  font-size: 16px !important;
-  color: #333 !important;
-  align-self: end !important;
-}
-
-#div-all #bikes-container .bike-modele {
-  grid-column: 2 !important;
-  grid-row: 2 !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-  color: #4facfe !important;
-  align-self: center !important;
-}
-
-#div-all #bikes-container .bike-annee {
-  grid-column: 2 !important;
-  grid-row: 3 !important;
-  font-size: 13px !important;
-  color: #a0a0a0 !important;
-  align-self: start !important;
-}
-
-#div-all button#button-add-bike {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
-  color: white !important;
-  width: 100% !important;
-  padding: 15px !important;
-  border: none !important;
-  border-radius: 15px !important;
-  margin-top: 20px !important;
-  margin-bottom: 10px !important;
-  font-weight: 600 !important;
-  font-size: 15px !important;
-  box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3) !important;
-  cursor: pointer !important;
-  position: relative !important;
-  z-index: 10 !important;
-  backdrop-filter: none !important; /* Enlève le flou de fond (blur) */
+/* Petite animation d'apparition globale */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
