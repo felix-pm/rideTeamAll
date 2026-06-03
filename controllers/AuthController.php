@@ -24,7 +24,7 @@ class AuthController extends AbstractController
                         $_SESSION['avatar'] = $user->getAvatar();
                         if($user->getRole() === 'ADMIN')
                         {
-                            $this->redirect("index.php?route=admin");
+                            $this->redirect("index.php?route=profile");
                         }
                         else 
                         {

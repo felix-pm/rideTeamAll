@@ -16,7 +16,8 @@ class Ride
         private ?float $end_longitude,    
         private int $difficulty_level, 
         private int $max_participants, 
-        private int $organizer_id
+        private int $organizer_id,
+        private ?string $organizer_pseudo = null
     ) {
     }  
 
@@ -175,6 +176,17 @@ class Ride
     public function setOrganizer_id($organizer_id)
     {
         $this->organizer_id = $organizer_id;
+        return $this;
+    }
+
+    public function getOrganizer_pseudo(): ?string
+    {
+        return $this->organizer_pseudo;
+    }
+
+    public function setOrganizer_pseudo($organizer_pseudo): self
+    {
+        $this->organizer_pseudo = $organizer_pseudo;
         return $this;
     }
 }

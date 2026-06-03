@@ -49,7 +49,6 @@ function setupAutocomplete(inputId, resultsId, latId, lonId) {
   });
 }
 
-// Initialisation pour les deux champs
 setupAutocomplete(
   "start_location",
   "start_results",

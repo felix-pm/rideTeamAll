@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../Partials/head.php'; ?>
+
 <section id="section-login">
   <div class="auth-container">
     <h2>Connexion</h2>

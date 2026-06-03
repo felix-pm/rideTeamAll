@@ -1,0 +1,188 @@
+:root {
+  --bg-dark: #121212;
+  --card-bg: #1e1e1e;
+  --input-bg: #2a2a2a;
+  --text-white: #ffffff;
+  --text-grey: #a0a0a0;
+  --accent-orange: #f05a30;
+  --error-red: #ff3b3b;
+  --border-radius: 12px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  color: var(--text-white);
+}
+
+/* =========================================
+   CONTENEUR GLOBAL (Centre la carte à l'écran)
+   ========================================= */
+#section-login,
+#section-register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Prend toute la hauteur de l'écran */
+  padding: 20px;
+}
+
+/* =========================================
+   CARTE PRINCIPALE
+   ========================================= */
+.auth-container {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 400px; /* Limite la largeur sur PC/Tablette */
+  padding: 35px 25px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Belle ombre de profondeur */
+}
+
+/* Titres (Connexion / Inscription) */
+.auth-container h1,
+.auth-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 25px 0;
+  color: var(--text-white);
+}
+
+/* =========================================
+   MESSAGES D'ERREUR
+   ========================================= */
+.alert-error {
+  background-color: rgba(255, 59, 59, 0.1);
+  border: 1px solid var(--error-red);
+  color: #ff6b6b;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  animation: shake 0.4s ease-in-out; /* Petite animation sympa si erreur */
+}
+
+.alert-error p {
+  margin: 0 0 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.alert-error p::before {
+  content: "⚠️"; /* Ajoute un petit emoji devant chaque erreur */
+  margin-right: 8px;
+  font-size: 0.8rem;
+}
+
+.alert-error p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   FORMULAIRE (Labels & Inputs)
+   ========================================= */
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container label {
+  font-size: 0.9rem;
+  color: var(--text-grey);
+  margin-bottom: 8px;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* Enlève la marge au-dessus du tout premier label */
+.auth-container form label:first-of-type {
+  margin-top: 0;
+}
+
+.auth-container input {
+  background-color: var(--input-bg);
+  border: 1px solid transparent;
+  color: var(--text-white);
+  padding: 14px 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.auth-container input::placeholder {
+  color: #666;
+}
+
+.auth-container input:focus {
+  border-color: var(--accent-orange);
+  background-color: #333;
+}
+
+/* =========================================
+   BOUTON DE SOUMISSION
+   ========================================= */
+.auth-container button[type="submit"] {
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 25px !important; /* Le !important sécurise le inline style de ton html */
+  transition:
+    background-color 0.3s,
+    transform 0.1s;
+  width: 100%;
+}
+
+.auth-container button[type="submit"]:hover {
+  background-color: #e04b22;
+}
+
+.auth-container button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+/* =========================================
+   LIEN VERS L'AUTRE PAGE
+   ========================================= */
+.auth-links {
+  display: block;
+  text-align: center;
+  margin-top: 25px;
+  color: var(--text-grey);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.auth-links:hover {
+  color: var(--accent-orange);
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}

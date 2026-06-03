@@ -26,7 +26,7 @@ class ParticipationManager extends AbstractManager
     }
 
     public function findParticipantsByRideId($ride_id) : array {
-        $query = $this->db->prepare('SELECT * FROM participations WHERE ride_id = :ride_id');
+        $query = $this->db->prepare('SELECT users.pseudo, participations.* FROM participations JOIN users ON participations.user_id = users.id WHERE ride_id = :ride_id');
         $parameters = [
             "ride_id" => $ride_id
         ];
@@ -36,10 +36,9 @@ class ParticipationManager extends AbstractManager
         $participations = [];
 
         foreach ($results as $item) {
-            $participations[] = new Participation($item["ride_id"], $item["user_id"], $item["created_at"]);
+            $participations[] = new Participation($item["ride_id"], $item["user_id"], $item["created_at"], $item["pseudo"]);
         }
 
-        // 4. On retourne le tableau rempli
         return $participations;
 }
 
@@ -88,6 +87,22 @@ class ParticipationManager extends AbstractManager
             ':created_at' => $participation->getCreated_at()
         ];
         $query->execute($parameters);
+    }
+
+    public function addParticipation(int $ride_id, int $user_id) : bool {
+        $query = $this->db->prepare('
+            INSERT IGNORE INTO participations (ride_id, user_id, created_at) 
+            VALUES (:ride_id, :user_id, NOW())
+        ');
+        
+        $parameters = [
+            "ride_id" => $ride_id,
+            "user_id" => $user_id
+        ];
+        
+        $query->execute($parameters);
+
+        return $query->rowCount() > 0;
     }
 
 

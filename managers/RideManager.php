@@ -7,13 +7,9 @@ class RideManager extends AbstractManager
         parent::__construct();
     }
 
-    public function findAll() : array
-    {
+    public function findAll() : array {
         $query = $this->db->prepare('
-            SELECT * 
-            FROM rides 
-            WHERE start_date > CURDATE() 
-            OR (start_date = CURDATE() AND start_hour > CURTIME())
+            SELECT rides.*, users.pseudo AS organizer_pseudo FROM rides JOIN users ON rides.organizer_id = users.id WHERE start_date > CURDATE() OR (start_date = CURDATE() AND start_hour > CURTIME())
         ');
         $parameters = [
 
@@ -24,7 +20,6 @@ class RideManager extends AbstractManager
 
         foreach($result as $item)
         {
-            // À remplacer dans findAll() ET dans findOne() :
             $ride = new Ride(
                 $item["id"], 
                 $item["title"], 
@@ -39,7 +34,8 @@ class RideManager extends AbstractManager
                 $item["end_longitude"],   
                 $item["difficulty_level"], 
                 $item["max_participants"], 
-                $item["organizer_id"]
+                $item["organizer_id"],
+                $item["organizer_pseudo"]
             );
             $rides[] = $ride;
         }
@@ -47,8 +43,94 @@ class RideManager extends AbstractManager
         return $rides;
     }
 
+    public function ridesFollowed($user_id) : array {
+        $query = $this->db->prepare('
+            SELECT rides.*, users.pseudo AS organizer_pseudo 
+            FROM rides 
+            JOIN follows ON rides.organizer_id = follows.followed_id 
+            JOIN users ON rides.organizer_id = users.id
+            WHERE follows.follower_id = :user_id
+            AND start_date > CURDATE() OR (start_date = CURDATE() AND start_hour > CURTIME())
+        ');
+        $parameters = [
+            "user_id" => $user_id
+        ];
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rides = [];
+
+        foreach($result as $item)
+        {
+            $ride = new Ride(
+                $item["id"], 
+                $item["title"], 
+                $item["description"], 
+                $item["start_hour"], 
+                $item["start_date"], 
+                $item["start_location"], 
+                $item["start_latitude"],  
+                $item["start_longitude"], 
+                $item["end_location"], 
+                $item["end_latitude"],    
+                $item["end_longitude"],   
+                $item["difficulty_level"], 
+                $item["max_participants"], 
+                $item["organizer_id"],
+                $item["organizer_pseudo"]
+            );
+            $rides[] = $ride;
+        }
+
+        return $rides;
+    }
+
+    public function searchRides(string $keyword): array{
+        $query = $this->db->prepare('
+            SELECT rides.*, users.pseudo AS organizer_pseudo 
+            FROM rides 
+            JOIN users ON rides.organizer_id = users.id 
+            WHERE (title LIKE :keyword OR start_location LIKE :keyword) 
+            AND (start_date > CURDATE() OR (start_date = CURDATE() AND start_hour > CURTIME()))
+        ');
+        
+        $parameters = [
+            'keyword' => '%' . $keyword . '%'
+        ];
+        
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rides = [];
+
+        foreach($result as $item) {
+            $rides[] = new Ride(
+                $item["id"], 
+                $item["title"], 
+                $item["description"], 
+                $item["start_hour"], 
+                $item["start_date"], 
+                $item["start_location"], 
+                $item["start_latitude"], 
+                $item["start_longitude"], 
+                $item["end_location"], 
+                $item["end_latitude"], 
+                $item["end_longitude"],   
+                $item["difficulty_level"], 
+                $item["max_participants"], 
+                $item["organizer_id"],
+                $item["organizer_pseudo"]
+            );
+        }
+
+        return $rides;
+    }
+
     public function findOne($id) {
-        $query = $this->db->prepare('SELECT * FROM rides WHERE id = :id');
+        $query = $this->db->prepare('
+            SELECT rides.*, users.pseudo AS organizer_pseudo 
+            FROM rides 
+            JOIN users ON rides.organizer_id = users.id 
+            WHERE rides.id = :id
+        ');        
         $parameters = [
             "id" => $id
         ];
@@ -71,7 +153,8 @@ class RideManager extends AbstractManager
                     $item["end_longitude"],   
                     $item["difficulty_level"], 
                     $item["max_participants"], 
-                    $item["organizer_id"]
+                    $item["organizer_id"], 
+                    $item["organizer_pseudo"]
                 );
         }
 

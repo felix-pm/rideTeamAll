@@ -2,14 +2,12 @@
 
 class UserManager extends AbstractManager
 {
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
     }
 
-    public function findAll() : array
-    {
-        $query = $this->db->prepare('SELECT * FROM users');
+    public function findAll() : array{
+        $query = $this->db->prepare('SELECT * FROM users ORDER BY RAND();');
         $parameters = [
 
         ];
@@ -26,8 +24,7 @@ class UserManager extends AbstractManager
         return $users;
     }
 
-    public function findById(int $id) : ? User
-    {
+    public function findById(int $id) : ? User{
         $query = $this->db->prepare('SELECT * FROM users WHERE id = :id');
         $parameters = [
             "id" => $id
@@ -43,42 +40,68 @@ class UserManager extends AbstractManager
         return null;
     }
 
-    public function findByEmail(string $email): ?User
-        {
-            $query = $this->db->prepare('SELECT * FROM users WHERE email = :email');
-            $query->execute([':email' => $email]);
-            $data = $query->fetch(PDO::FETCH_ASSOC);
+    public function findByEmail(string $email): ?User{
+        $query = $this->db->prepare('SELECT * FROM users WHERE email = :email');
+        $query->execute([':email' => $email]);
+        $data = $query->fetch(PDO::FETCH_ASSOC);
 
-            if ($data) {
-                return new User(
-                    $data['id'],        
-                    $data['pseudo'],  
-                    $data['email'],   
-                    $data['password'],
-                    $data['role'],
-                    $data['avatar']   
-                );
-            }
-
-            return null;
+        if ($data) {
+            return new User(
+                $data['id'],        
+                $data['pseudo'],  
+                $data['email'],   
+                $data['password'],
+                $data['role'],
+                $data['avatar']   
+            );
         }
 
-    public function create_user(User $user)
-        {
-            $query = $this->db->prepare("INSERT INTO users (pseudo, email, password, role, avatar) VALUES (:pseudo, :email, :password, :role, :avatar)");
-            $parameters = [
-                ':pseudo' => $user->getPseudo(),
-                ':email' => $user->getEmail(),
-                ':password' => $user->getPassword(),
-                ':role' => $user->getRole(),
-                ':avatar' => $user->getAvatar()
-            ];
+        return null;
+    }
 
-            $query->execute($parameters);
+    public function searchUser(string $keywordUser){
+        $query = $this->db->prepare('
+            SELECT * FROM Users WHERE (pseudo LIKE :keywordUser) 
+        ');
+        
+        $parameters = [
+            'keywordUser' => '%' . $keywordUser . '%'
+        ];
+        
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rides = [];
+
+        foreach($result as $item) {
+            $rides[] = new User(
+                $item['id'],        
+                $item['pseudo'],  
+                $item['email'],   
+                $item['password'],
+                $item['role'],
+                $item['avatar']
+            );
         }
 
-    public function update(User $user) : void
-    {
+        return $rides;
+    }
+
+    public function create_user(User $user){
+        $query = $this->db->prepare("INSERT INTO users (pseudo, email, password, role, avatar) VALUES (:pseudo, :email, :password, :role, :avatar)");
+        $parameters = [
+            ':pseudo' => $user->getPseudo(),
+            ':email' => $user->getEmail(),
+            ':password' => $user->getPassword(),
+            ':role' => $user->getRole(),
+            ':avatar' => $user->getAvatar()
+        ];
+
+        $query->execute($parameters);
+    }   
+
+    
+
+    public function update(User $user) : void{
         $query = $this->db->prepare('UPDATE users SET pseudo = :pseudo, email = :email, password = :password, role = :role, avatar = :avatar WHERE id = :id');;
         $parameters = [
                 ':id' => $user->getId(),
@@ -91,8 +114,7 @@ class UserManager extends AbstractManager
         $query->execute($parameters);
     }
 
-    public function delete(User $user) : void
-    {
+    public function delete(User $user) : void{
         $query = $this->db->prepare('DELETE FROM users WHERE id = :id');
         $parameters = [
             "id" => $user->getId()

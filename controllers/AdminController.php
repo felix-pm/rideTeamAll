@@ -2,170 +2,60 @@
 
 class AdminController extends AbstractController
 {
-    
-    // ! a garder
-    public function create_user() :void 
-    {
+    public function admin(){
+        // Vérification de sécurité
         if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
         {
             $this->redirect('index.php?route=login');
+            exit;
         }
         else {
             $errors = [];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST')
-        {
-            if (empty($_POST["pseudo"]) || empty($_POST["email"]) || empty($_POST["password"]) || empty($_POST["confirmPassword"]))
-            {  
-                $errors[] = "Veuillez remplir tous les champs !";
-            }
-            $manager = new UserManager();
-            $userCandidat = $manager->findByEmail($_POST["email"]);
-            if ($userCandidat !== null)
-            {
-                $errors[] = "Cet email est déjà utilisé !";
-            }
-            if ($_POST["password"] !== $_POST["confirmPassword"])
-            {
-                $errors[] = "Les mots de passe ne correspondent pas !";
-            }
-            if (empty($errors)) {
-                $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                
-                $userToCreate = new User(
-                    id: null, 
-                    pseudo: $_POST['pseudo'], 
-                    email: $_POST['email'],
-                    password: $hashedPassword,
-                    role: "USER",             
-                    avatar: null              
-                );
-                $manager->create_user($userToCreate);
-                $this->redirect('index.php?route=list_admin');
-                exit;
-            }
         }
-        }
-        // $this->render('admin/user/create.html.twig', ['errors' => $errors]); // ! changer la redirection
-    }
-
-    // ! a garder
-    public function update_user() : void {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
-        {
-            $this->redirect('index.php?route=login');
-        }
-        else {
-
-            $ctrl = new UserManager;
-            $datas = $ctrl->findById($_GET["id"]);
-            if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            {
-                $update_user = new User(
-                    id: (int)$_GET['id'], 
-                    pseudo: $_POST["pseudo"],
-                    email: $_POST["email"],
-                    password: password_hash($_POST["password"], PASSWORD_DEFAULT),
-                    role: $_POST["role"],
-                    avatar: $_POST["avatar"] 
-                );
-                $ctrl->update($update_user);
-            }
-            // $this->render('admin/user/update.html.twig', ['datas' => $datas]); // ! changer la redirection
-        }
-    }
-
-    // ! a garder
-    public function delete_user() : void {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
-        {
-            $this->redirect('index.php?route=login');
-            return; 
-        }
-
-        if (isset($_GET['id'])) 
-        {
-            $id = (int)$_GET['id'];
-            $manager = new UserManager();
-            $userToDelete = $manager->findById($id);
-
-            if ($userToDelete) 
-            {
-                $manager->delete($userToDelete);
-            }
-        }
-
-        $this->redirect('index.php?route=list_admin'); // ! changer la redirection
-    }
-
-    // ! a garder
-    public function list_admin() : void 
-    {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
-        {
-            $this->redirect('index.php?route=login');
-        }
-        else
-        {
-            $ctrl = new UserManager;
-            $datas = $ctrl->findAll();
-            // $this->render('admin/user/list_admin.html.twig', ['datas' => $datas]); // ! changer la redirection
-        }
-    }
-
-    // ! a garder
-    public function show_user() : void
-    {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
-        {
-            $this->redirect('index.php?route=login');
-        }
-        else
-        {
-            $id = $_GET["id"];
-            $ctrl = new UserManager;
-            $datas = $ctrl->findById($id);
-            // $this->render('admin/user/show.html.twig', ["datas" => $datas]); // ! changer la redirection
-        }
-
-    }
-
-    // ! a garder
-    public function profile() :void
-    {
-        if(isset($_SESSION["id"], $_SESSION["pseudo"], $_SESSION["email"], $_SESSION["role"]))
-        {
-            if($_SESSION["role"] === "ADMIN")
-            {
-                $this->redirect('index.php?route=list_admin');
-            }
-            else
-            {
-                // $this->render('member/profile.html.twig', []);
-            }
-        }
-        else
-        {
-            // $this->render('auth/login.html.twig', []);
-        }
-    }
-
-    // ! à voir si je la garde (ou si je change le nom)
-    public function home()
-    {
-        if (!isset($_SESSION['id'])) {
-            $this->redirect('index.php?route=login');
-        }
-
-        $userId = $_SESSION['id'];
-
-        $manager = new Group_userManager();
-        $myGroups = $manager->findGroupsByUserId($userId);
-
         
+        // ! Récupération des utilisateurs
+        $userManager = new UserManager();
+        $users = [];
+        $keywordUser = '';
+        if (isset($_GET['rechercheUser-admin']) && !empty(trim($_GET['rechercheUser-admin']))) {
+            $keywordUser = trim($_GET['rechercheUser-admin']);
+            $users = $userManager->searchUser($keywordUser);
+        } else {
+            $users = $userManager->findAll();
+        }
 
-        // return $this->render('home/home.html.twig', [
-            "groups" => $myGroups            
-    ]);
+        // ! Récupération des balades
+        $rideManager = new RideManager();
+        $rides = [];
+        $keyword = '';
+        if (isset($_GET['recherche-balade_admin']) && !empty(trim($_GET['recherche-balade_admin']))) {
+            $keyword = trim($_GET['recherche-balade_admin']);
+            $rides = $rideManager->searchRides($keyword);
+        } else {
+            $rides = $rideManager->findAll();
+        }
+
+        // ! Statistiques pour le Dashboard
+        // Données réelles
+        $activeRidesCount = count($rides); 
+        $totalUsersCount = count($users);
+        
+        $usersLastMonth = 15; 
+        $ridesLastMonth = 8; 
+        $pendingReports = 4; 
+
+        $this->render('admin/admin', [
+            'users' => $users,
+            'rides' => $rides,
+            'keywordUser' => $keywordUser,
+            'keywordRide' => $keyword,
+            'stats' => [
+                'active_rides' => $activeRidesCount,
+                'total_users' => $totalUsersCount,
+                'users_last_month' => $usersLastMonth,
+                'rides_last_month' => $ridesLastMonth,
+                'pending_reports' => $pendingReports
+            ]
+        ]);
     }
 }

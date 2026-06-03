@@ -48,16 +48,26 @@
                 </div>
 
                 <div class="timeline-inputs">
-                    <div class="input-group" style="position: relative;">
+                    <div class="input-group autocomplete-container" style="position: relative;">
                         <label for="start_location" class="start-label"><i class="fa-solid fa-location-dot"></i> Départ</label>
                         <input type="text" name="start_location" id="start_location" placeholder="Ville de départ" autocomplete="off" required>
+                        
+                        <ul id="start_results" class="autocomplete-results"></ul>
+                        
+                        <input type="hidden" name="start_latitude" id="start_latitude">
+                        <input type="hidden" name="start_longitude" id="start_longitude">
                     </div>
                     
                     <div class="connector-line"></div>
                     
-                    <div class="input-group" style="position: relative;">
+                    <div class="input-group autocomplete-container" style="position: relative;">
                         <label for="end_location" class="end-label"><i class="fa-solid fa-flag-checkered"></i> Arrivée</label>
                         <input type="text" name="end_location" id="end_location" placeholder="Ville d'arrivée" autocomplete="off" required>
+                        
+                        <ul id="end_results" class="autocomplete-results"></ul>
+                        
+                        <input type="hidden" name="end_latitude" id="end_latitude">
+                        <input type="hidden" name="end_longitude" id="end_longitude">
                     </div>
                 </div>
 
@@ -79,7 +89,6 @@
                 <button type="submit" class="submit-btn">
                     Créer la balade <i class="fa-solid fa-motorcycle"></i>
                 </button>
-
             </form>
         </section>
     </main>

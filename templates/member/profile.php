@@ -5,17 +5,76 @@
     <div id="div-all">
 
         <div id="profil">
-            <a href="#">
+            <?php
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+            $domain = $_SERVER['HTTP_HOST'];
+            $publicProfileUrl = $protocol . "://" . $domain . "/index.php?route=user_profile&id=" . $_SESSION['id'];
+            ?>
+            <a href="#" id="btn-share-profile" data-url="<?= $publicProfileUrl ?>" data-title="Découvre le profil de <?= $_SESSION['pseudo'] ?> sur RideTeam !">
+                <i class="fa-solid fa-share"></i>
+            </a>
+            <a href="#" id="btn-settings">
                 <i class="fa-solid fa-gear"></i>
             </a>
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'ADMIN'): ?>
+                <a href="index.php?route=admin" id="btn-admin">
+                    <i class="fa-solid fa-user-shield"></i>
+                </a>
+            <?php endif; ?>
             <img src="<?= $_SESSION['avatar']?>" alt="">
             <h2><?= $_SESSION['pseudo']?></h2>
-            <button>Partager mon profil</button>
+            <div class="social-stats">
+                <div class="stat">
+                    <strong><?= $followersCount ?></strong> Abonnés
+                </div>
+                <div class="stat">
+                    <strong><?= $followedsCount ?></strong> Abonnements
+                </div>
+            </div>
         </div>
         
         <div id="display-garages">
             <h2>Mon garage</h2>
-            <div id="bikes-container"></div>
+            <div id="bikes-container">
+                <?php
+                if (!isset($garage)): ?>
+                    <p class="error-message" style="color: red; text-align: center;">
+                        <i class="fa-solid fa-circle-exclamation"></i> Erreur technique : Impossible d'accéder au garage.
+                    </p>
+
+                <?php
+                elseif (empty($garage)): ?>
+                    <p class="no-bikes" style="color: var(--text-grey); text-align: center; padding: 20px; font-style: italic;">
+                        Aucune moto dans votre garage pour le moment...
+                    </p>
+
+                <?php
+                else: ?>
+                    <?php foreach ($garage as $bike): ?>
+                        <?php 
+                        if (!$bike instanceof Bike) {
+                            echo '';
+                            continue;
+                            }
+
+                        $bikeUrl = $bike->getUrl();
+                        $imageSrc = !empty($bikeUrl) ? htmlspecialchars($bikeUrl) : 'assets/img/default-bike.avif';
+                        ?>
+
+                        <div class="bike-card">
+                            <img class="bike-img" src="<?= $imageSrc ?>" alt="Photo de <?= htmlspecialchars($bike->getMarque()) ?>">
+                            
+                            <i class="fa-solid fa-trash-can" title="Supprimer cette moto"></i>
+                            <i class="fa-solid fa-gear" title="Modifier cette moto"></i>
+                            
+                            <p class="bike-marque"><?= htmlspecialchars($bike->getMarque()) ?></p>
+                            <p class="bike-modele"><?= htmlspecialchars($bike->getModele()) ?></p>
+                            <p class="bike-annee"><?= htmlspecialchars($bike->getAnnee()) ?></p>
+                        </div>
+
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
             <button id="button-add-bike">Ajouter une moto</button>
         </div>
 

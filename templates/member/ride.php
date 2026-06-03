@@ -6,7 +6,7 @@
     <?php if (isset($ride) && $ride !== null): ?>
         
         <div class="ride-cover">
-            <a href="index.php?route=home" class="btn-back-overlay">
+            <a href="javascript:history.back()" class="btn-back-overlay">
                 <i class="fa-solid fa-chevron-left"></i>
             </a>
             <img src="https://picsum.photos/600/300?random=<?= $ride->getId() ?>" alt="Couverture de la balade" class="cover-img">
@@ -24,7 +24,7 @@
                 <span class="badge <?= $badgeClass ?>"><?= $badgeText ?></span>
             </div>
             
-            <p class="author">Par Utilisateur ID: <?= htmlspecialchars($ride->getOrganizer_id()) ?></p>
+            <p class="author"><?= htmlspecialchars($ride->getOrganizer_pseudo()) ?></p>
 
                 <div class="info-row">
                     <i class="fa-regular fa-calendar"></i>
@@ -49,10 +49,14 @@
                 <?php if (!empty($participations)): ?>
                     <ul class="participants-list">
                         <?php foreach ($participations as $participation): ?>
-                            <li>
-                                <img src="assets/img/default-avatar.jpg" alt="Avatar" class="participant-avatar">
-                                <span class="participant-name">Utilisateur #<?= htmlspecialchars($participation->getUser_id()) ?></span>
-                            </li>
+                            
+                                <a href="index.php?route=user_profile&id=<?= $participation->getUser_id() ?>">
+                                    <li>
+                                        <img src="assets/img/default-avatar.jpg" alt="Avatar" class="participant-avatar">
+                                        <span class="participant-name"><?= htmlspecialchars($participation->getUser_pseudo() ?? '') ?></span>
+                                    </li>
+                                </a> 
+                            
                         <?php endforeach; ?>
                     </ul>
                 <?php else: ?>
@@ -60,7 +64,7 @@
                 <?php endif; ?>
             </div>
 
-            <button class="btn-join">Rejoindre la balade</button>
+            <a href="index.php?route=join_ride&id=<?= $ride->getId() ?>" class="btn btn-join">Rejoindre la balade</a>
 
         </div>
 

@@ -1,66 +1,42 @@
-// ! Affichage du garage
-const bikeContainer = document.getElementById("bikes-container");
+//! gestion du btn d'envoie de profil
+const shareProfileBtn = document.getElementById("btn-share-profile");
 
-// 1. On appelle notre route PHP (le livreur)
-fetch("index.php?route=api_bikes")
-  .then((response) => response.json()) // 2. On traduit la réponse texte en Objet JS
-  .then((data) => {
-    // 3. On vide le message "Chargement..."
-    bikeContainer.innerHTML = "";
+if (shareProfileBtn) {
+  shareProfileBtn.addEventListener("click", async (e) => {
+    e.preventDefault(); // Empêche la page de remonter tout en haut (comportement par défaut du "#")
 
-    if (data.length === 0) {
-      bikeContainer.textContent =
-        "Aucune moto dans votre garage pour le moment...";
-      return;
+    // On récupère les infos stockées dans le HTML
+    const shareUrl = shareProfileBtn.getAttribute("data-url");
+    const shareTitle = shareProfileBtn.getAttribute("data-title");
+
+    // On vérifie si l'appareil supporte le partage natif (smartphone, OS récent)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "RideTeam",
+          text: shareTitle,
+          url: shareUrl,
+        });
+        console.log("Profil partagé avec succès !");
+      } catch (err) {
+        // L'utilisateur a probablement annulé le partage, on l'ignore silencieusement.
+        console.log("Partage annulé ou échoué :", err);
+      }
+    } else {
+      // PLAN B : Si le partage natif n'est pas dispo (ex: vieux navigateur PC)
+      // On copie directement le lien dans le presse-papier
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Le lien de ton profil a été copié dans le presse-papier !");
+      } catch (err) {
+        console.error("Erreur lors de la copie :", err);
+        alert("Impossible de copier le lien automatiquement.");
+      }
     }
-
-    data.forEach((bike) => {
-      const cardBike = document.createElement("div");
-      cardBike.classList.add("bike-card");
-
-      const imageElement = document.createElement("img"); // ! <i class="fa-solid fa-trash-can"></i>    <i class="fa-solid fa-gear"></i>
-
-      imageElement.src = bike.url ? bike.url : "assets/img/default-bike.avif";
-
-      imageElement.alt = `Photo de ${bike.marque}`;
-      imageElement.classList.add("bike-img");
-      cardBike.appendChild(imageElement);
-      // -----------------------------------
-
-      const trash = document.createElement("i");
-      trash.classList.add("fa-solid", "fa-trash-can");
-
-      const setting = document.createElement("i");
-      setting.classList.add("fa-solid", "fa-gear");
-
-      const marque = document.createElement("p");
-      marque.classList.add("bike-marque");
-
-      const modele = document.createElement("p");
-      modele.classList.add("bike-modele");
-
-      const annee = document.createElement("p");
-      annee.classList.add("bike-annee");
-
-      marque.textContent = `Marque : ${bike.marque}`;
-      modele.textContent = `Modèle : ${bike.modele}`;
-      annee.textContent = `Année : ${bike.annee}`;
-
-      cardBike.appendChild(trash);
-      cardBike.appendChild(setting);
-      cardBike.appendChild(marque);
-      cardBike.appendChild(modele);
-      cardBike.appendChild(annee);
-
-      bikeContainer.appendChild(cardBike);
-    });
-  })
-  .catch((error) => {
-    console.error("Erreur de récupération :", error);
-    bikeContainer.textContent = "Erreur lors du chargement.";
   });
+}
 
-// On sélectionne tous les boutons d'onglets
+//! gestion des balades futures ou passées
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabPanels = document.querySelectorAll(".tab-panel");
 

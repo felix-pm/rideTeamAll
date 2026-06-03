@@ -10,36 +10,36 @@ class UserController extends AbstractController
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($_POST['pseudo'], $_POST['email'])){
                     $manager = new UserManager();
-                    // On récupère l'utilisateur actuel pour avoir son ID et ses infos actuelles
                     $user = $manager->findById($_SESSION['id']); 
                     
                     if ($user) {
-                        // On met à jour l'objet avec les données du formulaire
                         $user->setPseudo($_POST['pseudo']);
                         $user->setEmail($_POST['email']);
                         
-                        // Gestion simple du mot de passe (à améliorer avec hashage et vérification confirmPassword)
                         if (!empty($_POST['password'])) {
                             $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
                         }
 
-                        // On sauvegarde en base
                         $manager->update($user);
 
-                        // On met à jour la session pour que l'affichage change tout de suite
                         $_SESSION['pseudo'] = $user->getPseudo();
                         $_SESSION['email'] = $user->getEmail();
                     }
                 }
             }
 
-            if($_SESSION["role"] === "ADMIN")
+            $followManager = new FollowManager();
+            $followersCount = $followManager->countFollowers($_SESSION['id']);
+            $followedsCount = $followManager->countFolloweds($_SESSION['id']);
+
+            $bikeManager = new BikeManager();
+            $garage = $bikeManager->findAllBikeByUserId($_SESSION['id']);
             {
-                $this->redirect('index.php?route=list_admin');
-            }
-            else
-            {
-                $this->render('member/profile', []);
+                $this->render('member/profile', [
+                    "followersCount" => $followersCount,
+                    "followedsCount" => $followedsCount, 
+                    "garage" => $garage
+                ]);
             }
         }
         else
@@ -48,29 +48,56 @@ class UserController extends AbstractController
         }
     }
 
-    public function profilOther() {} // ! faire une fonction pour voir le profil des autres utilisateurs
-
     // ! à voir si je la garde (ou si je change le nom)
-    public function home()
-    {
-        // if (!isset($_SESSION['id'])) {
-        //     $this->redirect('index.php?route=login');
-        // }
 
+    public function home() {
         $userId = $_SESSION['id'] ?? null;
+        $rideManager = new RideManager();
+        $rides = [];
+        $keyword = '';
 
-        $manager = new RideManager();
+        if (isset($_GET['recherche']) && !empty(trim($_GET['recherche']))) {
+            $keyword = trim($_GET['recherche']);
+            $rides = $rideManager->searchRides($keyword);
+        } else {
+            $rides = $rideManager->findAll();
+        }
 
-        $rides = $manager->findAll(); 
+        $user_id = $_SESSION['id'];
+        $ridesFollowed = $rideManager->ridesFollowed($user_id);
 
-        return $this->render('member/home', [
-            "rides" => $rides
+        $participationManager = new ParticipationManager();
+        $participations = [];
+
+        foreach ($rides as $ride) {
+            $participations[$ride->getId()] = $participationManager->findParticipantsByRideId($ride->getId());
+        }
+
+        $this->render('member/home', [
+            'rides' => $rides,
+            'keyword' => $keyword,
+            'participations' => $participations,
+            'ridesFollowed' => $ridesFollowed
         ]);
     }
 
-    public function follow(): void
-    {
-        $this->render('member/follow', []);
+    public function searchUser() {
+        $userId = $_SESSION['id'] ?? null;
+        $userManager = new UserManager();
+        $users = [];
+        $keywordUser = '';
+
+        if (isset($_GET['rechercheUser']) && !empty(trim($_GET['rechercheUser']))) {
+            $keywordUser = trim($_GET['rechercheUser']);
+            $users = $userManager->searchUser($keywordUser);
+        } else {
+            $users = $userManager->findAll();
+        }
+
+        $this->render('member/search', [
+            'users' => $users,
+            'keywordUser' => $keywordUser
+        ]);
     }
 
     public function map(): void
@@ -88,11 +115,59 @@ class UserController extends AbstractController
             ];
         }
 
-        // 3. Envoyer ce tableau à la vue sous le nom "rides"
         $this->render('member/map', ['rides' => $ridesArray]);
+    }
+
+    public function showProfile($id){
+        $userManager = new UserManager();
+        $user = $userManager->findById($id);
+
+        if (!$user) {
+            $this->redirect('index.php?route=home');
+            exit;
+        }
+
+        $isFollowing = false;
+        $bikeManager = new BikeManager();
+        $garage = $bikeManager->findAllBikeByUserId($id); 
+
+        $followManager = new FollowManager();
+        $followersCount = $followManager->countFollowers($id);
+        $followedsCount = $followManager->countFolloweds($id);
+        $following = $followManager->isFollowing($_SESSION['id'], $user->getId());
+
+        return $this->render('member/public_profile', [
+            "user" => $user,
+            "garage" => $garage,
+            "followersCount" => $followersCount,
+            "followedsCount" => $followedsCount,
+            "following" => $following
+        ]);
+    }
+
+    public function follow($followed_id){
+        $follower_id = $_SESSION['id']; 
+
+        $followManager = new FollowManager();
+        $followManager->follow($follower_id, $followed_id);
+
+        $this->redirect('index.php?route=user_profile&id=' . $followed_id);
+    }
+
+    public function unfollow($followed_id){
+        $follower_id = $_SESSION['id']; 
+
+        $followManager = new FollowManager();
+        $followManager->unfollow($follower_id, $followed_id);
+
+        $this->redirect('index.php?route=user_profile&id=' . $followed_id);
     }
 
     public function create_way() :void{
         $this->render('member/create_way', []);
+    }
+
+    public function test(){
+        $this->redirect('index.php?route=admin');
     }
 }

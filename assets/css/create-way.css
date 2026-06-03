@@ -30,7 +30,7 @@ header.app-header {
   top: 0 !important;
   bottom: auto !important;
   z-index: 10;
-  border-bottom: 1px solid #2a2a2a;
+  /* border-bottom: 1px solid #2a2a2a; */
 }
 
 .app-header h1 {
@@ -48,7 +48,7 @@ header.app-header {
 }
 
 .form-wrapper {
-  padding: 20px 15px;
+  padding: 20px 15px 100px 15px;
 }
 
 /* =========================================
@@ -273,4 +273,41 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   .app-header .header-content {
     text-align: center;
   }
+}
+
+/* Style pour le conteneur de la liste déroulante */
+.autocomplete-results {
+  position: absolute;
+  top: 100%; /* Se place juste en dessous de l'input */
+  left: 0;
+  right: 0;
+  background-color: #2a2a2a; /* Adapte la couleur à ton thème sombre */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000; /* Passe par-dessus les autres éléments */
+  margin: 5px 0 0 0;
+  padding: 0;
+  list-style: none; /* Enlève les puces des li */
+}
+
+/* Style pour chaque proposition (les fameux li) */
+.autocomplete-results li {
+  padding: 12px 15px;
+  cursor: pointer;
+  color: #fff; /* Couleur du texte */
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+/* Au survol d'une proposition */
+.autocomplete-results li:hover {
+  background-color: #444; /* Légère surbrillance */
+}
+
+/* On enlève la bordure du dernier élément */
+.autocomplete-results li:last-child {
+  border-bottom: none;
 }

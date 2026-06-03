@@ -25,30 +25,42 @@ class Router
                 $uc = new UserController();
                 $uc->map();
             }
-            else if($_GET['route'] === 'follow') {
+            else if($_GET['route'] === 'follow' && isset($_GET['id'])) {
                 $uc = new UserController();
-                $uc->follow();
+                $uc->follow($_GET['id']);
+            }
+            else if($_GET['route'] === 'unfollow' && isset($_GET['id'])) {
+                $uc = new UserController();
+                $uc->unfollow($_GET['id']);
+            }
+            else if($_GET['route'] === 'search') {
+                $uc = new UserController();
+                $uc->searchUser();
             }
             else if($_GET['route'] === 'home') {
                 $uc = new UserController();
                 $uc->home();
             }
+            else if($_GET['route'] === 'admin') {
+                $uc = new AdminController();
+                $uc->admin();
+            }
             else if($_GET['route'] === 'ride' && isset($_GET['id'])) {
                 $rc = new RideController();
                 $rc->show($_GET['id']); 
+            }
+            else if($_GET['route'] === 'join_ride' && isset($_GET['id'])) {
+                $rc = new RideController();
+                $rc->joinRide($_GET['id']); 
+            }
+            else if($_GET['route'] === 'user_profile' && isset($_GET['id'])) {
+                $uc = new UserController();
+                $uc->showProfile($_GET['id']);
             }
             else if($_GET['route'] === 'create_way') {
                 $rc = new RideController();
                 $rc->addRide();
             }
-            else if($_GET['route'] === 'api_rides') {
-                $rc = new RideController();
-                $rc->api_list();
-            }
-            else if($_GET['route'] === 'api_bikes') {
-                $bc = new BikeController();
-                $bc->api_bike();
-            } 
             else if ($_GET['route'] === 'add_bike') {
                 $bc = new BikeController();
                 $bc->addBike();

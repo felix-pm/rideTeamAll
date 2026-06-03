@@ -13,6 +13,8 @@
    BASE (MOBILE FIRST)
    ========================================= */
 body {
+  box-sizing: border-box;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   background-color: var(--bg-dark);
@@ -42,11 +44,28 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Icône des paramètres (engrenage) */
-#profil a {
+#btn-share-profile {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: var(--text-grey);
+  font-size: 1.4rem;
+  transition: color 0.3s;
+}
+
+#btn-settings {
   position: absolute;
   top: 15px;
   right: 15px;
+  color: var(--text-grey);
+  font-size: 1.4rem;
+  transition: color 0.3s;
+}
+
+#btn-admin {
+  position: absolute;
+  top: 15px;
+  right: 60px;
   color: var(--text-grey);
   font-size: 1.4rem;
   transition: color 0.3s;
@@ -109,6 +128,19 @@ body {
 
 /* Cache la barre de scroll sur Chrome/Safari pour un effet "app native" */
 #bikes-container::-webkit-scrollbar {
+  display: none;
+}
+
+#public-bikes-container {
+  display: flex;
+  overflow-x: auto; /* Permet le scroll horizontal */
+  scroll-snap-type: x mandatory;
+  gap: 15px;
+  padding-bottom: 15px; /* Laisse de la place pour la barre de scroll */
+}
+
+/* Cache la barre de scroll sur Chrome/Safari pour un effet "app native" */
+#public-bikes-container::-webkit-scrollbar {
   display: none;
 }
 
@@ -261,9 +293,6 @@ input[type="file"] {
   gap: 10px;
 }
 
-/* =========================================
-   ONGLETS (À VENIR / PASSÉES)
-   ========================================= */
 .tabs-container {
   margin-top: 40px;
 }
@@ -292,20 +321,17 @@ input[type="file"] {
 }
 
 .tab-panel {
-  display: none; /* Caché par défaut */
+  display: none;
   padding: 20px 0;
   color: var(--text-grey);
   text-align: center;
 }
 
 .tab-panel.active {
-  display: block; /* Affiché si actif */
+  display: block;
   animation: fadeIn 0.4s ease;
 }
 
-/* =========================================
-   DÉCONNEXION
-   ========================================= */
 #btn-logout {
   margin-top: 50px;
   text-align: center;
@@ -330,4 +356,61 @@ input[type="file"] {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.social-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.social-stats .stat {
+  font-size: 0.9rem;
+  color: var(--text-grey);
+}
+
+.social-stats .stat strong {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--text-white);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+#profil .btn-follow,
+#profil .btn-unfollow {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 25px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--accent-orange);
+}
+
+#profil .btn-follow {
+  background-color: transparent;
+  color: var(--accent-orange);
+}
+
+#profil .btn-follow:hover,
+#profil .btn-follow:active {
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+}
+
+#profil .btn-unfollow {
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+}
+
+#profil .btn-unfollow:hover,
+#profil .btn-unfollow:active {
+  background-color: transparent;
+  color: var(--accent-orange);
 }

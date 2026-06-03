@@ -4,7 +4,7 @@
     <nav>
         <div class="flex">
             <a href="index.php?route=home">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <i class="fa-solid fa-house"></i>
                 Découvrir
             </a>
         </div>
@@ -19,9 +19,9 @@
             <p>Créer</p>
         </div>
         <div class="flex">
-            <a href="index.php?route=follow">
-                <i class="fa-regular fa-user"></i>
-                Abonnés
+            <a href="index.php?route=search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Rechercher
             </a>
         </div>
         
@@ -31,7 +31,10 @@
                 Profil
             </a>
             <?php else: ?>
-            <a href="index.php?route=login">Connexion</a>
+            <a href="index.php?route=login">
+                <img src="./assets/img/default-avatar.jpg" alt="">
+                Connexion
+            </a>
         <?php endif; ?>
     </nav>
 </header>

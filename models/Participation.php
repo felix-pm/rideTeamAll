@@ -3,7 +3,7 @@
 class Participation
 {
 
-    public function __construct(private int $ride_id, private int $user_id, private string $created_at)
+    public function __construct(private int $ride_id, private int $user_id, private string $created_at, private ?string $user_pseudo = null)
     {
 
     }  
@@ -42,6 +42,19 @@ class Participation
     public function setCreated_at($created_at)
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+
+    public function getUser_pseudo()
+    {
+        return $this->user_pseudo;
+    }
+
+    public function setUser_pseudo($user_pseudo)
+    {
+        $this->user_pseudo = $user_pseudo;
 
         return $this;
     }

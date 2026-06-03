@@ -5,6 +5,13 @@ class RideController extends AbstractController
     public function addRide() {
         $errors = [];
 
+        if (!isset($_SESSION['id'])) {
+            $this->redirect('index.php?route=login');
+            exit;
+        }
+
+        $errors = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             if (empty($_POST["title"]) || empty($_POST["description"]) || empty($_POST["start_hour"]) || empty($_POST["start_date"]) || empty($_POST["start_location"]) || empty($_POST["end_location"]) || empty($_POST["difficulty_level"]) || empty($_POST["max_participants"]))
             {
@@ -56,30 +63,18 @@ class RideController extends AbstractController
         ]);
     }
 
-
-    public function api_list()
-    {
-        $manager = new RideManager();
-        $ridesObjects = $manager->findAll(); 
-
-        $ridesArray = [];
-        foreach($ridesObjects as $ride) {
-            $ridesArray[] = [
-                'id' => $ride->getId(),
-                'title' => $ride->getTitle(),
-                'description' => $ride->getDescription(),
-                'startHour' => $ride->getStart_hour(),
-                'date' => $ride->getStart_date(),
-                'startLocation' => $ride->getStart_location(),
-                'endLocation' => $ride->getEnd_location(),
-                'difficultyLevel' => $ride->getDifficulty_level(),
-                'getMaxParticipants' => $ride->getMax_participants(),
-                'getOrganizerId' => $ride->getOrganizer_id()
-            ];
+    public function joinRide($id){
+        if (!isset($_SESSION['id'])) {
+            $this->redirect('index.php?route=login');
+            exit;
         }
 
-        header('Content-Type: application/json');
-        echo json_encode($ridesArray);
+        $user_id = $_SESSION['id'];
+        $participationManager = new ParticipationManager();
+
+        $participationManager->addParticipation($id, $user_id);
+
+        $this->redirect('index.php?route=ride&id=' . $id);
         exit;
-    }
+}
 }

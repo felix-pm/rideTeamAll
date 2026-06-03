@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../Partials/head.php'; ?>
+
 <section id="section-register">
   <div class="auth-container">
     <h1>Inscription</h1>
