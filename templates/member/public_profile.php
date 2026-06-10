@@ -8,7 +8,7 @@
             <a href="javascript:history.back()" class="btn-back-overlay">
                 <i class="fa-solid fa-chevron-left"></i>
             </a>
-            <img src="assets/img/default-avatar.jpg" alt="Avatar">
+            <img src="<?= htmlspecialchars($user->getAvatar() ?? 'assets/img/default-avatar.jpg') ?>" alt="Avatar de <?= htmlspecialchars($user->getPseudo()) ?>">
             
             <h2><?= htmlspecialchars($user->getPseudo()) ?></h2>
 
@@ -23,9 +23,9 @@
 
             <?php if (isset($_SESSION['id']) && $_SESSION['id'] != $user->getId()): ?>
                 <?php if ($following): ?>
-                    <a class="btn-unfollow" href="index.php?route=unfollow&id=<?= $user->getId() ?>">Se désabonner</a>
+                    <a class="btn-follow" href="index.php?route=unfollow&id=<?= $user->getId() ?>">Se désabonner</a>
                 <?php else: ?>
-                    <a class="btn-follow" href="index.php?route=follow&id=<?= $user->getId() ?>">S'abonner</a>
+                    <a class="btn-unfollow" href="index.php?route=follow&id=<?= $user->getId() ?>">S'abonner</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

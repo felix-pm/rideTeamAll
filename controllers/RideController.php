@@ -5,6 +5,8 @@ class RideController extends AbstractController
     public function addRide() {
         $errors = [];
 
+        $user_id = ($_SESSION['id']);
+
         if (!isset($_SESSION['id'])) {
             $this->redirect('index.php?route=login');
             exit;
@@ -37,7 +39,7 @@ class RideController extends AbstractController
                     organizer_id: $_SESSION['id']
                 );
 
-                $manager->createRide($rideToCreate);
+                $manager->createRide($rideToCreate, $user_id);
                 $this->redirect('index.php?route=home');
                 exit;
             }
@@ -54,12 +56,17 @@ class RideController extends AbstractController
             exit;
         }
 
+        $isParticipating = false;
+        $participating = $rideManager->isParticipating($_SESSION['id'], $ride->getId());
+
+
         $participationManager = new ParticipationManager();
         $participations = $participationManager->findParticipantsByRideId($id);
 
         return $this->render('member/ride', [
             "ride" => $ride,
-            "participations" => $participations 
+            "participations" => $participations,
+            "participating" => $participating
         ]);
     }
 
@@ -70,11 +77,38 @@ class RideController extends AbstractController
         }
 
         $user_id = $_SESSION['id'];
-        $participationManager = new ParticipationManager();
+        
+        $rideManager = new RideManager();
+        $ride = $rideManager->findOne($id);
 
-        $participationManager->addParticipation($id, $user_id);
+        if (!$ride) {
+            $this->redirect('index.php?route=home');
+            exit;
+        }
+
+        $participationManager = new ParticipationManager();
+        $participations = $participationManager->findParticipantsByRideId($id);
+
+        if (count($participations) < $ride->getMax_participants()) {
+            $participationManager->addParticipation($id, $user_id);
+        }
 
         $this->redirect('index.php?route=ride&id=' . $id);
         exit;
-}
+    }
+
+    public function unjoinRide($id){
+        if (!isset($_SESSION['id'])) {
+            $this->redirect('index.php?route=login');
+            exit;
+        }
+
+        $user_id = $_SESSION['id'];
+        $participationManager = new ParticipationManager();
+
+        $participationManager->deleteParticipation($id, $user_id);
+
+        $this->redirect('index.php?route=ride&id=' . $id);
+        exit;
+    } 
 }

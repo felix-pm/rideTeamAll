@@ -13,15 +13,21 @@
             <a href="#" id="btn-share-profile" data-url="<?= $publicProfileUrl ?>" data-title="Découvre le profil de <?= $_SESSION['pseudo'] ?> sur RideTeam !">
                 <i class="fa-solid fa-share"></i>
             </a>
-            <a href="#" id="btn-settings">
-                <i class="fa-solid fa-gear"></i>
-            </a>
+            <a id="open-settings-btn" class="btn-settings"><i class="fa-solid fa-gear"></i></a>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'ADMIN'): ?>
                 <a href="index.php?route=admin" id="btn-admin">
                     <i class="fa-solid fa-user-shield"></i>
                 </a>
             <?php endif; ?>
-            <img src="<?= $_SESSION['avatar']?>" alt="">
+            <form action="index.php?route=profile" method="POST" enctype="multipart/form-data" id="form-avatar">
+                <div class="avatar-wrapper">
+                    <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Avatar">
+                    <label for="avatar-input" class="edit-avatar-btn">
+                        <i class="fa-solid fa-plus"></i>
+                    </label>
+                    <input type="file" id="avatar-input" name="new_avatar" accept="image/*" style="display: none;" onchange="this.form.submit()">
+                </div>
+            </form>
             <h2><?= $_SESSION['pseudo']?></h2>
             <div class="social-stats">
                 <div class="stat">
@@ -108,10 +114,169 @@
 
             <div class="tabs-content">
                 <div id="tab-avenir" class="tab-panel active">
-                    <p>Vos événements à venir s'afficheront ici.</p>
+                    <section class="rides-wrapper">
+                        <div id="rides-container">
+                            <?php if (empty($futuresBalades)): ?>
+                                <p style="text-align: center; color: var(--text-grey); padding: 20px; margin-top: 50%;">Aucune balade pour le moment.</p>
+                            <?php else: ?>
+                                <?php foreach ($futuresBalades as $index => $ride): ?>
+                                    <?php
+                                    $diffValue = $ride->getDifficulty_level();
+                                    $badgeText = "Inconnu";
+                                    $diffClass = "badge-medium";
+
+                                    if (is_numeric($diffValue)) {
+                                        $intDiff = (int)$diffValue;
+                                        if ($intDiff === 1) {
+                                            $badgeText = "Facile";
+                                            $diffClass = "badge-easy";
+                                        } elseif ($intDiff === 2) {
+                                            $badgeText = "Moyen";
+                                            $diffClass = "badge-medium";
+                                        } elseif ($intDiff >= 3) {
+                                            $badgeText = "Difficile";
+                                            $diffClass = "badge-hard";
+                                        }
+                                    }
+
+                                    $dateValue = $ride->getStart_date();
+                                    $dateBdd = new DateTime($dateValue);
+                                    
+                                    $dateFormatter = new IntlDateFormatter(
+                                        'fr_FR', 
+                                        IntlDateFormatter::LONG, 
+                                        IntlDateFormatter::NONE
+                                    );
+                                    $dateFinal = $dateFormatter->format($dateBdd);
+                                    ?>
+
+                                    <a class="ride-card" href="index.php?route=ride&id=<?= htmlspecialchars($ride->getId()) ?>">
+                                        <div class="card-image-wrapper">
+                                            <img class="card-img" src="https://picsum.photos/400/200?random=<?= $index ?>" alt="Image de la balade">
+                                            <span class="badge <?= $diffClass ?>"><?= htmlspecialchars($badgeText) ?></span>
+                                        </div>
+                                        
+                                        <div class="card-content">
+                                            <h3><?= htmlspecialchars($ride->getTitle()) ?></h3>
+                                            
+                                            <p class="author"><?= htmlspecialchars($ride->getOrganizer_pseudo()) ?></p>
+                                            
+                                            <div class="info-row">
+                                                <i class="fa-regular fa-calendar"></i> 
+                                                <span><?= $dateFinal ?> à <?= htmlspecialchars(substr($ride->getStart_hour(), 0, 5)) ?></span>
+                                            </div>
+                                            
+                                            <div class="info-row">
+                                                <i class="fa-solid fa-location-dot"></i> 
+                                                <span><?= htmlspecialchars($ride->getStart_location()) ?></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </section>
                 </div>
                 <div id="tab-passees" class="tab-panel">
-                    <p>L'historique de vos événements passés.</p>
+                    <section class="rides-wrapper">
+                        <div id="rides-container">
+                            <?php if (empty($pastBalades)): ?>
+                                <p style="text-align: center; color: var(--text-grey); padding: 20px; margin-top: 50%;">Aucune balade pour le moment.</p>
+                            <?php else: ?>
+                                <?php foreach ($pastBalades as $index => $ride): ?>
+                                    <?php
+                                    $diffValue = $ride->getDifficulty_level();
+                                    $badgeText = "Inconnu";
+                                    $diffClass = "badge-medium";
+
+                                    if (is_numeric($diffValue)) {
+                                        $intDiff = (int)$diffValue;
+                                        if ($intDiff === 1) {
+                                            $badgeText = "Facile";
+                                            $diffClass = "badge-easy";
+                                        } elseif ($intDiff === 2) {
+                                            $badgeText = "Moyen";
+                                            $diffClass = "badge-medium";
+                                        } elseif ($intDiff >= 3) {
+                                            $badgeText = "Difficile";
+                                            $diffClass = "badge-hard";
+                                        }
+                                    }
+
+                                    $dateValue = $ride->getStart_date();
+                                    $dateBdd = new DateTime($dateValue);
+                                    
+                                    $dateFormatter = new IntlDateFormatter(
+                                        'fr_FR', 
+                                        IntlDateFormatter::LONG, 
+                                        IntlDateFormatter::NONE
+                                    );
+                                    $dateFinal = $dateFormatter->format($dateBdd);
+                                    ?>
+
+                                    <a class="ride-card" href="index.php?route=ride&id=<?= htmlspecialchars($ride->getId()) ?>">
+                                        <div class="card-image-wrapper">
+                                            <img class="card-img" src="https://picsum.photos/400/200?random=<?= $index ?>" alt="Image de la balade">
+                                            <span class="badge <?= $diffClass ?>"><?= htmlspecialchars($badgeText) ?></span>
+                                        </div>
+                                        
+                                        <div class="card-content">
+                                            <h3><?= htmlspecialchars($ride->getTitle()) ?></h3>
+                                            
+                                            <p class="author"><?= htmlspecialchars($ride->getOrganizer_pseudo()) ?></p>
+                                            
+                                            <div class="info-row">
+                                                <i class="fa-regular fa-calendar"></i> 
+                                                <span><?= $dateFinal ?> à <?= htmlspecialchars(substr($ride->getStart_hour(), 0, 5)) ?></span>
+                                            </div>
+                                            
+                                            <div class="info-row">
+                                                <i class="fa-solid fa-location-dot"></i> 
+                                                <span><?= htmlspecialchars($ride->getStart_location()) ?></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+        <div id="settings-modal" class="modal" style="display: none;">
+            <div class="modal-content animate-pop">
+                <span id="close-settings-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></span>
+                
+                <div id="display-profil">
+                    <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Avatar" class="modal-avatar">
+                    <h2>Modifier mon profil</h2>
+                    
+                    <form method="post" action="index.php?route=profile" onsubmit="return validatePassword()">
+                        <div class="input-group">
+                            <label for="pseudo"><i class="fa-solid fa-user"></i> Pseudo</label>
+                            <input type="text" name="pseudo" id="pseudo" value="<?= htmlspecialchars($_SESSION['pseudo']) ?>" required />
+                        </div>
+
+                        <div class="input-group">
+                            <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+                            <input type="email" name="email" id="email" value="<?= htmlspecialchars($_SESSION['email']) ?>" required />
+                        </div>
+
+                        <div class="input-group">
+                            <label for="password"><i class="fa-solid fa-lock"></i> Nouveau mot de passe</label>
+                            <input type="password" name="password" id="password" placeholder="Laisser vide si inchangé" />
+                        </div>
+
+                        <div class="input-group">
+                            <label for="confirmPassword"><i class="fa-solid fa-shield-halved"></i> Confirmation</label>
+                            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Laisser vide si inchangé" />
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            Enregistrer les modifications <i class="fa-solid fa-motorcycle"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -128,22 +293,21 @@
 <!-- <input type="file" accept="image/*"> -->
 
 <!-- <div id="display-profil" style="display: none;"> //! a mettre sur la page setting compte
-            <p id="btn-back-profil"><</p>
-            <img src="<?= $_SESSION['avatar']?>" alt="">
-            <h2><?= $_SESSION['pseudo']?></h2>
-            <form method="post" action="index.php?route=profile">
-                <label for="pseudo">Pseudo</label>
-                <input type="text" name="pseudo" id="pseudo" required />
+    <img src="<?= $_SESSION['avatar']?>" alt="">
+    <h2><?= $_SESSION['pseudo']?></h2>
+    <form method="post" action="index.php?route=profile">
+        <label for="pseudo">Pseudo</label>
+        <input type="text" name="pseudo" id="pseudo" required />
 
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" required />
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required />
 
-                <label for="password">Mot de passe</label>
-                <input type="password" name="password" id="password" required />
+        <label for="password">Mot de passe</label>
+        <input type="password" name="password" id="password" required />
 
-                <label for="confirmPassword">Confirmez le mot de passe</label>
-                <input type="password" name="confirmPassword" id="confirmPassword" required />
+        <label for="confirmPassword">Confirmez le mot de passe</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required />
 
-                <button type="submit" style="width: 100%; margin-top: 20px">Enregistrer</button>
-            </form>
-        </div> -->
+        <button type="submit" style="width: 100%; margin-top: 20px">Enregistrer</button>
+    </form>
+</div> -->

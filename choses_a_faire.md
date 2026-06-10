@@ -1,6 +1,6 @@
 ### 🚀 Todo List
 
-- ensuite afficher les noms des personnes qui participent ainsi que leur pdp en faisant une jointure sql
+- afficher les pdp des personnes qui participent
 
 ---
 
@@ -24,14 +24,8 @@
 
 ---
 
-- choix de faire une page spéciale pour chaque balade car cela permet de pouvoir partager le lien d'une balade simplement en copiant collant le lien
-
----
-
 ## Sur la page home :
 
-- mettre des vraies images en photo de profil des balades
-- faire la page abonnés
 - mettre les photos correspondantes aux balades
 
 ---
@@ -39,23 +33,15 @@
 ## Sur la page Ride
 
 - afficher les bonne pdp
-- faire le css du bouton pour rejoindre une balade
 - mettre les photos correspondantes aux balades
 
 ---
 
 ## Sur la page profil
 
-- faire en sorte de pouvoir mettre une pdp
+- faire la page réglage du compte, mettre le bouton de déconnexion dessus
 - faire en sorte de pouvoir modifier le profil _(mdp, pdp, username, etc...)_
 - faire en sorte de voir les balades passées et futures auxquelles ont a participés
-
----
-
-## Sur la page profil_user
-
-- faire en sorte de pouvoir voir la pdp du user
-- faire en sorte de voir les balades organisés apr le user
 
 ---
 

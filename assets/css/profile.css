@@ -53,7 +53,7 @@ body {
   transition: color 0.3s;
 }
 
-#btn-settings {
+.btn-settings i {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -75,6 +75,11 @@ body {
   color: var(--accent-orange);
 }
 
+#profil i:hover {
+  color: var(--accent-orange);
+  cursor: pointer;
+}
+
 /* Avatar */
 #profil img {
   width: 100px;
@@ -86,31 +91,52 @@ body {
   background-color: var(--bg-dark);
 }
 
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 10px auto 15px auto;
+}
+
+.avatar-wrapper img {
+  width: 100px; /* Adapte la taille si besoin */
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--accent-orange);
+}
+
+/* Le bouton rond avec le "plus" */
+.edit-avatar-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #ffffff; /* Fond blanc demandé */
+  color: var(--accent-orange); /* Plus orange */
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Ombre pour le détacher */
+  /* Petite bordure couleur carte pour bien séparer le rond blanc de l'image */
+  border: 3px solid var(--card-bg);
+  transition: transform 0.2s ease;
+  z-index: 2;
+}
+
+.edit-avatar-btn:hover {
+  transform: scale(1.1); /* Petit effet de zoom au survol */
+}
+
 #profil h2 {
   margin: 0 0 15px 0;
   font-size: 1.6rem;
 }
 
-#profil button {
-  background: transparent;
-  border: 1px solid var(--accent-orange);
-  color: var(--accent-orange);
-  padding: 8px 20px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#profil button:active {
-  background: var(--accent-orange);
-  color: var(--text-white);
-}
-
-/* =========================================
-   MON GARAGE (Carrousel horizontal)
-   ========================================= */
 #display-garages h2 {
   font-size: 1.3rem;
   margin-bottom: 15px;
@@ -413,4 +439,152 @@ input[type="file"] {
 #profil .btn-unfollow:active {
   background-color: transparent;
   color: var(--accent-orange);
+}
+
+/* =========================================
+   MODAL COMPTE & PARAMÈTRES (RIDE TEAM THEME)
+   ========================================= */
+.modal {
+  position: fixed;
+  z-index: 2000; /* S'assure de passer au-dessus de la barre de navigation basse */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Arrière-plan bien sombre */
+  backdrop-filter: blur(5px); /* Flou d'arrière-plan classe */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.modal-content {
+  background-color: var(--card-bg); /* Ton fond de carte #1e1e1e */
+  border: 1px solid #2a2a2a;
+  padding: 30px 20px;
+  border-radius: var(--border-radius); /* Coins arrondis à 12px */
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  position: relative;
+  color: var(--text-white);
+}
+
+/* Bouton de fermeture (Croix en haut à droite) */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.2rem;
+  color: var(--text-grey);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: var(--accent-orange); /* Survol orange mécanique */
+}
+
+#display-profil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#display-profil h2 {
+  font-size: 1.4rem;
+  margin-bottom: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.modal-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-orange);
+  margin-bottom: 15px;
+}
+
+#display-profil form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Écartement uniforme de tes champs */
+}
+
+/* Alignement et icônes calqués sur create_way et login */
+#display-profil .input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#display-profil label {
+  font-size: 0.9rem;
+  color: var(--text-grey);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+#display-profil label i {
+  color: var(--accent-orange); /* Icône orange */
+  margin-right: 6px;
+  width: 16px;
+  text-align: center;
+}
+
+#display-profil input {
+  width: 100%;
+  padding: 12px 14px;
+  background-color: var(--input-bg); /* Fond #2a2a2a */
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: var(--text-white);
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+#display-profil input:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  background-color: #333; /* Changement au focus comme tes pages auth */
+}
+
+#display-profil input::placeholder {
+  color: #555;
+  font-size: 0.85rem;
+}
+
+/* Bouton submit RideTeam standardisé */
+#display-profil .submit-btn {
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+#display-profil .submit-btn:hover {
+  background-color: #e04b22;
+}
+
+#display-profil .submit-btn:active {
+  transform: scale(0.98); /* Effet d'enfoncement natif au clic */
 }

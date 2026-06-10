@@ -53,6 +53,10 @@ class Router
                 $rc = new RideController();
                 $rc->joinRide($_GET['id']); 
             }
+            else if($_GET['route'] === 'unjoin_ride' && isset($_GET['id'])) {
+                $rc = new RideController();
+                $rc->unjoinRide($_GET['id']); 
+            }
             else if($_GET['route'] === 'user_profile' && isset($_GET['id'])) {
                 $uc = new UserController();
                 $uc->showProfile($_GET['id']);

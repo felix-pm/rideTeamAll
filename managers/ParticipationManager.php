@@ -26,7 +26,7 @@ class ParticipationManager extends AbstractManager
     }
 
     public function findParticipantsByRideId($ride_id) : array {
-        $query = $this->db->prepare('SELECT users.pseudo, participations.* FROM participations JOIN users ON participations.user_id = users.id WHERE ride_id = :ride_id');
+        $query = $this->db->prepare('SELECT users.pseudo, users.avatar, participations.* FROM participations JOIN users ON participations.user_id = users.id WHERE ride_id = :ride_id');
         $parameters = [
             "ride_id" => $ride_id
         ];
@@ -36,11 +36,11 @@ class ParticipationManager extends AbstractManager
         $participations = [];
 
         foreach ($results as $item) {
-            $participations[] = new Participation($item["ride_id"], $item["user_id"], $item["created_at"], $item["pseudo"]);
+            $participations[] = new Participation($item["ride_id"], $item["user_id"], $item["created_at"], $item["pseudo"], $item["avatar"]);
         }
 
         return $participations;
-}
+    }
 
     public function findOneByUserId(int $user_id) {
         $query = $this->db->prepare('SELECT * FROM participations WHERE user_id = :user_id');
@@ -56,26 +56,6 @@ class ParticipationManager extends AbstractManager
         }
 
         return null;
-    }
-
-    public function createParticipation(Participation $participation, Ride $ride, User $user) {
-            $query = $this->db->prepare("INSERT INTO participations VALUES (:ride_id, :user_id, :created_at)");
-            $parameters = [
-                ':ride_id' => $ride->getRide_id(),
-                ':user_id' => $user->getUser_id(),
-                ':created_at' => $participation->getCreated_at()
-            ];
-
-            // 3. On exécute
-            $query->execute($parameters);
-        }
-
-    public function deleteParticipation() {
-        $query = $this->db->prepare('DELETE FROM participations WHERE ride_id = :ride_id');
-        $parameters = [
-            ':ride_id' => $ride->getRide_id()
-        ];
-        $query->execute($parameters);
     }
 
     // ? pour le créateur de la balade, il peut modifier les participants
@@ -103,6 +83,18 @@ class ParticipationManager extends AbstractManager
         $query->execute($parameters);
 
         return $query->rowCount() > 0;
+    }
+
+    public function deleteParticipation(int $ride_id, int $user_id) {
+        $query = $this->db->prepare('DELETE FROM participations WHERE ride_id = :ride_id AND user_id = :user_id');
+
+        $parameters = [
+            ':ride_id' => $ride_id,
+            "user_id" => $user_id
+            
+        ];
+
+        $query->execute($parameters);
     }
 
 

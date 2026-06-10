@@ -23,7 +23,7 @@
     <div class="container">
         <div class="menu-header">
             <button class="tab-btn-switch active" data-tab="tab-avenir">Découvrir</button>
-            <button class="tab-btn-switch" data-tab="tab-passees">Abonnés</button>
+            <button class="tab-btn-switch" data-tab="tab-passees">Abonné(e)s</button>
         </div>
 
         <div class="tabs-content">

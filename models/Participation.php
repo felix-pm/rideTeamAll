@@ -3,7 +3,7 @@
 class Participation
 {
 
-    public function __construct(private int $ride_id, private int $user_id, private string $created_at, private ?string $user_pseudo = null)
+    public function __construct(private int $ride_id, private int $user_id, private string $created_at, private ?string $user_pseudo = null, private ?string $user_avatar = null)
     {
 
     }  
@@ -55,6 +55,19 @@ class Participation
     public function setUser_pseudo($user_pseudo)
     {
         $this->user_pseudo = $user_pseudo;
+
+        return $this;
+    }
+
+
+    public function getUser_avatar()
+    {
+        return $this->user_avatar;
+    }
+
+    public function setUser_avatar($user_avatar)
+    {
+        $this->user_avatar = $user_avatar;
 
         return $this;
     }

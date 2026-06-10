@@ -6,41 +6,77 @@ class UserController extends AbstractController
     {
         if(isset($_SESSION["id"], $_SESSION["pseudo"], $_SESSION["email"], $_SESSION["role"]))
         {
-            // AJOUT : Gestion du formulaire de modification
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                if (isset($_POST['pseudo'], $_POST['email'])){
-                    $manager = new UserManager();
-                    $user = $manager->findById($_SESSION['id']); 
-                    
-                    if ($user) {
+                $manager = new UserManager();
+                $user = $manager->findById($_SESSION['id']); 
+                
+                if ($user) {
+                    // 1. GESTION DU CHANGEMENT D'INFOS VIA LA MODALE
+                    if (isset($_POST['pseudo'], $_POST['email'])){
                         $user->setPseudo($_POST['pseudo']);
                         $user->setEmail($_POST['email']);
                         
                         if (!empty($_POST['password'])) {
                             $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
                         }
-
-                        $manager->update($user);
-
-                        $_SESSION['pseudo'] = $user->getPseudo();
-                        $_SESSION['email'] = $user->getEmail();
                     }
+
+                    // 2. GESTION DE L'AJOUT / MODIFICATION DE LA PHOTO DE PROFIL (AVATAR)
+                    if (isset($_FILES['new_avatar']) && $_FILES['new_avatar']['error'] === UPLOAD_ERR_OK) {
+                        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                        $fileTmpPath = $_FILES['new_avatar']['tmp_name'];
+                        $fileMimeType = mime_content_type($fileTmpPath);
+                        
+                        if (in_array($fileMimeType, $allowedMimeTypes)) {
+                            $uploadDir = 'assets/img/';
+                            
+                            // Génération d'un nom de fichier unique sécurisé
+                            $extension = pathinfo($_FILES['new_avatar']['name'], PATHINFO_EXTENSION);
+                            $newFileName = uniqid('avatar_') . '.' . $extension;
+                            $destination = $uploadDir . $newFileName;
+                            
+                            if (move_uploaded_file($fileTmpPath, $destination)) {
+                                // Nettoyage de l'ancienne photo sur le serveur (sauf si c'est l'avatar par défaut)
+                                $oldAvatar = $user->getAvatar();
+                                if ($oldAvatar && strpos($oldAvatar, 'default-avatar.jpg') === false && file_exists($oldAvatar)) {
+                                    unlink($oldAvatar);
+                                }
+                                
+                                $user->setAvatar($destination);
+                            }
+                        }
+                    }
+
+                    // Sauvegarde des modifications globales en BDD
+                    $manager->update($user);
+
+                    // Synchronisation immédiate des variables de session pour l'affichage fluide
+                    $_SESSION['pseudo'] = $user->getPseudo();
+                    $_SESSION['email'] = $user->getEmail();
+                    $_SESSION['avatar'] = $user->getAvatar();
                 }
             }
+            
+            $userId = $_SESSION['id'] ?? null;
 
             $followManager = new FollowManager();
-            $followersCount = $followManager->countFollowers($_SESSION['id']);
-            $followedsCount = $followManager->countFolloweds($_SESSION['id']);
+            $followersCount = $followManager->countFollowers($userId);
+            $followedsCount = $followManager->countFolloweds($userId);
 
             $bikeManager = new BikeManager();
-            $garage = $bikeManager->findAllBikeByUserId($_SESSION['id']);
-            {
-                $this->render('member/profile', [
-                    "followersCount" => $followersCount,
-                    "followedsCount" => $followedsCount, 
-                    "garage" => $garage
-                ]);
-            }
+            $garage = $bikeManager->findAllBikeByUserId($userId);
+
+            $rideManager = new RideManager();
+            $pastBalades = $rideManager->findPastParticiaptionsByUserid($userId);
+            $futuresBalades = $rideManager->findFutureParticiaptionsByUserid($userId);
+
+            $this->render('member/profile', [
+                "followersCount" => $followersCount,
+                "followedsCount" => $followedsCount, 
+                "garage" => $garage, 
+                "pastBalades" => $pastBalades,
+                "futuresBalades" => $futuresBalades
+            ]);
         }
         else
         {
@@ -63,8 +99,7 @@ class UserController extends AbstractController
             $rides = $rideManager->findAll();
         }
 
-        $user_id = $_SESSION['id'];
-        $ridesFollowed = $rideManager->ridesFollowed($user_id);
+        $ridesFollowed = $rideManager->ridesFollowed($userId);
 
         $participationManager = new ParticipationManager();
         $participations = [];
@@ -127,11 +162,12 @@ class UserController extends AbstractController
             exit;
         }
 
-        $isFollowing = false;
+        
         $bikeManager = new BikeManager();
         $garage = $bikeManager->findAllBikeByUserId($id); 
 
         $followManager = new FollowManager();
+        $isFollowing = false;
         $followersCount = $followManager->countFollowers($id);
         $followedsCount = $followManager->countFolloweds($id);
         $following = $followManager->isFollowing($_SESSION['id'], $user->getId());

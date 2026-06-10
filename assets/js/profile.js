@@ -72,3 +72,43 @@ if (btnAddBike && formAddBike) {
     displayGarages.style.display = "block"; // Fait réapparaitre le garage
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("settings-modal");
+  const openBtn = document.getElementById("open-settings-btn");
+  const closeBtn = document.getElementById("close-settings-btn");
+
+  // Ouvre la modale proprement au clic sur l'engrenage
+  if (openBtn) {
+    openBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.style.display = "flex"; // Aligné au centre grâce au flexbox
+    });
+  }
+
+  // Fermeture par la croix
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  // Fermeture si on clique n'importe où en dehors de la boîte
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+});
+
+// Validation stricte des mots de passe en JS avant envoi PHP
+function validatePassword() {
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  if (password !== "" && password !== confirmPassword) {
+    alert("Les mots de passe ne correspondent pas !");
+    return false;
+  }
+  return true;
+}

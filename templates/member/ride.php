@@ -52,7 +52,7 @@
                             
                                 <a href="index.php?route=user_profile&id=<?= $participation->getUser_id() ?>">
                                     <li>
-                                        <img src="assets/img/default-avatar.jpg" alt="Avatar" class="participant-avatar">
+                                        <img class="participant-avatar" src="<?= htmlspecialchars($participation->getUser_avatar() ?? 'assets/img/default-avatar.jpg') ?>" alt="Avatar de <?= htmlspecialchars($participation->getUser_pseudo() ?? '') ?>">
                                         <span class="participant-name"><?= htmlspecialchars($participation->getUser_pseudo() ?? '') ?></span>
                                     </li>
                                 </a> 
@@ -64,7 +64,20 @@
                 <?php endif; ?>
             </div>
 
-            <a href="index.php?route=join_ride&id=<?= $ride->getId() ?>" class="btn btn-join">Rejoindre la balade</a>
+            <?php 
+            $maxParticipants = $ride->getMax_participants();
+            $participants = count($participations);
+            ?>
+
+            <?php if (isset($_SESSION['id']) && $_SESSION['id'] != $ride->getOrganizer_id()): ?>
+                <?php if ($participating): ?>
+                    <a class="btn-leave" href="index.php?route=unjoin_ride&id=<?= $ride->getId() ?>">Se désinscrire</a>
+                <?php elseif ($participants < $maxParticipants): ?>
+                    <a class="btn-join" href="index.php?route=join_ride&id=<?= $ride->getId() ?>">Participer</a>
+                <?php else: ?>
+                    <span class="info-complete">Complet</span>
+                <?php endif; ?>
+            <?php endif; ?>
 
         </div>
 

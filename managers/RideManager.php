@@ -124,6 +124,104 @@ class RideManager extends AbstractManager
         return $rides;
     }
 
+    public function findPastParticiaptionsByUserid($user_id){
+        $query = $this->db->prepare('
+        SELECT rides.*, users.pseudo AS organizer_pseudo FROM rides 
+        JOIN participations ON rides.id = participations.ride_id 
+        JOIN users ON rides.organizer_id = users.id 
+        WHERE (start_date < CURDATE() OR (start_date = CURDATE() AND start_hour < CURTIME())) 
+        AND :user_id = participations.user_id
+        ');
+
+        $parameters = [
+            "user_id" => $user_id
+        ];
+
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rides = [];
+
+        foreach($result as $item)
+        {
+            $ride = new Ride(
+                $item["id"], 
+                $item["title"], 
+                $item["description"], 
+                $item["start_hour"], 
+                $item["start_date"], 
+                $item["start_location"], 
+                $item["start_latitude"],  
+                $item["start_longitude"], 
+                $item["end_location"], 
+                $item["end_latitude"],    
+                $item["end_longitude"],   
+                $item["difficulty_level"], 
+                $item["max_participants"], 
+                $item["organizer_id"],
+                $item["organizer_pseudo"]
+            );
+            $rides[] = $ride;
+        }
+
+        return $rides;
+    }
+    
+
+    public function findFutureParticiaptionsByUserid($user_id){
+        $query = $this->db->prepare('
+        SELECT rides.*, users.pseudo AS organizer_pseudo FROM rides 
+        JOIN participations ON rides.id = participations.ride_id 
+        JOIN users ON rides.organizer_id = users.id 
+        WHERE (start_date > CURDATE() OR (start_date = CURDATE() AND start_hour > CURTIME())) 
+        AND :user_id = participations.user_id
+        ');
+
+        $parameters = [
+            "user_id" => $user_id
+        ];
+
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rides = [];
+
+        foreach($result as $item)
+        {
+            $ride = new Ride(
+                $item["id"], 
+                $item["title"], 
+                $item["description"], 
+                $item["start_hour"], 
+                $item["start_date"], 
+                $item["start_location"], 
+                $item["start_latitude"],  
+                $item["start_longitude"], 
+                $item["end_location"], 
+                $item["end_latitude"],    
+                $item["end_longitude"],   
+                $item["difficulty_level"], 
+                $item["max_participants"], 
+                $item["organizer_id"],
+                $item["organizer_pseudo"]
+            );
+            $rides[] = $ride;
+        }
+
+        return $rides;
+    }
+
+    public function isParticipating(int $user_id, int $ride_id) : bool {
+        $query = $this->db->prepare("SELECT count(*) FROM participations WHERE user_id = :user_id AND ride_id = :ride_id");
+
+        $parameters = [
+            ':user_id' => $user_id, 
+            ':ride_id' => $ride_id
+        ];
+
+        $query->execute($parameters);
+
+        return $query->fetchColumn() > 0;
+    }
+
     public function findOne($id) {
         $query = $this->db->prepare('
             SELECT rides.*, users.pseudo AS organizer_pseudo 
@@ -161,7 +259,54 @@ class RideManager extends AbstractManager
         return null;
     }
 
-    public function createRide(Ride $ride) {
+    public function deleteRide($ride) {
+        $query = $this->db->prepare('DELETE FROM rides WHERE id = :id');
+        $parameters = [
+            "id" => $ride->getId()
+        ];
+        $query->execute($parameters);
+    }
+
+    // ! comment faire pour que ce soit uniquement la personne qui à créer le sortie qui puisse la modifier (l'admin aussi)
+    public function addRide() {
+        $errors = [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            if (empty($_POST["title"]) || empty($_POST["description"]) || empty($_POST["start_hour"]) || empty($_POST["start_date"]) || empty($_POST["start_location"]) || empty($_POST["end_location"]) || empty($_POST["difficulty_level"]) || empty($_POST["max_participants"]))
+            {
+                $errors[] = "Veuillez remplir tous les champs !";
+            }
+            $manager = new RideManager();
+            
+            if (empty($errors)) {
+                $startCoords = $this->getCoordinates($_POST['start_location']);
+                $endCoords = $this->getCoordinates($_POST['end_location']);
+    
+                $rideToCreate = new Ride(
+                        $item["id"], 
+                        $item["title"], 
+                        $item["description"], 
+                        $item["start_hour"], 
+                        $item["start_date"], 
+                        $item["start_location"], 
+                        $item["start_latitude"],  
+                        $item["start_longitude"], 
+                        $item["end_location"], 
+                        $item["end_latitude"],    
+                        $item["end_longitude"],   
+                        $item["difficulty_level"], 
+                        $item["max_participants"], 
+                        $item["organizer_id"]
+                    );
+                $manager->createRide($rideToCreate);
+                $this->redirect('index.php?route=home');
+                exit;
+            }
+        }
+        $this->render('member/create_way', ['errors' => $errors]);
+    }
+
+    public function createRide(Ride $ride, $user_id) {
         $query = $this->db->prepare("INSERT INTO rides (
                     title, 
                     description, 
@@ -209,56 +354,24 @@ class RideManager extends AbstractManager
         ];
 
         $query->execute($parameters);
-}
 
-    public function deleteRide($ride) {
-        $query = $this->db->prepare('DELETE FROM rides WHERE id = :id');
-        $parameters = [
-            "id" => $ride->getId()
+
+
+        $ride_id = $this->db->lastInsertId();
+
+        $queryParticipationOrganizer = $this->db->prepare('INSERT INTO participations (ride_id, user_id, created_at) VALUES (:ride_id, :user_id, NOW())');
+
+         $parametersParticipationOrganizer = [
+            "user_id" => $user_id,
+            "ride_id" => $ride_id
         ];
-        $query->execute($parameters);
-    }
 
-    // ! comment faire pour que ce soit uniquement la personne qui à créer le sortie qui puisse la modifier (l'admin aussi)
-    public function addRide() {
-    $errors = [];
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-        if (empty($_POST["title"]) || empty($_POST["description"]) || empty($_POST["start_hour"]) || empty($_POST["start_date"]) || empty($_POST["start_location"]) || empty($_POST["end_location"]) || empty($_POST["difficulty_level"]) || empty($_POST["max_participants"]))
-        {
-            $errors[] = "Veuillez remplir tous les champs !";
-        }
-        $manager = new RideManager();
-        
-        if (empty($errors)) {
-            // 1. On récupère les coordonnées via l'API
-            $startCoords = $this->getCoordinates($_POST['start_location']);
-            $endCoords = $this->getCoordinates($_POST['end_location']);
-   
-            $rideToCreate = new Ride(
-                    $item["id"], 
-                    $item["title"], 
-                    $item["description"], 
-                    $item["start_hour"], 
-                    $item["start_date"], 
-                    $item["start_location"], 
-                    $item["start_latitude"],  
-                    $item["start_longitude"], 
-                    $item["end_location"], 
-                    $item["end_latitude"],    
-                    $item["end_longitude"],   
-                    $item["difficulty_level"], 
-                    $item["max_participants"], 
-                    $item["organizer_id"]
-                );
-            $manager->createRide($rideToCreate);
-            $this->redirect('index.php?route=home');
-            exit;
-        }
+        $queryParticipationOrganizer->execute($parametersParticipationOrganizer);
     }
-    $this->render('member/create_way', ['errors' => $errors]);
-}
     
 
     public function signalerRide() {} // ! a faire en js 
 }
+
+
+

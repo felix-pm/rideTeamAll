@@ -83,9 +83,11 @@ class FollowManager extends AbstractManager
     public function countFollowers(int $user_id) : int {
         $query = $this->db->prepare("SELECT COUNT(*) FROM follows WHERE followed_id = :user_id");
         
-        $query->execute([
+        $parameters = [
             ':user_id' => $user_id
-        ]);
+        ];
+
+        $query->execute($parameters);
         
         return (int) $query->fetchColumn();
     }
@@ -93,9 +95,11 @@ class FollowManager extends AbstractManager
     public function countFolloweds(int $user_id) : int {
         $query = $this->db->prepare("SELECT COUNT(*) FROM follows WHERE follower_id = :user_id");
         
-        $query->execute([
+        $parameters = [
             ':user_id' => $user_id
-        ]);
+        ];
+
+        $query->execute($parameters);
         
         return (int) $query->fetchColumn();
     }
@@ -103,10 +107,12 @@ class FollowManager extends AbstractManager
     public function isFollowing(int $follower_id, int $followed_id) : bool {
         $query = $this->db->prepare("SELECT count(*) FROM follows WHERE follower_id = :follower_id AND followed_id = :followed_id");
 
-        $query->execute([
-            ':follower_id' => $follower_id,
+        $parameters = [
+            ':follower_id' => $follower_id, 
             ':followed_id' => $followed_id
-        ]);
+        ];
+
+        $query->execute($parameters);
 
         return $query->fetchColumn() > 0;
     }
