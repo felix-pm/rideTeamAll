@@ -1,107 +1,147 @@
-//! gestion du btn d'envoie de profil
-const shareProfileBtn = document.getElementById("btn-share-profile");
-
-if (shareProfileBtn) {
-  shareProfileBtn.addEventListener("click", async (e) => {
-    e.preventDefault(); // Empêche la page de remonter tout en haut (comportement par défaut du "#")
-
-    // On récupère les infos stockées dans le HTML
-    const shareUrl = shareProfileBtn.getAttribute("data-url");
-    const shareTitle = shareProfileBtn.getAttribute("data-title");
-
-    // On vérifie si l'appareil supporte le partage natif (smartphone, OS récent)
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "RideTeam",
-          text: shareTitle,
-          url: shareUrl,
-        });
-        console.log("Profil partagé avec succès !");
-      } catch (err) {
-        // L'utilisateur a probablement annulé le partage, on l'ignore silencieusement.
-        console.log("Partage annulé ou échoué :", err);
-      }
-    } else {
-      // PLAN B : Si le partage natif n'est pas dispo (ex: vieux navigateur PC)
-      // On copie directement le lien dans le presse-papier
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        alert("Le lien de ton profil a été copié dans le presse-papier !");
-      } catch (err) {
-        console.error("Erreur lors de la copie :", err);
-        alert("Impossible de copier le lien automatiquement.");
-      }
-    }
-  });
-}
-
-//! gestion des balades futures ou passées
-const tabButtons = document.querySelectorAll(".tab-btn");
-const tabPanels = document.querySelectorAll(".tab-panel");
-
-tabButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    // 1. Retirer la classe 'active' de tous les boutons et panneaux
-    tabButtons.forEach((btn) => btn.classList.remove("active"));
-    tabPanels.forEach((panel) => panel.classList.remove("active"));
-
-    // 2. Ajouter la classe 'active' au bouton cliqué
-    button.classList.add("active");
-
-    // 3. Afficher le panneau correspondant grâce à l'attribut data-tab
-    const targetTab = button.getAttribute("data-tab");
-    document.getElementById(targetTab).classList.add("active");
-  });
-});
-
-// Gérer l'affichage du formulaire d'ajout de moto
-const btnAddBike = document.getElementById("button-add-bike");
-const formAddBike = document.getElementById("add-bike");
-const btnBackAddBike = document.getElementById("btn-back-add-bike");
-const displayGarages = document.getElementById("display-garages");
-
-if (btnAddBike && formAddBike) {
-  btnAddBike.addEventListener("click", () => {
-    formAddBike.style.display = "block";
-    displayGarages.style.display = "none"; // Optionnel : cache le garage pendant l'ajout
-  });
-
-  btnBackAddBike.addEventListener("click", () => {
-    formAddBike.style.display = "none";
-    displayGarages.style.display = "block"; // Fait réapparaitre le garage
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("settings-modal");
-  const openBtn = document.getElementById("open-settings-btn");
-  const closeBtn = document.getElementById("close-settings-btn");
-
-  // Ouvre la modale proprement au clic sur l'engrenage
-  if (openBtn) {
-    openBtn.addEventListener("click", (e) => {
+  //! 1. Gestion du bouton de partage du profil
+  const shareProfileBtn = document.getElementById("btn-share-profile");
+  if (shareProfileBtn) {
+    shareProfileBtn.addEventListener("click", async (e) => {
       e.preventDefault();
-      modal.style.display = "flex"; // Aligné au centre grâce au flexbox
+      const shareUrl = shareProfileBtn.getAttribute("data-url");
+      const shareTitle = shareProfileBtn.getAttribute("data-title");
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "RideTeam",
+            text: shareTitle,
+            url: shareUrl,
+          });
+        } catch (err) {
+          console.log("Partage annulé ou échoué :", err);
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          alert("Le lien de ton profil a été copié dans le presse-papier !");
+        } catch (err) {
+          console.error("Erreur lors de la copie :", err);
+        }
+      }
     });
   }
 
-  // Fermeture par la croix
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      modal.style.display = "none";
+  //! 2. Gestion des onglets (balades futures ou passées)
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const tabPanels = document.querySelectorAll(".tab-panel");
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      tabButtons.forEach((btn) => btn.classList.remove("active"));
+      tabPanels.forEach((panel) => panel.classList.remove("active"));
+
+      button.classList.add("active");
+      const targetTab = button.getAttribute("data-tab");
+      document.getElementById(targetTab).classList.add("active");
+    });
+  });
+
+  //! 3. Affichage/Masquage du formulaire classique d'ajout de moto
+  const btnAddBike = document.getElementById("button-add-bike");
+  const formAddBike = document.getElementById("add-bike");
+  const btnBackAddBike = document.getElementById("btn-back-add-bike");
+  const displayGarages = document.getElementById("display-garages");
+
+  if (btnAddBike && formAddBike) {
+    btnAddBike.addEventListener("click", () => {
+      formAddBike.style.display = "block";
+      displayGarages.style.display = "none";
+    });
+
+    btnBackAddBike.addEventListener("click", () => {
+      formAddBike.style.display = "none";
+      displayGarages.style.display = "block";
     });
   }
 
-  // Fermeture si on clique n'importe où en dehors de la boîte
+  //! 4. Modale de modification des informations du compte utilisateur
+  const profileModal = document.getElementById("settings-modal");
+  const openProfileBtn = document.getElementById("open-settings-btn");
+  const closeProfileBtn = document.getElementById("close-settings-btn");
+
+  if (openProfileBtn && profileModal) {
+    openProfileBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      profileModal.style.display = "flex";
+    });
+  }
+
+  if (closeProfileBtn && profileModal) {
+    closeProfileBtn.addEventListener("click", () => {
+      profileModal.style.display = "none";
+    });
+  }
+
+  //! 5. Modales de modification des motos
+  const openBikeBtns = document.querySelectorAll(".open-edit-bike-btn");
+  const closeBikeBtns = document.querySelectorAll(".close-edit-bike-btn");
+
+  openBikeBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetId = btn.getAttribute("data-target");
+      const modal = document.getElementById(targetId);
+      if (modal) {
+        modal.style.display = "flex";
+      }
+    });
+  });
+
+  closeBikeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const modal = btn.closest(".edit-bike-modal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+
+  //! 6. Modales de modification de balades (Calqué sur les motos)
+  const openEditRideBtns = document.querySelectorAll(".open-edit-ride-btn");
+  const closeEditRideBtns = document.querySelectorAll(".close-edit-ride-btn");
+
+  openEditRideBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetId = btn.getAttribute("data-target");
+      const modal = document.getElementById(targetId);
+      if (modal) {
+        modal.style.display = "flex";
+      }
+    });
+  });
+
+  closeEditRideBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const modal = btn.closest(".edit-ride-modal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+
+  //! 7. Fermeture globale lors d'un clic en dehors d'une fenêtre ouverte
   window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
+    if (e.target === profileModal) {
+      profileModal.style.display = "none";
+    }
+    if (e.target.classList.contains("edit-bike-modal")) {
+      e.target.style.display = "none";
+    }
+    if (e.target.classList.contains("edit-ride-modal")) {
+      e.target.style.display = "none";
     }
   });
 });
 
-// Validation stricte des mots de passe en JS avant envoi PHP
+// Validation JS des mots de passe
 function validatePassword() {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirmPassword").value;

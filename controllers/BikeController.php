@@ -52,4 +52,66 @@ class BikeController extends AbstractController
         }
         $this->render('member/profile', ['errors' => $errors]);
     }
+
+    public function editBike(int $id) 
+    {
+        // 1. SÉCURITÉ : L'utilisateur doit être connecté
+        if (!isset($_SESSION['id'])) {
+            $this->redirect('index.php?route=login');
+            exit;
+        }
+
+        $bikeManager = new BikeManager();
+        $bike = $bikeManager->findOneBikeById($id);
+
+        // 2. SÉCURITÉ : La moto doit exister en BDD
+        if (!$bike) {
+            $this->redirect('index.php?route=profile');
+            exit;
+        }
+
+        // 3. SÉCURITÉ : Seul le propriétaire ou un ADMIN peut modifier
+        $isOwner = $bike->getUser_id()->getId() === $_SESSION['id'];
+        $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'ADMIN';
+
+        if (!$isOwner && !$isAdmin) {
+            $this->redirect('index.php?route=profile');
+            exit;
+        }
+
+        // 4. Traitement du formulaire au clic sur "Enregistrer"
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!empty($_POST['marque']) && !empty($_POST['modele']) && !empty($_POST['annee'])) {
+                
+                // Mise à jour de l'objet local
+                $bike->setMarque($_POST['marque']);
+                $bike->setModele($_POST['modele']);
+                $bike->setAnnee($_POST['annee']);
+
+                // Gestion de la nouvelle image (si envoyée)
+                if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                    $dossierDestination = 'assets/img/'; 
+                    $nomFichier = uniqid() . '_' . basename($_FILES['image']['name']);
+                    $cheminComplet = $dossierDestination . $nomFichier;
+                    
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], $cheminComplet)) {
+                        $bike->setUrl($cheminComplet); 
+                    }
+                }
+
+                // Sauvegarde définitive en BDD
+                $bikeManager->updateBike($bike);
+
+                // Redirection vers le profil pour recharger la page proprement
+                $this->redirect('index.php?route=profile');
+                exit;
+            }
+        }
+
+        // Redirection par sécurité si quelqu'un tente d'accéder à l'URL en direct sans POST
+        $this->redirect('index.php?route=profile');
+        exit;
+    }
+
+    
 }

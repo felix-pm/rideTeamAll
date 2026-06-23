@@ -69,6 +69,14 @@ class Router
                 $bc = new BikeController();
                 $bc->addBike();
             }
+            else if ($_GET['route'] === 'edit_bike' && isset($_GET['id'])) {
+                $bc = new BikeController();
+                $bc->editBike($_GET['id']);
+            }
+            else if ($_GET['route'] === 'edit_ride' && isset($_GET['id'])) {
+                $rc = new RideController();
+                $rc->editRide($_GET['id']);
+            }
             else
             {
                 $ac = new AuthController();

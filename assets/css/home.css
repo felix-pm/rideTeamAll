@@ -149,12 +149,14 @@ body {
   margin: 0 0 5px 0;
   font-size: 1.2rem;
   font-weight: 600;
+  text-align: left;
 }
 
 .author {
   color: var(--text-grey);
   font-size: 0.9rem;
   margin: 0 0 15px 0;
+  text-align: left;
 }
 
 .info-row {
@@ -201,11 +203,6 @@ body {
   margin-left: 0;
 }
 
-/* =========================================
-   TABLETTES & DESKTOP (MEDIA QUERIES)
-   S'applique uniquement aux écrans > 768px
-   ========================================= */
-
 @media (min-width: 768px) {
   /* On centre le contenu et on limite la largeur max */
   .app-header,
@@ -228,7 +225,8 @@ body {
   }
 
   /* Transformation de la liste en grille automatique */
-  #rides-container {
+  #rides-container,
+  #my-rides-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px; /* Espace entre les cartes */

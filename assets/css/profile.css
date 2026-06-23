@@ -137,11 +137,16 @@ body {
   font-size: 1.6rem;
 }
 
-#display-garages h2 {
+#display-garages h2,
+#display-my-rides h2 {
   font-size: 1.3rem;
   margin-bottom: 15px;
   border-left: 4px solid var(--accent-orange);
   padding-left: 10px;
+}
+
+#display-my-rides h2 {
+  margin-top: 35px;
 }
 
 #bikes-container {
@@ -155,6 +160,10 @@ body {
 /* Cache la barre de scroll sur Chrome/Safari pour un effet "app native" */
 #bikes-container::-webkit-scrollbar {
   display: none;
+}
+
+.modal-rides {
+  margin-bottom: 20px;
 }
 
 #public-bikes-container {

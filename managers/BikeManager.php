@@ -29,27 +29,20 @@ class BikeManager extends AbstractManager
         return $bikes;
     }
 
-    public function findOneBike(int $user_id) : array
+    public function findOneBikeById(int $id) : ?Bike
     {
-        $query = $this->db->prepare('SELECT * FROM bikes WHERE user_id = :user_id AND id = :id');
-        $parameters = [
-            "user_id" => $user_id,
-            "id" => $id
-        ];
-        $query->execute($parameters);
-        $result = $query->fetchAll(PDO::FETCH_ASSOC);
-        $bikes = [];
+        $query = $this->db->prepare('SELECT * FROM bikes WHERE id = :id');
+        $query->execute(['id' => $id]);
+        $item = $query->fetch(PDO::FETCH_ASSOC);
 
-        $userManager = new UserManager();
-        $user = $userManager->findById($user_id);
-
-        foreach($result as $item)
-        {
-            $bike = new Bike($item["id"], $item["marque"], $item["modele"], $item["annee"], $user, $item["url"]);
-            $bikes[] = $bike;
+        if (!$item) {
+            return null;
         }
 
-        return $bikes;
+        $userManager = new UserManager();
+        $user = $userManager->findById($item['user_id']);
+
+        return new Bike($item["id"], $item["marque"], $item["modele"], $item["annee"], $user, $item["url"]);
     }
 
     public function createBike(Bike $bike, User $user) {
@@ -73,17 +66,15 @@ class BikeManager extends AbstractManager
         $query->execute($parameters);
     }
 
-    public function updateBike(Bike $bike, User $user) {
+    public function updateBike(Bike $bike) : void {
         $query = $this->db->prepare('UPDATE bikes SET marque = :marque, modele = :modele, url = :url, annee = :annee WHERE id = :id');
         $parameters = [
             ':id' => $bike->getId(),
             ':marque' => $bike->getMarque(),
             ':modele' => $bike->getModele(),
             ':annee' => $bike->getAnnee(),
-            ':url' => $bike->getUrl(),
-            ':user_id' => $user->getId()
+            ':url' => $bike->getUrl()
         ];
         $query->execute($parameters);
     }
-    // ? comment faire pour que ce soit uniquement la personne à qui appartient la moto qui puisse modifier les specs (l'admin aussi)
 }

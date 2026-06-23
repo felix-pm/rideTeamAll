@@ -69,13 +69,15 @@ class UserController extends AbstractController
             $rideManager = new RideManager();
             $pastBalades = $rideManager->findPastParticiaptionsByUserid($userId);
             $futuresBalades = $rideManager->findFutureParticiaptionsByUserid($userId);
+            $myRides = $rideManager->findRidesByOrganizerId($userId);
 
             $this->render('member/profile', [
                 "followersCount" => $followersCount,
                 "followedsCount" => $followedsCount, 
                 "garage" => $garage, 
                 "pastBalades" => $pastBalades,
-                "futuresBalades" => $futuresBalades
+                "futuresBalades" => $futuresBalades,
+                "myRides" => $myRides
             ]);
         }
         else
@@ -162,15 +164,19 @@ class UserController extends AbstractController
             exit;
         }
 
-        
         $bikeManager = new BikeManager();
         $garage = $bikeManager->findAllBikeByUserId($id); 
 
         $followManager = new FollowManager();
-        $isFollowing = false;
+        
         $followersCount = $followManager->countFollowers($id);
         $followedsCount = $followManager->countFolloweds($id);
-        $following = $followManager->isFollowing($_SESSION['id'], $user->getId());
+        
+        $following = false;
+
+        if (isset($_SESSION['id'])) {
+            $following = $followManager->isFollowing($_SESSION['id'], $user->getId());
+        }
 
         return $this->render('member/public_profile', [
             "user" => $user,
@@ -182,6 +188,10 @@ class UserController extends AbstractController
     }
 
     public function follow($followed_id){
+        if (!isset($_SESSION['id'])) {
+            $this->redirect('index.php?route=login');
+            exit;
+        }
         $follower_id = $_SESSION['id']; 
 
         $followManager = new FollowManager();

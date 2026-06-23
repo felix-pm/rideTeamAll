@@ -8,7 +8,7 @@
             <?php
             $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
             $domain = $_SERVER['HTTP_HOST'];
-            $publicProfileUrl = $protocol . "://" . $domain . "/index.php?route=user_profile&id=" . $_SESSION['id'];
+            $publicProfileUrl = $protocol . "://" . $domain . "/rideteamall/index.php?route=user_profile&id=" . $_SESSION['id'];
             ?>
             <a href="#" id="btn-share-profile" data-url="<?= $publicProfileUrl ?>" data-title="Découvre le profil de <?= $_SESSION['pseudo'] ?> sur RideTeam !">
                 <i class="fa-solid fa-share"></i>
@@ -59,10 +59,8 @@
                     <?php foreach ($garage as $bike): ?>
                         <?php 
                         if (!$bike instanceof Bike) {
-                            echo '';
                             continue;
-                            }
-
+                        }
                         $bikeUrl = $bike->getUrl();
                         $imageSrc = !empty($bikeUrl) ? htmlspecialchars($bikeUrl) : 'assets/img/default-bike.avif';
                         ?>
@@ -70,18 +68,168 @@
                         <div class="bike-card">
                             <img class="bike-img" src="<?= $imageSrc ?>" alt="Photo de <?= htmlspecialchars($bike->getMarque()) ?>">
                             
-                            <i class="fa-solid fa-trash-can" title="Supprimer cette moto"></i>
-                            <i class="fa-solid fa-gear" title="Modifier cette moto"></i>
+                            <a href="#" class="open-edit-bike-btn" data-target="edit-bike-modal-<?= $bike->getId() ?>" style="color: inherit;">
+                                <i class="fa-solid fa-gear" title="Modifier cette moto"></i>
+                            </a>
                             
                             <p class="bike-marque"><?= htmlspecialchars($bike->getMarque()) ?></p>
                             <p class="bike-modele"><?= htmlspecialchars($bike->getModele()) ?></p>
                             <p class="bike-annee"><?= htmlspecialchars($bike->getAnnee()) ?></p>
                         </div>
 
+                        <div id="edit-bike-modal-<?= $bike->getId() ?>" class="modal edit-bike-modal" style="display: none;">
+                            <div class="modal-content animate-pop">
+                                <span class="close-btn close-edit-bike-btn"><i class="fa-solid fa-xmark"></i></span>
+                                
+                                <div id="display-edit-bike">
+                                    <h2>Modifier ma moto</h2>
+                                    
+                                    <form method="POST" enctype="multipart/form-data" action="index.php?route=edit_bike&id=<?= $bike->getId() ?>">
+                                        
+                                        <div class="input-group">
+                                            <label for="marque-<?= $bike->getId() ?>"><i class="fa-solid fa-route"></i> Marque</label>
+                                            <input type="text" name="marque" id="marque-<?= $bike->getId() ?>" value="<?= htmlspecialchars($bike->getMarque()) ?>" required />
+                                        </div>
+
+                                        <div class="input-group">
+                                            <label for="modele-<?= $bike->getId() ?>"><i class="fa-solid fa-align-left"></i> Modèle</label>
+                                            <input type="text" name="modele" id="modele-<?= $bike->getId() ?>" value="<?= htmlspecialchars($bike->getModele()) ?>" required />
+                                        </div>
+
+                                        <div class="input-group">
+                                            <label for="annee-<?= $bike->getId() ?>"><i class="fa-regular fa-calendar"></i> Année</label>
+                                            <input type="date" name="annee" id="annee-<?= $bike->getId() ?>" value="<?= htmlspecialchars($bike->getAnnee()) ?>" required />
+                                        </div>
+
+                                        <div class="input-group">
+                                            <label for="image-<?= $bike->getId() ?>"><i class="fa-solid fa-camera"></i> Nouvelle photo (optionnel)</label>
+                                            <input type="file" name="image" id="image-<?= $bike->getId() ?>" accept="image/*">
+                                        </div>
+
+                                        <?php if ($bike->getUrl()): ?>
+                                            <div style="margin-top: 10px; text-align: center;">
+                                                <p style="font-size: 0.9em; color: var(--text-grey);">Photo actuelle :</p>
+                                                <img src="<?= htmlspecialchars($bike->getUrl()) ?>" alt="Aperçu" style="max-width: 150px; border-radius: 8px;">
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <button type="submit" class="submit-btn">
+                                            Enregistrer les modifications <i class="fa-solid fa-motorcycle"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
             <button id="button-add-bike">Ajouter une moto</button>
+        </div>
+
+        <div id="display-my-rides">
+            <h2>Mes balades en cours</h2>
+            
+            <section class="rides-wrapper" style="padding: 0; padding-bottom: 20px;">
+                <div id="my-rides-container">
+                    <?php
+                    if (!isset($myRides)): ?>
+                        <p class="error-message" style="color: red; text-align: center;">
+                            <i class="fa-solid fa-circle-exclamation"></i> Erreur technique : Impossible d'accéder à vos balades.
+                        </p>
+                    <?php
+                    elseif (empty($myRides)): ?>
+                        <p class="no-bikes" style="color: var(--text-grey); text-align: center; padding: 20px; font-style: italic;">
+                            Vous n'avez organisé aucune balade pour le moment...
+                        </p>
+                    <?php
+                    else: ?>
+                        <?php foreach ($myRides as $myRide): ?>
+                            <?php
+                            $dateValue = $myRide->getStart_date();
+                            $dateBdd = new DateTime($dateValue);
+                            
+                            $dateFormatter = new IntlDateFormatter(
+                                'fr_FR', 
+                                IntlDateFormatter::LONG, 
+                                IntlDateFormatter::NONE
+                            );
+                            $dateFinal = $dateFormatter->format($dateBdd);
+                            ?>
+                            
+                            <div class="modal-rides" style="position: relative; height: 100%;"> 
+                                
+                                <a class="ride-card" href="index.php?route=ride&id=<?= $myRide->getId() ?>" style="margin-bottom: 0; height: 100%;">
+                                    <div class="card-image-wrapper">
+                                        <img class="card-img" src="https://picsum.photos/400/200?random=<?= $myRide->getId() ?>" alt="Image de la balade">
+                                    </div>
+                                    
+                                    <div class="card-content">
+                                        <h3><?= htmlspecialchars($myRide->getTitle()) ?></h3>
+                                        <div class="info-row">
+                                            <i class="fa-regular fa-calendar"></i> 
+                                            <span><?= $dateFinal ?> à <?= htmlspecialchars(substr($myRide->getStart_hour(), 0, 5)) ?></span>
+                                        </div>
+                                        <div class="info-row">
+                                            <i class="fa-solid fa-location-dot"></i> 
+                                            <span><?= htmlspecialchars($myRide->getStart_location()) ?></span>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <i class="fa-solid fa-gear" 
+                                   onclick="document.getElementById('edit-ride-modal-<?= $myRide->getId() ?>').style.display='flex';" 
+                                   title="Modifier cette balade" 
+                                   style="position: absolute; top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.6); color: var(--text-white); padding: 8px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; z-index: 20;"></i>
+                            </div>
+
+                            <div id="edit-ride-modal-<?= $myRide->getId() ?>" class="modal edit-ride-modal" style="display: none;">
+                                <div class="modal-content animate-pop">
+                                    <span class="close-btn" onclick="document.getElementById('edit-ride-modal-<?= $myRide->getId() ?>').style.display='none';">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </span>
+                                    
+                                    <div id="display-profil"> 
+                                        <h2 style="margin-bottom: 25px; text-align: center;">Modifier la balade</h2>
+                                        
+                                        <form method="POST" action="index.php?route=edit_ride&id=<?= $myRide->getId() ?>">
+                                            <div class="input-group">
+                                                <label for="title-<?= $myRide->getId() ?>"><i class="fa-solid fa-heading"></i> Titre</label>
+                                                <input type="text" name="title" id="title-<?= $myRide->getId() ?>" value="<?= htmlspecialchars($myRide->getTitle()) ?>" required />
+                                            </div>
+
+                                            <div class="row-group" style="display: flex; gap: 15px; width: 100%;">
+                                                <div class="input-group half" style="flex: 1;">
+                                                    <label for="date-<?= $myRide->getId() ?>"><i class="fa-regular fa-calendar"></i> Date</label>
+                                                    <input type="date" name="start_date" id="date-<?= $myRide->getId() ?>" value="<?= htmlspecialchars($myRide->getStart_date()) ?>" required />
+                                                </div>
+                                                <div class="input-group half" style="flex: 1;">
+                                                    <label for="hour-<?= $myRide->getId() ?>"><i class="fa-regular fa-clock"></i> Heure</label>
+                                                    <input type="time" name="start_hour" id="hour-<?= $myRide->getId() ?>" value="<?= htmlspecialchars(substr($myRide->getStart_hour(), 0, 5)) ?>" required />
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <label for="start_loc-<?= $myRide->getId() ?>"><i class="fa-solid fa-location-dot"></i> Point de départ</label>
+                                                <input type="text" name="start_location" id="start_loc-<?= $myRide->getId() ?>" value="<?= htmlspecialchars($myRide->getStart_location()) ?>" required />
+                                            </div>
+
+                                            <button type="submit" class="submit-btn">
+                                                Mettre à jour <i class="fa-solid fa-route"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </section>
+            
+            <a href="index.php?route=create_way" id="button-add-ride" style="display: block; width: 100%; text-align: center; background: transparent; border: 2px dashed var(--accent-orange); color: var(--accent-orange); padding: 15px; border-radius: var(--border-radius); font-weight: bold; margin-bottom: 20px; text-decoration: none;">
+                Créer une nouvelle balade
+            </a>
         </div>
 
         <div id="add-bike" style="display: none;">
@@ -106,6 +254,7 @@
 
             </form>
         </div>
+
         <div class="tabs-container">
             <div class="tabs-header">
                 <button class="tab-btn active" data-tab="tab-avenir">À venir</button>
@@ -158,14 +307,11 @@
                                         
                                         <div class="card-content">
                                             <h3><?= htmlspecialchars($ride->getTitle()) ?></h3>
-                                            
                                             <p class="author"><?= htmlspecialchars($ride->getOrganizer_pseudo()) ?></p>
-                                            
                                             <div class="info-row">
                                                 <i class="fa-regular fa-calendar"></i> 
                                                 <span><?= $dateFinal ?> à <?= htmlspecialchars(substr($ride->getStart_hour(), 0, 5)) ?></span>
                                             </div>
-                                            
                                             <div class="info-row">
                                                 <i class="fa-solid fa-location-dot"></i> 
                                                 <span><?= htmlspecialchars($ride->getStart_location()) ?></span>
@@ -177,6 +323,7 @@
                         </div>
                     </section>
                 </div>
+                
                 <div id="tab-passees" class="tab-panel">
                     <section class="rides-wrapper">
                         <div id="rides-container">
@@ -222,14 +369,11 @@
                                         
                                         <div class="card-content">
                                             <h3><?= htmlspecialchars($ride->getTitle()) ?></h3>
-                                            
                                             <p class="author"><?= htmlspecialchars($ride->getOrganizer_pseudo()) ?></p>
-                                            
                                             <div class="info-row">
                                                 <i class="fa-regular fa-calendar"></i> 
                                                 <span><?= $dateFinal ?> à <?= htmlspecialchars(substr($ride->getStart_hour(), 0, 5)) ?></span>
                                             </div>
-                                            
                                             <div class="info-row">
                                                 <i class="fa-solid fa-location-dot"></i> 
                                                 <span><?= htmlspecialchars($ride->getStart_location()) ?></span>
@@ -277,37 +421,15 @@
                             Enregistrer les modifications <i class="fa-solid fa-motorcycle"></i>
                         </button>
                     </form>
+
+                    <div id="btn-logout">
+                        <?php if (isset($_SESSION['id'])): ?>
+                            <a href="index.php?route=logout">Déconnexion</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
-    <div id="btn-logout">
-        <?php if (isset($_SESSION['id'])): ?>
-            <a href="index.php?route=logout">Déconnexion</a>
-        <?php endif; ?>
-    </div>
 </section>
-
-
-<!-- <input type="file" accept="image/*"> -->
-
-<!-- <div id="display-profil" style="display: none;"> //! a mettre sur la page setting compte
-    <img src="<?= $_SESSION['avatar']?>" alt="">
-    <h2><?= $_SESSION['pseudo']?></h2>
-    <form method="post" action="index.php?route=profile">
-        <label for="pseudo">Pseudo</label>
-        <input type="text" name="pseudo" id="pseudo" required />
-
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required />
-
-        <label for="password">Mot de passe</label>
-        <input type="password" name="password" id="password" required />
-
-        <label for="confirmPassword">Confirmez le mot de passe</label>
-        <input type="password" name="confirmPassword" id="confirmPassword" required />
-
-        <button type="submit" style="width: 100%; margin-top: 20px">Enregistrer</button>
-    </form>
-</div> -->

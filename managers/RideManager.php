@@ -124,6 +124,35 @@ class RideManager extends AbstractManager
         return $rides;
     }
 
+    public function findRidesByOrganizerId($user_id) : array {
+        $query = $this->db->prepare('
+            SELECT rides.*, users.pseudo AS organizer_pseudo 
+            FROM rides 
+            JOIN users ON rides.organizer_id = users.id 
+            WHERE rides.organizer_id = :user_id
+            AND (rides.start_date > CURDATE() OR (rides.start_date = CURDATE() AND rides.start_hour > CURTIME()))
+            ORDER BY rides.start_date ASC
+        ');
+        
+        $query->execute(['user_id' => $user_id]);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rides = [];
+
+        foreach($result as $item) {
+            $rides[] = new Ride(
+                $item["id"], $item["title"], $item["description"], 
+                $item["start_hour"], $item["start_date"], 
+                $item["start_location"], $item["start_latitude"],  
+                $item["start_longitude"], $item["end_location"], 
+                $item["end_latitude"], $item["end_longitude"],   
+                $item["difficulty_level"], $item["max_participants"], 
+                $item["organizer_id"], $item["organizer_pseudo"]
+            );
+        }
+
+        return $rides;
+    }
+
     public function findPastParticiaptionsByUserid($user_id){
         $query = $this->db->prepare('
         SELECT rides.*, users.pseudo AS organizer_pseudo FROM rides 
@@ -370,7 +399,43 @@ class RideManager extends AbstractManager
     }
     
 
-    public function signalerRide() {} // ! a faire en js 
+    public function updateRide(Ride $ride) 
+    {
+        $query = $this->db->prepare("
+            UPDATE rides 
+            SET title = :title, 
+                description = :description, 
+                start_date = :start_date, 
+                start_hour = :start_hour, 
+                start_location = :start_location, 
+                start_latitude = :start_latitude,
+                start_longitude = :start_longitude,
+                end_location = :end_location, 
+                end_latitude = :end_latitude,
+                end_longitude = :end_longitude,
+                difficulty_level = :difficulty_level, 
+                max_participants = :max_participants
+            WHERE id = :id
+        ");
+                
+        $parameters = [
+            ':id' => $ride->getId(),
+            ':title' => $ride->getTitle(), 
+            ':description' => $ride->getDescription(),
+            ':start_hour' => $ride->getStart_hour(),
+            ':start_date' => $ride->getStart_date(),
+            ':start_location' => $ride->getStart_location(),
+            ':start_latitude' => $ride->getStart_latitude(), 
+            ':start_longitude' => $ride->getStart_longitude(),
+            ':end_location' => $ride->getEnd_location(),
+            ':end_latitude' => $ride->getEnd_latitude(), 
+            ':end_longitude' => $ride->getEnd_longitude(), 
+            ':difficulty_level' => $ride->getDifficulty_level(),
+            ':max_participants'  => $ride->getMax_participants()
+        ];
+
+        $query->execute($parameters);
+    }
 }
 
 
