@@ -436,6 +436,18 @@ class RideManager extends AbstractManager
 
         $query->execute($parameters);
     }
+
+    public function getStats() {
+        $stats = [];
+        // Total balades créées
+        $stats['total'] = $this->db->query('SELECT COUNT(*) FROM rides')->fetchColumn();
+        // Balades en cours / à venir
+        $stats['active'] = $this->db->query('SELECT COUNT(*) FROM rides WHERE start_date > CURDATE() OR (start_date = CURDATE() AND start_hour > CURTIME())')->fetchColumn();
+        // Balades créées ce mois-ci
+        $stats['month'] = $this->db->query('SELECT COUNT(*) FROM rides WHERE MONTH(start_date) = MONTH(CURDATE()) AND YEAR(start_date) = YEAR(CURDATE())')->fetchColumn();
+
+        return $stats;
+    }
 }
 
 

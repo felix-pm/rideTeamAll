@@ -8,6 +8,8 @@
             <form action="index.php" method="get" style="display: flex;">
                 <input type="hidden" name="route" value="search"> 
                 
+                <img src="assets/img/favicon.png" alt="RideTeam Logo" style="width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex-shrink: 0;">
+
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" name="rechercheUser" autocomplete="off" placeholder="Rechercher des riders..." value="<?= htmlspecialchars($keywordUser ?? '') ?>">

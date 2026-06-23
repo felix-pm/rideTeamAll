@@ -127,6 +127,29 @@
             <button id="button-add-bike">Ajouter une moto</button>
         </div>
 
+        <div id="add-bike" style="display: none;">
+            <p id="btn-back-add-bike"><</p>
+            <form action="index.php?route=add_bike" method="POST" enctype="multipart/form-data">
+                
+                <label for="marque"><i class="fa-solid fa-route"></i> Marque :</label>
+                <input type="text" name="marque" id="marque" placeholder="La marque de ta moto" required>
+
+                <label for="modele"><i class="fa-solid fa-align-left"></i>Modèle :</label>
+                <input type="text" name="modele" id="modele" placeholder="Le modèle de ta moto" required>
+
+                <label for="annee"><i class="fa-regular fa-calendar"></i> Année</label>
+                <input type="date" name="annee" id="annee" required>
+
+                <label for="image"><i class="fa-solid fa-camera"></i> Photo de la moto :</label>
+                <input type="file" name="image" id="image" accept="image/*">
+
+                <button type="submit" class="submit-btn">
+                    Enregistrer ta moto <i class="fa-solid fa-motorcycle"></i>
+                </button>
+
+            </form>
+        </div>
+
         <div id="display-my-rides">
             <h2>Mes balades en cours</h2>
             
@@ -194,7 +217,7 @@
                                         
                                         <form method="POST" action="index.php?route=edit_ride&id=<?= $myRide->getId() ?>">
                                             <div class="input-group">
-                                                <label for="title-<?= $myRide->getId() ?>"><i class="fa-solid fa-heading"></i> Titre</label>
+                                                <label for="title-<?= $myRide->getId() ?>"><label for="title"><i class="fa-solid fa-route"></i></i> Titre</label>
                                                 <input type="text" name="title" id="title-<?= $myRide->getId() ?>" value="<?= htmlspecialchars($myRide->getTitle()) ?>" required />
                                             </div>
 
@@ -215,7 +238,7 @@
                                             </div>
 
                                             <button type="submit" class="submit-btn">
-                                                Mettre à jour <i class="fa-solid fa-route"></i>
+                                                Enregistrer les modifications <i class="fa-solid fa-motorcycle"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -230,29 +253,6 @@
             <a href="index.php?route=create_way" id="button-add-ride" style="display: block; width: 100%; text-align: center; background: transparent; border: 2px dashed var(--accent-orange); color: var(--accent-orange); padding: 15px; border-radius: var(--border-radius); font-weight: bold; margin-bottom: 20px; text-decoration: none;">
                 Créer une nouvelle balade
             </a>
-        </div>
-
-        <div id="add-bike" style="display: none;">
-            <p id="btn-back-add-bike"><</p>
-            <form action="index.php?route=add_bike" method="POST" enctype="multipart/form-data">
-                
-                <label for="marque"><i class="fa-solid fa-route"></i> Marque :</label>
-                <input type="text" name="marque" id="marque" placeholder="La marque de ta moto" required>
-
-                <label for="modele"><i class="fa-solid fa-align-left"></i>Modèle :</label>
-                <input type="text" name="modele" id="modele" placeholder="Le modèle de ta moto" required>
-
-                <label for="annee"><i class="fa-regular fa-calendar"></i> Année</label>
-                <input type="date" name="annee" id="annee" required>
-
-                <label for="image"><i class="fa-solid fa-camera"></i> Photo de la moto :</label>
-                <input type="file" name="image" id="image" accept="image/*">
-
-                <button type="submit" class="submit-btn">
-                    Enregistrer ta moto <i class="fa-solid fa-motorcycle"></i>
-                </button>
-
-            </form>
         </div>
 
         <div class="tabs-container">

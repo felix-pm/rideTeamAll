@@ -3,59 +3,46 @@
 class AdminController extends AbstractController
 {
     public function admin(){
-        // Vérification de sécurité
-        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
-        {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN') {
             $this->redirect('index.php?route=login');
             exit;
         }
-        else {
-            $errors = [];
-        }
         
-        // ! Récupération des utilisateurs
         $userManager = new UserManager();
-        $users = [];
-        $keywordUser = '';
-        if (isset($_GET['rechercheUser-admin']) && !empty(trim($_GET['rechercheUser-admin']))) {
-            $keywordUser = trim($_GET['rechercheUser-admin']);
-            $users = $userManager->searchUser($keywordUser);
-        } else {
-            $users = $userManager->findAll();
-        }
-
-        // ! Récupération des balades
         $rideManager = new RideManager();
-        $rides = [];
-        $keyword = '';
-        if (isset($_GET['recherche-balade_admin']) && !empty(trim($_GET['recherche-balade_admin']))) {
-            $keyword = trim($_GET['recherche-balade_admin']);
-            $rides = $rideManager->searchRides($keyword);
-        } else {
-            $rides = $rideManager->findAll();
-        }
+        $messageManager = new ChatManager();
 
-        // ! Statistiques pour le Dashboard
-        // Données réelles
-        $activeRidesCount = count($rides); 
-        $totalUsersCount = count($users);
+        // Recherche Utilisateurs
+        $keywordUser = trim($_GET['rechercheUser-admin'] ?? '');
+        $users = !empty($keywordUser) ? $userManager->searchUser($keywordUser) : $userManager->findAll();
+
+        // Recherche Balades
+        $keywordRide = trim($_GET['recherche-balade_admin'] ?? '');
+        $rides = !empty($keywordRide) ? $rideManager->searchRides($keywordRide) : $rideManager->findAll();
+
+        // Récupération des statistiques globales
+        $userStats = $userManager->getStats();
+        $rideStats = $rideManager->getStats();
+
+        $messageStats = $messageManager->getStats();
         
-        $usersLastMonth = 15; 
-        $ridesLastMonth = 8; 
-        $pendingReports = 4; 
+        $chartDates = [];
+        $chartValues = [];
+        foreach($userStats['chart_7_days'] as $data) {
+            $chartDates[] = date('d/m', strtotime($data['date']));
+            $chartValues[] = $data['count'];
+        }
 
         $this->render('admin/admin', [
             'users' => $users,
             'rides' => $rides,
             'keywordUser' => $keywordUser,
-            'keywordRide' => $keyword,
-            'stats' => [
-                'active_rides' => $activeRidesCount,
-                'total_users' => $totalUsersCount,
-                'users_last_month' => $usersLastMonth,
-                'rides_last_month' => $ridesLastMonth,
-                'pending_reports' => $pendingReports
-            ]
+            'keywordRide' => $keywordRide,
+            'userStats' => $userStats,
+            'rideStats' => $rideStats,
+            'messageStats' => $messageStats,
+            'chartData' => json_encode(['labels' => $chartDates, 'data' => $chartValues]),
+            'mapRides' => json_encode($rides)
         ]);
     }
 }

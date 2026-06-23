@@ -20,9 +20,6 @@ class ChatManager extends AbstractManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Sauvegarde un nouveau message en BDD
-     */
     public function saveMessage(int $rideId, int $userId, string $content): bool
     {
         $query = "INSERT INTO chat (ride_id, user_id, content, created_at) 
@@ -30,5 +27,18 @@ class ChatManager extends AbstractManager
                   
         $stmt = $this->db->prepare($query);
         return $stmt->execute([$rideId, $userId, $content]);
+    }
+
+    public function getStats() {
+        $stats = [];
+        try {
+            $stats['total'] = $this->db->query('SELECT COUNT(*) FROM chat')->fetchColumn();
+            $stats['today'] = $this->db->query('SELECT COUNT(*) FROM chat WHERE DATE(created_at) = CURDATE()')->fetchColumn();
+            $stats['month'] = $this->db->query('SELECT COUNT(*) FROM chat WHERE MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())')->fetchColumn();
+        } catch(Exception $e) {
+            // Sécurité au cas où la table n'existe pas encore
+            $stats['total'] = 0; $stats['today'] = 0; $stats['month'] = 0;
+        }
+        return $stats;
     }
 }

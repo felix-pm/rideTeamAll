@@ -1,100 +1,143 @@
-/* --- Couleurs de base du Dashboard --- */
+/* --- Couleurs & Typographie --- */
 .admin-dashboard {
-  background-color: #151521;
+  background-color: #121212; /* Match avec home.css */
   color: #ffffff;
   padding: 2rem;
-  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-bottom: 100px;
 }
 
 .admin-header h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+  font-weight: 800;
 }
 
 .admin-header p {
-  color: #a1a5b7;
-  margin-bottom: 2rem;
+  color: #a0a0a0;
+  margin-bottom: 2.5rem;
 }
 
-/* --- Stats Grid --- */
-.stats-grid {
+/* --- Grille des KPIs --- */
+.kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-.stat-card {
-  background-color: #1e1e2d;
+.kpi-card {
+  background: linear-gradient(145deg, #1e1e1e 0%, #151521 100%);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 1.5rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  transition: transform 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.stat-card:hover {
+.kpi-card:hover {
   transform: translateY(-5px);
 }
 
-.stat-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+/* Effets de lueur colorée selon la carte */
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+.glow-blue::before {
+  background: #009ef7;
+  box-shadow: 0 0 15px #009ef7;
+}
+.glow-orange::before {
+  background: #f05a30;
+  box-shadow: 0 0 15px #f05a30;
+}
+.glow-green::before {
+  background: #50cd89;
+  box-shadow: 0 0 15px #50cd89;
+}
+
+.kpi-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.pulse-green {
-  background: rgba(80, 205, 137, 0.1);
-  color: #50cd89;
-}
-.pulse-red {
-  background: rgba(241, 65, 108, 0.1);
-  color: #f1416c;
-}
-.pulse-blue {
-  background: rgba(0, 158, 247, 0.1);
+.glow-blue .kpi-icon {
   color: #009ef7;
 }
-
-.stat-info h3 {
-  font-size: 1.8rem;
-  margin: 0;
+.glow-orange .kpi-icon {
+  color: #f05a30;
+}
+.glow-green .kpi-icon {
+  color: #50cd89;
 }
 
-.stat-info p {
-  color: #a1a5b7;
+.kpi-content h3 {
+  font-size: 2rem;
   margin: 0;
+  font-weight: 800;
+}
+
+.kpi-content p {
+  color: #a0a0a0;
+  margin: 0 0 8px 0;
   font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.kpi-substats {
+  font-size: 0.85rem;
+  color: #a0a0a0;
+  display: flex;
+  gap: 8px;
+}
+.kpi-substats span i {
+  margin-right: 4px;
+}
+.text-orange {
+  color: #f05a30;
+  font-weight: bold;
 }
 
 /* --- Layout Principal --- */
-.content-grid {
+.dashboard-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
 }
 
 @media (max-width: 1024px) {
-  .content-grid {
+  .dashboard-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* --- Cartes des Listes --- */
+/* --- Cartes des Panels (Listes, Graphes, Map) --- */
 .admin-panel-card {
-  background-color: #1e1e2d;
+  background-color: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
 }
 
 .card-header {
@@ -107,17 +150,16 @@
 }
 
 .card-header h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin: 0;
 }
 
 /* --- Barres de recherche --- */
 .admin-search-form {
   display: flex;
-  background: #151521;
+  background: #2a2a2a;
   border-radius: 8px;
   padding: 0.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .admin-search-form input {
@@ -131,13 +173,13 @@
 .admin-search-form button {
   background: transparent;
   border: none;
-  color: #a1a5b7;
-  padding: 0.5rem;
+  color: #a0a0a0;
+  padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
 .admin-search-form button:hover {
-  color: #009ef7;
+  color: #f05a30;
 }
 
 /* --- Listes scrollables --- */
@@ -151,12 +193,15 @@
   width: 6px;
 }
 .list-container::-webkit-scrollbar-track {
-  background: #151521;
+  background: #121212;
   border-radius: 4px;
 }
 .list-container::-webkit-scrollbar-thumb {
-  background: #323248;
+  background: #333;
   border-radius: 4px;
+}
+.list-container::-webkit-scrollbar-thumb:hover {
+  background: #f05a30;
 }
 
 .list-item {
@@ -165,90 +210,53 @@
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
-.list-item:last-child {
-  border-bottom: none;
+.list-item:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .item-details strong {
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
   display: block;
 }
 .item-details span {
   font-size: 0.85rem;
-  color: #a1a5b7;
+  color: #a0a0a0;
 }
 
 .role-badge {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: 0.75rem;
   font-weight: bold;
   margin-top: 5px;
+  text-transform: uppercase;
 }
 .role-badge.admin {
-  background: rgba(241, 65, 108, 0.2);
-  color: #f1416c;
+  background: rgba(240, 90, 48, 0.2);
+  color: #f05a30;
 }
 .role-badge.user {
-  background: rgba(0, 158, 247, 0.2);
-  color: #009ef7;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ccc;
 }
 
 .btn-action {
-  background: #151521;
+  background: #2a2a2a;
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9rem;
+  transition: background 0.3s;
 }
 .btn-action:hover {
-  background: #009ef7;
-  border-color: #009ef7;
-}
-
-/* --- Map Widget & Fullscreen --- */
-.map-column .map-wrapper {
-  position: relative;
-  height: 400px;
-  border-radius: 8px;
-}
-
-.expand-map-btn {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  background: #1e1e2d;
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-/* Mode Plein écran activé via JS */
-.map-widget.fullscreen-mode {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  margin: 0;
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.map-widget.fullscreen-mode .map-wrapper {
-  flex-grow: 1;
-  height: 100%;
+  background: #f05a30;
 }

@@ -8,6 +8,8 @@
             <form action="index.php" method="get" style="display: flex;">
                 <input type="hidden" name="route" value="home"> 
                 
+                <img src="assets/img/favicon.png" alt="RideTeam Logo" style="width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex-shrink: 0;">
+
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" autocomplete="off" name="recherche" placeholder="Rechercher..." value="<?= htmlspecialchars($keyword ?? '') ?>">
@@ -15,7 +17,7 @@
                 <button type="submit" class="btn-sent-home"><i class="fa-solid fa-paper-plane"></i></button>
             </form>
             
-            <h1>Les balades à venir</h1>
+            <h1>Bienvenue sur RideTeam !</h1>
             <p>Trouve ta prochaine balade !</p>
         </div>
     </header>
@@ -83,6 +85,11 @@
                                         <div class="info-row">
                                             <i class="fa-solid fa-location-dot"></i> 
                                             <span><?= htmlspecialchars($ride->getStart_location()) ?></span>
+                                        </div>  
+
+                                        <div class="info-row">
+                                            <i class="fa-solid fa-flag-checkered"></i>
+                                            <span><?= htmlspecialchars($ride->getEnd_location()) ?></span>
                                         </div>
                                         
                                         <div class="participants-row">

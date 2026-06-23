@@ -122,5 +122,26 @@ class UserManager extends AbstractManager
         $query->execute($parameters);
     }
 
-    public function signalerUser() {} // ! a faire en js je pense pour ne pas a avoir à recharger la page et donc perdre le fil de la discution par exemple dans le chat
+    public function getStats() {
+        $stats = [];
+        // Total inscrits
+        $stats['total'] = $this->db->query('SELECT COUNT(*) FROM users')->fetchColumn();
+        // Inscrits aujourd'hui
+        $stats['today'] = $this->db->query('SELECT COUNT(*) FROM users WHERE DATE(created_at) = CURDATE()')->fetchColumn();
+        // Inscrits ce mois-ci
+        $stats['month'] = $this->db->query('SELECT COUNT(*) FROM users WHERE MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())')->fetchColumn();
+        
+        // Données pour le graphique (7 derniers jours)
+        $query = $this->db->query('
+            SELECT DATE(created_at) as date, COUNT(*) as count 
+            FROM users 
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
+            GROUP BY DATE(created_at) 
+            ORDER BY date ASC
+        ');
+        $stats['chart_7_days'] = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        return $stats;
+    }
+
 }

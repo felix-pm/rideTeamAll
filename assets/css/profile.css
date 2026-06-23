@@ -64,8 +64,8 @@ body {
 
 #btn-admin {
   position: absolute;
-  top: 15px;
-  right: 60px;
+  top: 10px;
+  right: 50px;
   color: var(--text-grey);
   font-size: 1.4rem;
   transition: color 0.3s;
