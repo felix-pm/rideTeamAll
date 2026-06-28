@@ -2,7 +2,7 @@
 
 class AbstractController
 {
-    protected function render(string $templatePath, array $data = []) : void
+    protected function render(string $templatePath, array $data = []) : void {
         extract($data);
         require_once __DIR__ . '/../templates/' . $templatePath . '.php';
     }

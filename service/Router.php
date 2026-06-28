@@ -90,3 +90,7 @@ class Router
         }
     }
 }
+
+
+require_once '../models/Ride.php';
+require_once '../managers/RideManager.php';
