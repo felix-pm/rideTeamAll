@@ -1,10 +1,6 @@
 # 🏍️ RideTeam — Plateforme Communautaire des Deux-Roues
 
 
-**RideTeam** est une application web complète développée en solo (projet de fin d'année). Elle a pour but de rassembler la communauté des passionnés de deux-roues (motards et cyclistes) en centralisant la gestion de leur garage, la création d'itinéraires et la communication en temps réel.
-
----
-
 ## 🎯 Présentation du projet
 L'idée de RideTeam est née d'un constat simple : l'organisation de balades entre amis nécessite souvent d'utiliser plusieurs applications distinctes (Google Maps pour l'itinéraire, Facebook/WhatsApp pour l'organisation et le chat). RideTeam unifie cette expérience dans une seule plateforme centralisée, interactive et dynamique.
 
