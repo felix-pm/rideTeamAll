@@ -1,9 +1,5 @@
 # 🏍️ RideTeam — Plateforme Communautaire des Deux-Roues
 
-![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=flat-square&logo=php&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=flat-square&logo=mysql&logoColor=white)
-![WebSocket](https://img.shields.io/badge/WebSocket-Temps%20R%C3%A9el-010101?style=flat-square)
 
 **RideTeam** est une application web complète développée en solo (projet de fin d'année). Elle a pour but de rassembler la communauté des passionnés de deux-roues (motards et cyclistes) en centralisant la gestion de leur garage, la création d'itinéraires et la communication en temps réel.
 
