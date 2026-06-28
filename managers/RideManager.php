@@ -296,45 +296,6 @@ class RideManager extends AbstractManager
         $query->execute($parameters);
     }
 
-    // ! comment faire pour que ce soit uniquement la personne qui à créer le sortie qui puisse la modifier (l'admin aussi)
-    public function addRide() {
-        $errors = [];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-            if (empty($_POST["title"]) || empty($_POST["description"]) || empty($_POST["start_hour"]) || empty($_POST["start_date"]) || empty($_POST["start_location"]) || empty($_POST["end_location"]) || empty($_POST["difficulty_level"]) || empty($_POST["max_participants"]))
-            {
-                $errors[] = "Veuillez remplir tous les champs !";
-            }
-            $manager = new RideManager();
-            
-            if (empty($errors)) {
-                $startCoords = $this->getCoordinates($_POST['start_location']);
-                $endCoords = $this->getCoordinates($_POST['end_location']);
-    
-                $rideToCreate = new Ride(
-                        $item["id"], 
-                        $item["title"], 
-                        $item["description"], 
-                        $item["start_hour"], 
-                        $item["start_date"], 
-                        $item["start_location"], 
-                        $item["start_latitude"],  
-                        $item["start_longitude"], 
-                        $item["end_location"], 
-                        $item["end_latitude"],    
-                        $item["end_longitude"],   
-                        $item["difficulty_level"], 
-                        $item["max_participants"], 
-                        $item["organizer_id"]
-                    );
-                $manager->createRide($rideToCreate);
-                $this->redirect('index.php?route=home');
-                exit;
-            }
-        }
-        $this->render('member/create_way', ['errors' => $errors]);
-    }
-
     public function createRide(Ride $ride, $user_id) {
         $query = $this->db->prepare("INSERT INTO rides (
                     title, 

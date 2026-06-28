@@ -19,31 +19,24 @@ body {
   color: var(--text-white);
 }
 
-/* =========================================
-   CONTENEUR GLOBAL (Centre la carte à l'écran)
-   ========================================= */
 #section-login,
 #section-register {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Prend toute la hauteur de l'écran */
+  min-height: 100vh;
   padding: 20px;
 }
 
-/* =========================================
-   CARTE PRINCIPALE
-   ========================================= */
 .auth-container {
   background-color: var(--card-bg);
   width: 100%;
-  max-width: 400px; /* Limite la largeur sur PC/Tablette */
+  max-width: 400px;
   padding: 35px 25px;
   border-radius: var(--border-radius);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Belle ombre de profondeur */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Titres (Connexion / Inscription) */
 .auth-container h1,
 .auth-container h2 {
   text-align: center;
@@ -53,9 +46,6 @@ body {
   color: var(--text-white);
 }
 
-/* =========================================
-   MESSAGES D'ERREUR
-   ========================================= */
 .alert-error {
   background-color: rgba(255, 59, 59, 0.1);
   border: 1px solid var(--error-red);
@@ -64,7 +54,7 @@ body {
   border-radius: 8px;
   margin-bottom: 20px;
   font-size: 0.9rem;
-  animation: shake 0.4s ease-in-out; /* Petite animation sympa si erreur */
+  animation: shake 0.4s ease-in-out;
 }
 
 .alert-error p {
@@ -74,7 +64,7 @@ body {
 }
 
 .alert-error p::before {
-  content: "⚠️"; /* Ajoute un petit emoji devant chaque erreur */
+  content: "⚠️";
   margin-right: 8px;
   font-size: 0.8rem;
 }
@@ -83,9 +73,6 @@ body {
   margin-bottom: 0;
 }
 
-/* =========================================
-   FORMULAIRE (Labels & Inputs)
-   ========================================= */
 .auth-container form {
   display: flex;
   flex-direction: column;
@@ -99,7 +86,6 @@ body {
   font-weight: 500;
 }
 
-/* Enlève la marge au-dessus du tout premier label */
 .auth-container form label:first-of-type {
   margin-top: 0;
 }
@@ -124,9 +110,6 @@ body {
   background-color: #333;
 }
 
-/* =========================================
-   BOUTON DE SOUMISSION
-   ========================================= */
 .auth-container button[type="submit"] {
   background-color: var(--accent-orange);
   color: var(--text-white);
@@ -136,7 +119,7 @@ body {
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 25px !important; /* Le !important sécurise le inline style de ton html */
+  margin-top: 25px !important;
   transition:
     background-color 0.3s,
     transform 0.1s;
@@ -151,9 +134,6 @@ body {
   transform: scale(0.98);
 }
 
-/* =========================================
-   LIEN VERS L'AUTRE PAGE
-   ========================================= */
 .auth-links {
   display: block;
   text-align: center;
@@ -168,9 +148,6 @@ body {
   color: var(--accent-orange);
 }
 
-/* =========================================
-   ANIMATIONS
-   ========================================= */
 @keyframes shake {
   0%,
   100% {

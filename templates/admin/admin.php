@@ -51,7 +51,7 @@
         <div class="dashboard-main">
             <div class="admin-panel-card">
                 <div class="card-header">
-                    <h2>Croissance des utilisateurs (7 derniers jours)</h2>
+                    <h2>Croissance des utilisateurs</h2>
                 </div>
                 <div style="position: relative; height: 300px;">
                     <canvas id="usersChart"></canvas>
@@ -122,13 +122,11 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    // --- 1. INITIALISATION DU GRAPHIQUE (CHART.JS) ---
     const ctx = document.getElementById('usersChart').getContext('2d');
     const chartDataRaw = <?= $chartData ?>;
     
-    // Dégradé sous la courbe
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(240, 90, 48, 0.5)'); // Orange RideTeam
+    gradient.addColorStop(0, 'rgba(240, 90, 48, 0.5)');
     gradient.addColorStop(1, 'rgba(240, 90, 48, 0.0)');
 
     new Chart(ctx, {
@@ -141,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 borderColor: '#f05a30',
                 backgroundColor: gradient,
                 borderWidth: 3,
-                tension: 0.4, // Courbe arrondie
+                tension: 0.4,
                 fill: true,
                 pointBackgroundColor: '#151521',
                 pointBorderColor: '#f05a30',
@@ -163,13 +161,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- 2. INITIALISATION DE LA MAP ADMIN ---
-    const adminMap = L.map("admin-map").setView([46.6, 2.5], 5); // Centré sur la France
+    const adminMap = L.map("admin-map").setView([46.6, 2.5], 5);
     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png").addTo(adminMap);
 
     const ridesData = <?= $mapRides ?>;
     
-    // Icône personnalisée
     const adminIcon = L.divIcon({
       className: "custom-icon-wrapper",
       html: `<div style="background-color: var(--accent-orange); width: 20px; height: 20px; border-radius: 50%; border: 3px solid #151521; box-shadow: 0 0 10px rgba(240,90,48,0.8);"></div>`,

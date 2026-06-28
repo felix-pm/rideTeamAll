@@ -9,9 +9,6 @@
   --border-radius: 12px;
 }
 
-/* =========================================
-   BASE (MOBILE FIRST)
-   ========================================= */
 body {
   box-sizing: border-box;
   overflow-x: hidden;
@@ -22,7 +19,7 @@ body {
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
   color: var(--text-white);
-  padding-bottom: 90px; /* Espace pour la navbar fixed */
+  padding-bottom: 90px;
 }
 
 #section-profile {
@@ -31,9 +28,6 @@ body {
   margin: 0 auto;
 }
 
-/* =========================================
-   EN-TÊTE PROFIL
-   ========================================= */
 #profil {
   position: relative;
   text-align: center;
@@ -80,7 +74,6 @@ body {
   cursor: pointer;
 }
 
-/* Avatar */
 #profil img {
   width: 100px;
   height: 100px;
@@ -98,7 +91,7 @@ body {
 }
 
 .avatar-wrapper img {
-  width: 100px; /* Adapte la taille si besoin */
+  width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
@@ -106,13 +99,12 @@ body {
   border: 2px solid var(--accent-orange);
 }
 
-/* Le bouton rond avec le "plus" */
 .edit-avatar-btn {
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #ffffff; /* Fond blanc demandé */
-  color: var(--accent-orange); /* Plus orange */
+  background-color: #ffffff;
+  color: var(--accent-orange);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -121,15 +113,14 @@ body {
   align-items: center;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Ombre pour le détacher */
-  /* Petite bordure couleur carte pour bien séparer le rond blanc de l'image */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
   border: 3px solid var(--card-bg);
   transition: transform 0.2s ease;
   z-index: 2;
 }
 
 .edit-avatar-btn:hover {
-  transform: scale(1.1); /* Petit effet de zoom au survol */
+  transform: scale(1.1);
 }
 
 #profil h2 {
@@ -151,13 +142,12 @@ body {
 
 #bikes-container {
   display: flex;
-  overflow-x: auto; /* Permet le scroll horizontal */
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   gap: 15px;
-  padding-bottom: 15px; /* Laisse de la place pour la barre de scroll */
+  padding-bottom: 15px;
 }
 
-/* Cache la barre de scroll sur Chrome/Safari pour un effet "app native" */
 #bikes-container::-webkit-scrollbar {
   display: none;
 }
@@ -168,20 +158,18 @@ body {
 
 #public-bikes-container {
   display: flex;
-  overflow-x: auto; /* Permet le scroll horizontal */
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   gap: 15px;
-  padding-bottom: 15px; /* Laisse de la place pour la barre de scroll */
+  padding-bottom: 15px;
 }
 
-/* Cache la barre de scroll sur Chrome/Safari pour un effet "app native" */
 #public-bikes-container::-webkit-scrollbar {
   display: none;
 }
 
-/* Carte Moto */
 .bike-card {
-  flex: 0 0 220px; /* Taille fixe pour chaque carte dans le carrousel */
+  flex: 0 0 220px;
   scroll-snap-align: start;
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
@@ -196,7 +184,6 @@ body {
   object-fit: cover;
 }
 
-/* Icônes Paramètres et Poubelle sur l'image */
 .bike-card .fa-gear,
 .bike-card .fa-trash-can {
   position: absolute;
@@ -217,7 +204,6 @@ body {
   color: #ff6b6b;
 }
 
-/* Textes de la moto */
 .bike-marque,
 .bike-modele,
 .bike-annee {
@@ -237,7 +223,6 @@ body {
   margin-bottom: 15px;
 }
 
-/* Bouton Ajouter une moto */
 #button-add-bike {
   width: 100%;
   background-color: transparent;
@@ -256,9 +241,6 @@ body {
   background-color: rgba(240, 90, 48, 0.1);
 }
 
-/* =========================================
-   FORMULAIRE D'AJOUT DE MOTO
-   ========================================= */
 #add-bike {
   background-color: var(--card-bg);
   padding: 20px;
@@ -381,7 +363,6 @@ input[type="file"] {
   display: inline-block;
 }
 
-/* Petite animation d'apparition globale */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -450,18 +431,15 @@ input[type="file"] {
   color: var(--accent-orange);
 }
 
-/* =========================================
-   MODAL COMPTE & PARAMÈTRES (RIDE TEAM THEME)
-   ========================================= */
 .modal {
   position: fixed;
-  z-index: 2000; /* S'assure de passer au-dessus de la barre de navigation basse */
+  z-index: 2000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Arrière-plan bien sombre */
-  backdrop-filter: blur(5px); /* Flou d'arrière-plan classe */
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -469,10 +447,10 @@ input[type="file"] {
 }
 
 .modal-content {
-  background-color: var(--card-bg); /* Ton fond de carte #1e1e1e */
+  background-color: var(--card-bg);
   border: 1px solid #2a2a2a;
   padding: 30px 20px;
-  border-radius: var(--border-radius); /* Coins arrondis à 12px */
+  border-radius: var(--border-radius);
   width: 100%;
   max-width: 400px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
@@ -480,7 +458,6 @@ input[type="file"] {
   color: var(--text-white);
 }
 
-/* Bouton de fermeture (Croix en haut à droite) */
 .close-btn {
   position: absolute;
   top: 15px;
@@ -492,7 +469,7 @@ input[type="file"] {
 }
 
 .close-btn:hover {
-  color: var(--accent-orange); /* Survol orange mécanique */
+  color: var(--accent-orange);
 }
 
 #display-profil {
@@ -521,10 +498,9 @@ input[type="file"] {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Écartement uniforme de tes champs */
+  gap: 15px;
 }
 
-/* Alignement et icônes calqués sur create_way et login */
 #display-profil .input-group {
   display: flex;
   flex-direction: column;
@@ -539,7 +515,7 @@ input[type="file"] {
 }
 
 #display-profil label i {
-  color: var(--accent-orange); /* Icône orange */
+  color: var(--accent-orange);
   margin-right: 6px;
   width: 16px;
   text-align: center;
@@ -548,7 +524,7 @@ input[type="file"] {
 #display-profil input {
   width: 100%;
   padding: 12px 14px;
-  background-color: var(--input-bg); /* Fond #2a2a2a */
+  background-color: var(--input-bg);
   border: 1px solid #333;
   border-radius: 8px;
   color: var(--text-white);
@@ -561,7 +537,7 @@ input[type="file"] {
 #display-profil input:focus {
   outline: none;
   border-color: var(--accent-orange);
-  background-color: #333; /* Changement au focus comme tes pages auth */
+  background-color: #333;
 }
 
 #display-profil input::placeholder {
@@ -569,7 +545,6 @@ input[type="file"] {
   font-size: 0.85rem;
 }
 
-/* Bouton submit RideTeam standardisé */
 #display-profil .submit-btn {
   background-color: var(--accent-orange);
   color: var(--text-white);
@@ -595,5 +570,5 @@ input[type="file"] {
 }
 
 #display-profil .submit-btn:active {
-  transform: scale(0.98); /* Effet d'enfoncement natif au clic */
+  transform: scale(0.98);
 }

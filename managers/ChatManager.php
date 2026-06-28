@@ -36,7 +36,6 @@ class ChatManager extends AbstractManager
             $stats['today'] = $this->db->query('SELECT COUNT(*) FROM chat WHERE DATE(created_at) = CURDATE()')->fetchColumn();
             $stats['month'] = $this->db->query('SELECT COUNT(*) FROM chat WHERE MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())')->fetchColumn();
         } catch(Exception $e) {
-            // Sécurité au cas où la table n'existe pas encore
             $stats['total'] = 0; $stats['today'] = 0; $stats['month'] = 0;
         }
         return $stats;

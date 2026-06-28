@@ -116,7 +116,6 @@ class RideController extends AbstractController
 
     public function editRide(int $id) 
     {
-        // 1. SÉCURITÉ : L'utilisateur doit être connecté
         if (!isset($_SESSION['id'])) {
             $this->redirect('index.php?route=login');
             exit;
@@ -125,13 +124,13 @@ class RideController extends AbstractController
         $rideManager = new RideManager();
         $ride = $rideManager->findOne($id);
 
-        // 2. SÉCURITÉ : La balade doit exister en BDD
+        // on regarde si la balade existe en BDD
         if (!$ride) {
             $this->redirect('index.php?route=profile');
             exit;
         }
 
-        // 3. SÉCURITÉ : Seul l'organisateur (ou un ADMIN) peut modifier la balade
+        // il faut être l'organisateur ou l'admin pour modifier la balade
         $isOwner = (int)$ride->getOrganizer_id() === (int)$_SESSION['id'];
         $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'ADMIN';
 
@@ -140,31 +139,19 @@ class RideController extends AbstractController
             exit;
         }
 
-        // 4. Traitement du formulaire au clic sur "Mettre à jour"
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // On vérifie que les champs obligatoires de notre modale sont bien remplis
             if (!empty($_POST['title']) && !empty($_POST['start_date']) && !empty($_POST['start_hour']) && !empty($_POST['start_location'])) {
-                
-                // Mise à jour de l'objet local avec les nouvelles données
                 $ride->setTitle($_POST['title']);
                 $ride->setStart_date($_POST['start_date']);
                 $ride->setStart_hour($_POST['start_hour']);
                 $ride->setStart_location($_POST['start_location']);
-
-                /* Optionnel : Si tu utilises une API de géocodage pour avoir la latitude/longitude 
-                   à partir de l'adresse, c'est ici qu'il faudrait la rappeler pour mettre à jour
-                   $ride->setStart_latitude(...) et $ride->setStart_longitude(...) */
-
-                // Sauvegarde définitive en BDD
                 $rideManager->updateRide($ride);
 
-                // Redirection vers le profil pour recharger la page proprement
                 $this->redirect('index.php?route=profile');
                 exit;
             }
         }
 
-        // Redirection par sécurité si quelqu'un tente d'accéder à l'URL en direct sans envoyer le formulaire
         $this->redirect('index.php?route=profile');
         exit;
     }

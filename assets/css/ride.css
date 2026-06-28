@@ -1,8 +1,3 @@
-/* =========================================
-   PAGE DETAILS BALADE (ride.php) - MAQUETTE
-   ========================================= */
-
-/* On enlève le padding pour que l'image touche les bords de l'écran */
 .ride-details-main {
   padding: 0;
   max-width: 800px;
@@ -10,7 +5,6 @@
   padding-bottom: 90px;
 }
 
-/* --- Image de Couverture --- */
 .ride-cover {
   position: relative;
   width: 100%;
@@ -23,12 +17,11 @@
   object-fit: cover;
 }
 
-/* Bouton Retour superposé sur l'image */
 .btn-back-overlay {
   position: absolute;
   top: 20px;
   left: 15px;
-  background-color: rgba(0, 0, 0, 0.5); /* Cercle noir semi-transparent */
+  background-color: rgba(0, 0, 0, 0.5);
   color: var(--text-white);
   width: 40px;
   height: 40px;
@@ -38,7 +31,7 @@
   justify-content: center;
   text-decoration: none;
   font-size: 1.2rem;
-  backdrop-filter: blur(4px); /* Petit effet de flou derrière le bouton */
+  backdrop-filter: blur(4px);
   transition: background-color 0.3s;
 }
 
@@ -46,12 +39,10 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* --- Contenu Principal --- */
 .ride-content {
   padding: 25px 20px;
 }
 
-/* Titre et Badge sur la même ligne */
 .ride-header-top {
   display: flex;
   justify-content: space-between;
@@ -67,12 +58,10 @@
   line-height: 1.3;
 }
 
-/* On force la position relative pour le badge pour annuler l'absolu du badge des cartes de l'accueil */
 .ride-header-top .badge {
   position: static;
 }
 
-/* --- COULEURS DES BADGES (Ajout pour sécuriser l'affichage de "Moyen") --- */
 .badge-medium {
   background-color: #f35207b8;
   color: var(--text-white);
@@ -86,7 +75,6 @@
   color: white;
 }
 
-/* Auteur */
 .ride-details-main .author {
   color: var(--text-grey);
   font-size: 0.95rem;
@@ -94,7 +82,6 @@
   text-align: left;
 }
 
-/* --- Bloc d'informations condensées --- */
 .ride-quick-infos {
   background-color: var(--card-bg);
   border-radius: var(--border-radius);
@@ -104,20 +91,18 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* On réutilise tes classes .info-row et .participants-row, on les aère un peu */
 .ride-quick-infos .info-row {
   margin-bottom: 15px;
 }
 .ride-quick-infos .info-row:last-of-type {
-  margin-bottom: 0; /* Évite un espace en trop si pas de participants */
+  margin-bottom: 0;
 }
 .ride-quick-infos .participants-row {
   margin-top: 15px;
   padding-top: 15px;
-  border-top: 1px solid #333; /* Petite ligne de séparation */
+  border-top: 1px solid #333;
 }
 
-/* --- Section Description --- */
 .ride-description {
   margin-bottom: 40px;
 }
@@ -137,7 +122,6 @@
   text-align: left;
 }
 
-/* --- Liste détaillée des participants (ride.php) --- */
 .ride-participants-list {
   margin-bottom: 30px;
 }
@@ -155,33 +139,28 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Espace régulier entre chaque carte participant */
+  gap: 10px;
 }
 
-/* Design de la "carte" utilisateur */
 .participants-list li {
   background-color: var(--card-bg);
   padding: 10px 15px;
   border-radius: var(--border-radius);
   display: flex;
   align-items: center;
-  gap: 15px; /* Espace entre l'avatar et le nom */
+  gap: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* L'avatar du participant */
 .participant-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  background-color: var(
-    --bg-dark
-  ); /* Au cas où l'image met du temps à charger */
-  border: 2px solid var(--accent-orange); /* Petit rappel de la couleur principale */
+  background-color: var(--bg-dark);
+  border: 2px solid var(--accent-orange);
 }
 
-/* Le pseudo du participant */
 .participant-name {
   color: var(--text-white);
   font-size: 0.95rem;
@@ -226,7 +205,6 @@
   color: var(--text-white);
 }
 
-/* État : Je veux me désinscrire (équivalent de btn-unfollow) */
 .btn-leave {
   background-color: var(--accent-orange);
   color: var(--text-white);
@@ -255,14 +233,10 @@
   margin-top: 15px;
 }
 
-/* =========================================
-   SECTION CHAT (DARK THEME)
-   ========================================= */
-
 .ride-chat-section {
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid #333; /* On vire le gris clair #ddd */
+  border-top: 1px solid #333;
 }
 
 .ride-chat-section h3 {
@@ -272,23 +246,20 @@
   text-align: left;
 }
 
-/* La zone où les messages défilent */
 .chat-messages-container {
   max-height: 350px;
   overflow-y: auto;
-  background: var(--bg-dark); /* Le fond très sombre de l'app */
+  background: var(--bg-dark);
   padding: 15px;
   border-radius: var(--border-radius);
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  /* Légère ombre interne pour l'effet de profondeur */
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
   border: 1px solid #2a2a2a;
 }
 
-/* --- SCROLLBAR PERSONNALISÉE POUR LE CHAT --- */
 .chat-messages-container::-webkit-scrollbar {
   width: 6px;
 }
@@ -303,11 +274,10 @@
   background: var(--accent-orange);
 }
 
-/* Le conteneur d'un message entier */
 .chat-message {
   display: flex;
   gap: 12px;
-  align-items: flex-end; /* Aligne l'avatar en bas de la bulle */
+  align-items: flex-end;
 }
 
 .chat-avatar {
@@ -315,14 +285,12 @@
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #333; /* Petit contour classe */
+  border: 2px solid #333;
 }
 
-/* La bulle de texte */
 .message-content {
-  background: var(--card-bg); /* Couleur gris sombre des cartes */
+  background: var(--card-bg);
   padding: 10px 14px;
-  /* Design "Bulle" : on arrondit tout, sauf le coin en bas à gauche */
   border-radius: 18px 18px 18px 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   max-width: 85%;
@@ -331,7 +299,7 @@
 .message-author {
   font-weight: 600;
   font-size: 0.85rem;
-  color: var(--accent-orange); /* Pseudo en orange pour flasher */
+  color: var(--accent-orange);
   display: block;
   margin-bottom: 4px;
   text-align: left;
@@ -346,14 +314,13 @@
   text-align: left;
 }
 
-/* --- BARRE D'ENVOI DE MESSAGE --- */
 .chat-form {
   display: flex;
   gap: 10px;
   align-items: center;
   background-color: var(--card-bg);
-  padding: 6px 6px 6px 15px; /* Padding asymétrique pour caler le bouton rond */
-  border-radius: 30px; /* Forme de pilule */
+  padding: 6px 6px 6px 15px;
+  border-radius: 30px;
   border: 1px solid #333;
 }
 
@@ -371,14 +338,13 @@
   color: var(--text-grey);
 }
 
-/* Le fameux bouton d'envoi */
 .btn-send-chat {
-  background: var(--accent-orange); /* Adieu le bleu ! */
+  background: var(--accent-orange);
   color: var(--text-white);
   border: none;
   width: 40px;
   height: 40px;
-  border-radius: 50%; /* Bouton parfaitement rond */
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -389,7 +355,6 @@
   font-size: 1.1rem;
 }
 
-/* Icône un peu décalée car l'avion en papier a un centre de gravité trompeur */
 .btn-send-chat i {
   margin-left: -2px;
   margin-top: 1px;
@@ -404,7 +369,6 @@
   transform: scale(0.95);
 }
 
-/* Si l'utilisateur n'est pas connecté */
 .chat-login-prompt {
   text-align: center;
   color: var(--text-grey);

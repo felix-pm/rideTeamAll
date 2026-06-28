@@ -2,7 +2,6 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-// Charger l'environnement (.env) pour que AbstractManager trouve les accès BDD
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 

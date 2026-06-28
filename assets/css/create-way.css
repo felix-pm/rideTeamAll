@@ -9,9 +9,6 @@
   --border-radius: 12px;
 }
 
-/* =========================================
-   BASE & STRUCTURE (MOBILE FIRST)
-   ========================================= */
 body.app-bg {
   margin: 0;
   padding: 0;
@@ -20,7 +17,7 @@ body.app-bg {
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
   color: var(--text-white);
-  padding-bottom: 85px; /* Pour éviter que le bouton soit caché par ta navbar */
+  padding-bottom: 85px;
 }
 
 header.app-header {
@@ -30,18 +27,17 @@ header.app-header {
   top: 0 !important;
   bottom: auto !important;
   z-index: 10;
-  /* border-bottom: 1px solid #2a2a2a; */
 }
 
 .app-header h1 {
-  display: block !important; /* Force l'apparition du titre */
+  display: block !important;
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 .app-header p {
-  display: block !important; /* Force l'apparition du sous-titre */
+  display: block !important;
   margin: 5px 0 0 0;
   color: var(--text-grey);
   font-size: 0.95rem;
@@ -51,9 +47,6 @@ header.app-header {
   padding: 20px 15px 100px 15px;
 }
 
-/* =========================================
-   MESSAGES D'ERREUR
-   ========================================= */
 .error-box {
   background-color: rgba(255, 59, 59, 0.1);
   border: 1px solid var(--error-red);
@@ -75,7 +68,6 @@ header.app-header {
   margin-bottom: 0;
 }
 
-/* Animation d'apparition */
 .animate-pop {
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
@@ -91,9 +83,6 @@ header.app-header {
   }
 }
 
-/* =========================================
-   FORMULAIRE & INPUTS
-   ========================================= */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -107,7 +96,6 @@ header.app-header {
   font-weight: 500;
 }
 
-/* Les icônes dans les labels prennent la couleur principale */
 .input-group label i {
   color: var(--accent-orange);
   width: 20px;
@@ -115,7 +103,6 @@ header.app-header {
   margin-right: 5px;
 }
 
-/* Champs de texte, textarea et selects */
 .input-group input,
 .input-group textarea,
 .input-group select {
@@ -130,13 +117,11 @@ header.app-header {
   transition: all 0.3s ease;
 }
 
-/* Pour le placeholder */
 .input-group input::placeholder,
 .input-group textarea::placeholder {
   color: #666;
 }
 
-/* Effet au clic (focus) */
 .input-group input:focus,
 .input-group textarea:focus,
 .input-group select:focus {
@@ -149,7 +134,6 @@ header.app-header {
   min-height: 100px;
 }
 
-/* Pour mettre deux champs côte à côte (Date/Heure, Niveau/Max) */
 .row-group {
   display: flex;
   gap: 15px;
@@ -159,7 +143,6 @@ header.app-header {
   flex: 1;
 }
 
-/* Modifier l'icône calendrier/horloge native sur mobile */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
@@ -167,9 +150,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
-/* =========================================
-   DESIGN "TIMELINE" (Départ -> Arrivée)
-   ========================================= */
 .timeline-inputs {
   background-color: var(--card-bg);
   padding: 15px;
@@ -182,20 +162,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .timeline-inputs input {
-  background-color: var(--bg-dark); /* Contraste pour ressortir de la carte */
+  background-color: var(--bg-dark);
 }
 
 .connector-line {
   height: 15px;
   width: 2px;
   background-color: var(--text-grey);
-  margin: 8px 0 8px 10px; /* Aligné juste en dessous de l'icône de localisation */
+  margin: 8px 0 8px 10px;
   opacity: 0.3;
 }
 
-/* =========================================
-   AUTOCOMPLÉTION (Adresses)
-   ========================================= */
 .autocomplete-list {
   position: absolute;
   top: 100%;
@@ -229,9 +206,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-color: var(--accent-orange);
 }
 
-/* =========================================
-   BOUTON DE SOUMISSION
-   ========================================= */
 .submit-btn {
   width: 100%;
   background-color: var(--accent-orange);
@@ -257,12 +231,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .submit-btn:active {
-  transform: scale(0.98); /* Petit effet d'enfoncement au clic */
+  transform: scale(0.98);
 }
 
-/* =========================================
-   TABLETTES & DESKTOP
-   ========================================= */
 @media (min-width: 768px) {
   .app-header .header-content,
   .form-wrapper {
@@ -275,39 +246,35 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   }
 }
 
-/* Style pour le conteneur de la liste déroulante */
 .autocomplete-results {
   position: absolute;
-  top: 100%; /* Se place juste en dessous de l'input */
+  top: 100%;
   left: 0;
   right: 0;
-  background-color: #2a2a2a; /* Adapte la couleur à ton thème sombre */
+  background-color: #2a2a2a;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000; /* Passe par-dessus les autres éléments */
+  z-index: 1000;
   margin: 5px 0 0 0;
   padding: 0;
-  list-style: none; /* Enlève les puces des li */
+  list-style: none;
 }
 
-/* Style pour chaque proposition (les fameux li) */
 .autocomplete-results li {
   padding: 12px 15px;
   cursor: pointer;
-  color: #fff; /* Couleur du texte */
+  color: #fff;
   border-bottom: 1px solid #333;
   font-size: 14px;
   transition: background 0.2s ease;
 }
 
-/* Au survol d'une proposition */
 .autocomplete-results li:hover {
-  background-color: #444; /* Légère surbrillance */
+  background-color: #444;
 }
 
-/* On enlève la bordure du dernier élément */
 .autocomplete-results li:last-child {
   border-bottom: none;
 }

@@ -11,7 +11,6 @@ class UserController extends AbstractController
                 $user = $manager->findById($_SESSION['id']); 
                 
                 if ($user) {
-                    // 1. GESTION DU CHANGEMENT D'INFOS VIA LA MODALE
                     if (isset($_POST['pseudo'], $_POST['email'])){
                         $user->setPseudo($_POST['pseudo']);
                         $user->setEmail($_POST['email']);
@@ -21,7 +20,6 @@ class UserController extends AbstractController
                         }
                     }
 
-                    // 2. GESTION DE L'AJOUT / MODIFICATION DE LA PHOTO DE PROFIL (AVATAR)
                     if (isset($_FILES['new_avatar']) && $_FILES['new_avatar']['error'] === UPLOAD_ERR_OK) {
                         $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
                         $fileTmpPath = $_FILES['new_avatar']['tmp_name'];
@@ -30,13 +28,11 @@ class UserController extends AbstractController
                         if (in_array($fileMimeType, $allowedMimeTypes)) {
                             $uploadDir = 'assets/img/';
                             
-                            // Génération d'un nom de fichier unique sécurisé
                             $extension = pathinfo($_FILES['new_avatar']['name'], PATHINFO_EXTENSION);
                             $newFileName = uniqid('avatar_') . '.' . $extension;
                             $destination = $uploadDir . $newFileName;
                             
                             if (move_uploaded_file($fileTmpPath, $destination)) {
-                                // Nettoyage de l'ancienne photo sur le serveur (sauf si c'est l'avatar par défaut)
                                 $oldAvatar = $user->getAvatar();
                                 if ($oldAvatar && strpos($oldAvatar, 'default-avatar.jpg') === false && file_exists($oldAvatar)) {
                                     unlink($oldAvatar);
@@ -47,10 +43,8 @@ class UserController extends AbstractController
                         }
                     }
 
-                    // Sauvegarde des modifications globales en BDD
                     $manager->update($user);
 
-                    // Synchronisation immédiate des variables de session pour l'affichage fluide
                     $_SESSION['pseudo'] = $user->getPseudo();
                     $_SESSION['email'] = $user->getEmail();
                     $_SESSION['avatar'] = $user->getAvatar();

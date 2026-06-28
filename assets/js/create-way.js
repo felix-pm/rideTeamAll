@@ -11,13 +11,14 @@ function setupAutocomplete(inputId, resultsId, latId, lonId) {
     debounceTimer = setTimeout(async () => {
       const query = input.value.trim();
 
+      // doit mettre au minimum 3 lettres pour que l'autocomplet affiche une ville
       if (query.length < 3) {
         results.innerHTML = "";
         return;
       }
 
+      // lance l'essai de la requête
       try {
-        // Appel direct à l'API Nominatim (OpenStreetMap)
         const response = await fetch(
           `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`,
         );

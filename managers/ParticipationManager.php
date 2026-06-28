@@ -96,8 +96,4 @@ class ParticipationManager extends AbstractManager
 
         $query->execute($parameters);
     }
-
-
-
-    //! rajouter une fonction permettant de compter le nb de participants dans la balade avec un count en sql
 }

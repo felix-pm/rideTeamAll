@@ -12,15 +12,12 @@ class AdminController extends AbstractController
         $rideManager = new RideManager();
         $messageManager = new ChatManager();
 
-        // Recherche Utilisateurs
         $keywordUser = trim($_GET['rechercheUser-admin'] ?? '');
         $users = !empty($keywordUser) ? $userManager->searchUser($keywordUser) : $userManager->findAll();
 
-        // Recherche Balades
         $keywordRide = trim($_GET['recherche-balade_admin'] ?? '');
         $rides = !empty($keywordRide) ? $rideManager->searchRides($keywordRide) : $rideManager->findAll();
 
-        // Récupération des statistiques globales
         $userStats = $userManager->getStats();
         $rideStats = $rideManager->getStats();
 

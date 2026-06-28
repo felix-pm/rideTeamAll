@@ -3,18 +3,17 @@
   width: 100%;
 }
 
-/* --- Le marqueur principal --- */
 .beautiful-marker {
-  background-color: var(--accent-orange); /* Un beau vert moderne */
+  background-color: var(--accent-orange);
   width: 36px;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 3px solid #ffffff; /* Bordure blanche pour détacher de la carte */
+  border: 3px solid #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  font-size: 18px; /* Taille de l'emoji */
+  font-size: 18px;
   transition:
     transform 0.3s ease,
     background-color 0.3s ease;
@@ -23,23 +22,20 @@
   z-index: 2;
 }
 
-/* Effet quand on passe la souris dessus */
 .beautiful-marker:hover {
-  transform: scale(1.15); /* Grossit légèrement */
-  background-color: #d5641e3d; /* Devient bleu */
+  transform: scale(1.15);
+  background-color: #d5641e3d;
 }
 
-/* --- L'animation de pulsation (l'onde sous le marqueur) --- */
 .marker-pulse {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 40px;
   height: 40px;
-  background-color: #e15d1149; /* Vert transparent */
+  background-color: #e15d1149;
   border-radius: 50%;
   z-index: 1;
-  /* L'animation qui tourne en boucle */
   animation: pulse-animation 2s infinite;
 }
 
@@ -60,5 +56,4 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); */
 }

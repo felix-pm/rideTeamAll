@@ -1,30 +1,21 @@
-/* =========================================
-   ESPACEMENT POUR LE CONTENU PRINCIPAL
-   ========================================= */
 body {
-  /* Indispensable : on libère l'espace en bas pour ne pas que les 
-     dernières cartes de balades soient cachées sous la navbar */
   padding-bottom: 80px;
 }
 
-/* =========================================
-   TA NAVBAR FIXÉE EN BAS (Ton style exact)
-   ========================================= */
 nav {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 65px; /* Ta hauteur fixe */
-  background-color: #121212; /* Noir sombre style app */
-  border-top: 1px solid #2a2a2a; /* Ligne de séparation subtile */
+  height: 65px;
+  background-color: #121212;
+  border-top: 1px solid #2a2a2a;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  z-index: 1000; /* Assure que la navbar reste au-dessus des cartes */
+  z-index: 1000;
 }
 
-/* --- Éléments Conteneurs (.flex et le lien profil direct) --- */
 .flex,
 nav > a {
   flex: 1;
@@ -37,7 +28,6 @@ nav > a {
   color: #9e9e9e;
 }
 
-/* --- Style du Texte --- */
 nav a,
 nav p {
   font-size: 10px;
@@ -49,14 +39,12 @@ nav p {
   transition: color 0.3s ease;
 }
 
-/* --- Style des Icônes standards --- */
 nav i {
   font-size: 20px;
   display: block;
   margin-bottom: 0;
 }
 
-/* --- CAS 1 : Les liens classiques --- */
 .flex a {
   display: flex;
   flex-direction: column;
@@ -66,7 +54,6 @@ nav i {
   justify-content: center;
 }
 
-/* --- CAS 2 : Le bouton "Créer" (+) --- */
 .flex:nth-child(3) a {
   font-size: 24px;
   font-weight: 300;
@@ -82,7 +69,6 @@ nav i {
   flex: none;
 }
 
-/* --- CAS 3 : Le Profil (Image + Texte) --- */
 nav > a img {
   width: 30px !important;
   height: 30px !important;
@@ -92,7 +78,6 @@ nav > a img {
   margin-bottom: 0;
 }
 
-/* --- Effet au clic/survol --- */
 nav a:active,
 nav a:hover {
   color: #e0e0e0;
